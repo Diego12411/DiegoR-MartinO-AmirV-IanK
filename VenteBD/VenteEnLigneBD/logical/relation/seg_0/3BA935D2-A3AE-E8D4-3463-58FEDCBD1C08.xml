@@ -1,0 +1,33 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="Panier-Produit" directorySegmentName="seg_0" id="3BA935D2-A3AE-E8D4-3463-58FEDCBD1C08">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:29:53 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>*</sourceCardinality>
+<sourceEntity>13EF31AE-2A2F-36D7-7079-A142A5EAFCDB</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>52AB2B07-B66D-E870-C883-8CA60AF1C0A2</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<attribute name="quantite" id="541EB0DF-9183-454E-F450-12162391232D">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:30:33 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</attribute>
+</attributes>
+</Relation>

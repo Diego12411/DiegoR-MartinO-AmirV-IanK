@@ -1,0 +1,129 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="196897BA-5E27-4972-3281-8A28B2706699" name="Utilisateur">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:17:18 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id_utilisateur" id="724779DF-DC5D-BC25-E092-450C1F1C4EF2">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:17:54 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le ID unique de l'utilisateur]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="nom" id="D07B0EFE-DCB2-40E9-0779-5A1E748665B9">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:18:19 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le nom de famille de l'utilisateur.]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 CHAR</dataTypeSize>
+<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="prenom" id="0BCAA4F9-2D3E-F45C-D12F-8452BF5ED7BE">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:19:10 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le prénom de l'utilisateur.]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 CHAR</dataTypeSize>
+<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="mot_de_passe" id="FF66523A-24A9-E66F-002D-1EF5528A3FDF">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:19:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le mot de passe associé au compte de l'utilisateur.]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100 CHAR</dataTypeSize>
+<ownDataTypeParameters>100 CHAR,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="courriel" id="6421D682-12AF-4240-8A7A-8495F6A42C31">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:20:18 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le courriel associé au compte de l'utilisateur]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 CHAR</dataTypeSize>
+<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="adresse" id="AD39D2B6-EED8-6EF7-9353-D834A369B9A7">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 20:00:46 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 CHAR</dataTypeSize>
+<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="role" id="9EFFE634-108B-9A59-58B4-6ECDF6FA3DE0">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:19:48 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le role de l'utilisateur (client, admin)]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="EA023D76-339C-2C18-3EAD-11608013E149" name="Utilisateur PK">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:18:01 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>724779DF-DC5D-BC25-E092-450C1F1C4EF2</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

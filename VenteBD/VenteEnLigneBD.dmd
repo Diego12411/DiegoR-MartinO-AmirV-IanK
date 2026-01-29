@@ -1,0 +1,8 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<OSDM_Design class="oracle.dbtools.crest.model.design.Design" name="VenteEnLigneBD" id="ABB5A32E-6E5B-C8D1-DA79-406D99AB4468" version="3.5">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:11:04 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<capitalNames>false</capitalNames>
+<designId>ABB5A32E-6E5B-C8D1-DA79-406D99AB4468</designId>
+</OSDM_Design>

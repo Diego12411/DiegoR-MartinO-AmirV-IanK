@@ -1,0 +1,85 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="929F986F-4E2B-16B3-10E6-FBD2F00C6A35" name="Commande">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:31:31 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id_commande" id="A0E84203-5765-67DA-9D17-69627713C356">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:31:40 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le ID unique de la commande.]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id_utilisateur" id="56461B9E-D552-B783-9A40-7F1E95384D83">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:34:05 UTC</createdTime>
+<generatorID>173CE33B-E16A-6C61-E61E-5E3161E6B80D</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<referedAttribute>724779DF-DC5D-BC25-E092-450C1F1C4EF2</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="date_commande" id="D2D14ADD-4981-224F-73A1-82F37AC4257D">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:31:59 UTC</createdTime>
+<commentInRDBMS><![CDATA[La date du départ de la commande.]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="statut" id="2171D63A-04BA-BBE0-374E-8C501AF6479F">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:33:10 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le statut de la commande (Payé, livré, en cours)]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="EB9A1BAB-3C92-F5F1-17EE-3A291F4A2BCF" name="Commande PK">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:31:51 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>A0E84203-5765-67DA-9D17-69627713C356</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

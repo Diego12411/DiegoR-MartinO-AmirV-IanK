@@ -1,0 +1,19 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="Util-Panier" directorySegmentName="seg_0" id="3E70988C-BE8C-16D9-1BB4-FA84F0DAD2F3">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:29:00 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<sourcePk>EA023D76-339C-2C18-3EAD-11608013E149</sourcePk>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>196897BA-5E27-4972-3281-8A28B2706699</sourceEntity>
+<targetCardinalityString>1</targetCardinalityString>
+<targetEntity>13EF31AE-2A2F-36D7-7079-A142A5EAFCDB</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

@@ -1,0 +1,73 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="13EF31AE-2A2F-36D7-7079-A142A5EAFCDB" name="Panier">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:20:46 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id_panier" id="80026408-F238-5BC3-65AD-D332C28A8B87">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:20:56 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le ID unique du panier créée par un utilisateur]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id_utilisateur" id="92A6FF5B-4473-5105-5247-31A0F953460B">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:29:00 UTC</createdTime>
+<generatorID>3E70988C-BE8C-16D9-1BB4-FA84F0DAD2F3</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<referedAttribute>724779DF-DC5D-BC25-E092-450C1F1C4EF2</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="date_creation" id="9974135E-C78B-A313-63C7-B303BE3DA419">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:21:17 UTC</createdTime>
+<commentInRDBMS><![CDATA[Date de création du panier]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="7180DECB-9595-95C2-48B8-D6243118B9B0" name="Panier PK">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:21:22 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>80026408-F238-5BC3-65AD-D332C28A8B87</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

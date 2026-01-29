@@ -1,0 +1,89 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="52AB2B07-B66D-E870-C883-8CA60AF1C0A2" name="Produit">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:21:44 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id_produit" id="49CF521F-FE3B-2AA7-30A2-005A14372616">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:21:55 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le ID unique du produit.]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="nom" id="31AABDB6-E739-5CC6-D886-CD42C6C5431C">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:23:32 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le nom du produit.]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="description" id="2B37F933-5A8D-2228-701E-975198ECF0CB">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:23:49 UTC</createdTime>
+<commentInRDBMS><![CDATA[La description du produit.]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>1000 CHAR</dataTypeSize>
+<ownDataTypeParameters>1000 CHAR,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="prix" id="1CC3BC76-5A07-D765-DAC4-E84EED0B5DCA">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:24:13 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le prix en decimal du produit (en $).]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT026</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<dataTypeScale>2</dataTypeScale>
+<ownDataTypeParameters>,10,2</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="E1831AFB-5AFD-B8AB-94C3-95BF7C0F4986" name="Produit PK">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:22:00 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>49CF521F-FE3B-2AA7-30A2-005A14372616</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

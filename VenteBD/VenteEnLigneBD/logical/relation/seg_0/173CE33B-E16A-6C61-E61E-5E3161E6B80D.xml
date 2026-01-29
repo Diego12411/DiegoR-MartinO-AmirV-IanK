@@ -1,0 +1,21 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="Util-Commande" directorySegmentName="seg_0" id="173CE33B-E16A-6C61-E61E-5E3161E6B80D">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:34:05 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<sourcePk>EA023D76-339C-2C18-3EAD-11608013E149</sourcePk>
+<identifying>false</identifying>
+<nameOnSource>Utilisateur</nameOnSource>
+<nameOnTarget>Commande</nameOnTarget>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>196897BA-5E27-4972-3281-8A28B2706699</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>929F986F-4E2B-16B3-10E6-FBD2F00C6A35</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

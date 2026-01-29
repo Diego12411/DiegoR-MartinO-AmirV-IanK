@@ -1,0 +1,21 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="Produit-Specs" directorySegmentName="seg_0" id="ED05BF6A-FED8-DC3E-1C33-6BB9640E1990">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 20:05:01 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<sourcePk>E1831AFB-5AFD-B8AB-94C3-95BF7C0F4986</sourcePk>
+<identifying>false</identifying>
+<nameOnSource>Produit</nameOnSource>
+<nameOnTarget>Specs</nameOnTarget>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>52AB2B07-B66D-E870-C883-8CA60AF1C0A2</sourceEntity>
+<targetCardinalityString>1</targetCardinalityString>
+<targetEntity>6786272B-8108-B891-9733-CB4BFFB4052E</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

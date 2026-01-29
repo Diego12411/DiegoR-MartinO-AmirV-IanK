@@ -1,0 +1,176 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="6786272B-8108-B891-9733-CB4BFFB4052E" name="Specs">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:49:58 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id_specs" id="AD55562C-115D-6F6F-1FF1-AAA73B9D713D">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:52:12 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le ID unique de spec.]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id_produit" id="8176B366-0784-112F-16BC-F95A28059B2E">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 20:05:01 UTC</createdTime>
+<generatorID>ED05BF6A-FED8-DC3E-1C33-6BB9640E1990</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<referedAttribute>49CF521F-FE3B-2AA7-30A2-005A14372616</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="type_produit" id="D8BB24A9-F918-C968-4A60-77872C2611BA">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 20:06:31 UTC</createdTime>
+<commentInRDBMS><![CDATA[Type du produit (ordinateur ou composant)]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20 CHAR</dataTypeSize>
+<ownDataTypeParameters>20 CHAR,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="processeur" id="2C1D049E-ABBB-BEF1-615A-1063A9DA72FD">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:54:01 UTC</createdTime>
+<commentInRDBMS><![CDATA[Composant: processeur/CPU. Nom]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 CHAR</dataTypeSize>
+<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="frequence_processeur" id="B2323B81-9187-5E2E-1475-610D7BAEF42B">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 20:25:24 UTC</createdTime>
+<commentInRDBMS><![CDATA[Composant: Processeur. Fréquence (en GHz)]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="taille_ram" id="099FB523-D16D-C237-A1B6-E1D54D62B7F8">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 20:11:18 UTC</createdTime>
+<commentInRDBMS><![CDATA[Composant: RAM. Taille (en Go)]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="type_ram" id="7AF5E303-EA4C-D8E8-8019-4DC697246A25">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 20:11:35 UTC</createdTime>
+<commentInRDBMS><![CDATA[Composant: RAM. Type (DRAM: dynamique, SRAM: statique...)]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 CHAR</dataTypeSize>
+<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="taille_stockage" id="8A2ED1E4-98A4-8809-80E3-2708D048273E">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 20:13:49 UTC</createdTime>
+<commentInRDBMS><![CDATA[Composant: stockage. Taille (en Go)]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="type_stockage" id="394D6776-416C-7E7E-A3DF-9EB26A0FFA30">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 20:14:40 UTC</createdTime>
+<commentInRDBMS><![CDATA[Composant: stockage. Type (SSD, HDD...)]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 CHAR</dataTypeSize>
+<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="carte_graphique" id="AAF7947B-E599-A911-AE82-F484689E0052">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 20:16:43 UTC</createdTime>
+<commentInRDBMS><![CDATA[Composant: Carte graphique/GPU: Nom]]></commentInRDBMS>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 CHAR</dataTypeSize>
+<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="04BE2F50-F9C3-7FCE-E66D-52F0A9480D65" name="Spec PK">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:53:00 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>AD55562C-115D-6F6F-1FF1-AAA73B9D713D</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>
