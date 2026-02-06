@@ -1,0 +1,75 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="D481CDA1-3086-85A9-73E3-6B342D2F348A" name="Produit-Categorie">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="Produit_id_produit" id="16E1192E-32CF-B2E8-E5B0-6C1F6DA69696">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="4E9459B0-C6E3-3632-287E-FF2371A1F71C" referredColumn="2CF5873C-6631-2B30-3CEC-3170BEAE8A79"/>
+</associations>
+</Column>
+<Column name="Categorie_id_categorie" id="0A944845-15A2-DAF8-FA90-15B6693068E7">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="6F596B4D-1AC4-E717-B38E-EDB59513F5A4" referredColumn="9F766375-86B2-EB01-88EE-A0BA38A70563"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="514EB83A-BFA7-63B5-8DCA-617AB709BDE3" name="Produit-Categorie_PK">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="16E1192E-32CF-B2E8-E5B0-6C1F6DA69696"/>
+<colUsage columnID="0A944845-15A2-DAF8-FA90-15B6693068E7"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="745285B3-336C-04A8-CE1E-F2D12A49452D" name="Produit-Categorie_Produit_FK">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<generatorID>C554D8A0-5A58-28B9-F9CF-06ABD07EE02E</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="16E1192E-32CF-B2E8-E5B0-6C1F6DA69696"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="BA18F0FC-8048-A782-C74A-BA36E4ED7FAD" name="Produit-Categorie_Categorie_FK">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<generatorID>C554D8A0-5A58-28B9-F9CF-06ABD07EE02E</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="0A944845-15A2-DAF8-FA90-15B6693068E7"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

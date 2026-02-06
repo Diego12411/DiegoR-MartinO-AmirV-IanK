@@ -78,7 +78,6 @@
 <engineerTo>
 <item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
 </engineerTo>
-<nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
@@ -109,6 +108,20 @@
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id_panier" id="D7860FAF-1BA9-6E30-F78E-15A7259217EE">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 14:52:20 UTC</createdTime>
+<generatorID>3E70988C-BE8C-16D9-1BB4-FA84F0DAD2F3</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<referedAttribute>80026408-F238-5BC3-65AD-D332C28A8B87</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 </attributes>

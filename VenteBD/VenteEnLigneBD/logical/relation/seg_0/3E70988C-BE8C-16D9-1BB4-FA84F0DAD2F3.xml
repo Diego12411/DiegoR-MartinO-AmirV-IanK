@@ -7,8 +7,9 @@
 <item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
 </engineerTo>
 <sourcePk>EA023D76-339C-2C18-3EAD-11608013E149</sourcePk>
+<targetPk>7180DECB-9595-95C2-48B8-D6243118B9B0</targetPk>
 <identifying>false</identifying>
-<optionalSource>true</optionalSource>
+<optionalSource>false</optionalSource>
 <optionalTarget>false</optionalTarget>
 <sourceCardinality>1</sourceCardinality>
 <sourceEntity>196897BA-5E27-4972-3281-8A28B2706699</sourceEntity>

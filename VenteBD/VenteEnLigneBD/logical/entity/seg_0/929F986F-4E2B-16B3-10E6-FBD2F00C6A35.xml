@@ -28,20 +28,6 @@
 <logicalDatatype>LOGDT011</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="id_utilisateur" id="56461B9E-D552-B783-9A40-7F1E95384D83">
-<createdBy>o</createdBy>
-<createdTime>2026-01-29 19:34:05 UTC</createdTime>
-<generatorID>173CE33B-E16A-6C61-E61E-5E3161E6B80D</generatorID>
-<ownerDesignName>VenteEnLigneBD</ownerDesignName>
-<engineerTo>
-<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
-</engineerTo>
-<referedAttribute>724779DF-DC5D-BC25-E092-450C1F1C4EF2</referedAttribute>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-</Attribute>
 <Attribute name="date_commande" id="D2D14ADD-4981-224F-73A1-82F37AC4257D">
 <createdBy>o</createdBy>
 <createdTime>2026-01-29 19:31:59 UTC</createdTime>
@@ -65,6 +51,20 @@
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id_panier" id="FA07A599-69B9-43D4-FD88-AFCD057BDEDB">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:00:29 UTC</createdTime>
+<generatorID>7F0EFDB8-73E1-D1AC-64F4-DB8127AC00CE</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<referedAttribute>80026408-F238-5BC3-65AD-D332C28A8B87</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 </attributes>

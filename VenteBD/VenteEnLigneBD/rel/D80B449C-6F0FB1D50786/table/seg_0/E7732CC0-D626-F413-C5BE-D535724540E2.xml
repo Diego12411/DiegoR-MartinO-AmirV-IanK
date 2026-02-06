@@ -1,0 +1,87 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="E7732CC0-D626-F413-C5BE-D535724540E2" name="Panier">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<generatorID>13EF31AE-2A2F-36D7-7079-A142A5EAFCDB</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_panier" id="4D666C39-13F8-15D4-D009-76FF8D96BB66">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le ID unique du panier créée par un utilisateur]]></commentInRDBMS>
+<generatorID>80026408-F238-5BC3-65AD-D332C28A8B87</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Utilisateur_id_utilisateur" id="FFB71934-6FE9-C155-5BD9-5893EA69086F">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<generatorID>92A6FF5B-4473-5105-5247-31A0F953460B</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="DADFEF8A-AA33-1C4E-CD63-8DCB2BB9AA65" referredColumn="261CBCE0-1F3D-909C-8693-8E0B94B6FC74"/>
+</associations>
+</Column>
+<Column name="date_creation" id="CB2684AF-DA35-B42A-B249-30324B042056">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<commentInRDBMS><![CDATA[Date de création du panier]]></commentInRDBMS>
+<generatorID>9974135E-C78B-A313-63C7-B303BE3DA419</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="8FE611D7-080D-7710-ABC1-383C20CA506B" name="Panier_PK">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<generatorID>7180DECB-9595-95C2-48B8-D6243118B9B0</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="4D666C39-13F8-15D4-D009-76FF8D96BB66"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="9EE8D011-BD97-5F20-F5DC-FE0C6C7FC66E" name="Panier__IDX">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<relationGeneratorID>3E70988C-BE8C-16D9-1BB4-FA84F0DAD2F3</relationGeneratorID>
+<indexColumnUsage>
+<colUsage columnID="FFB71934-6FE9-C155-5BD9-5893EA69086F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="AC00A6DB-C658-FCBE-E553-CACC8D53C5C8" name="Panier_Utilisateur_FK">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:43:19 UTC</createdTime>
+<generatorID>3E70988C-BE8C-16D9-1BB4-FA84F0DAD2F3</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FFB71934-6FE9-C155-5BD9-5893EA69086F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

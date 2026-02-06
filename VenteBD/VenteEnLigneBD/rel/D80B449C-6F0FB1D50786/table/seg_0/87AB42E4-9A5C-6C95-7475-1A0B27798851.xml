@@ -1,0 +1,151 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="87AB42E4-9A5C-6C95-7475-1A0B27798851" name="Utilisateur">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<generatorID>196897BA-5E27-4972-3281-8A28B2706699</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_utilisateur" id="261CBCE0-1F3D-909C-8693-8E0B94B6FC74">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le ID unique de l'utilisateur]]></commentInRDBMS>
+<generatorID>724779DF-DC5D-BC25-E092-450C1F1C4EF2</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="nom" id="466248CA-6137-F633-A9C6-688E101E16FF">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le nom de famille de l'utilisateur.]]></commentInRDBMS>
+<generatorID>D07B0EFE-DCB2-40E9-0779-5A1E748665B9</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 CHAR</dataTypeSize>
+<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="prenom" id="DFB28803-CF36-6CD1-EB5C-DBB535144BD5">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le prénom de l'utilisateur.]]></commentInRDBMS>
+<generatorID>0BCAA4F9-2D3E-F45C-D12F-8452BF5ED7BE</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 CHAR</dataTypeSize>
+<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mot_de_passe" id="8FFEAD86-B1CB-9533-3C10-E395C4D3ADFD">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le mot de passe associé au compte de l'utilisateur.]]></commentInRDBMS>
+<generatorID>FF66523A-24A9-E66F-002D-1EF5528A3FDF</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100 CHAR</dataTypeSize>
+<ownDataTypeParameters>100 CHAR,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="courriel" id="8005D631-3835-F464-E4FE-0DAC5F9A7536">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le courriel associé au compte de l'utilisateur]]></commentInRDBMS>
+<generatorID>6421D682-12AF-4240-8A7A-8495F6A42C31</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 CHAR</dataTypeSize>
+<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="adresse" id="F1BD6C3C-A8B6-2798-302A-3CD22CE0EFCD">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<generatorID>AD39D2B6-EED8-6EF7-9353-D834A369B9A7</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 CHAR</dataTypeSize>
+<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="role" id="046CD3BF-D9CC-34EE-30A5-D2FE83E42562">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le role de l'utilisateur (client, admin)]]></commentInRDBMS>
+<generatorID>9EFFE634-108B-9A59-58B4-6ECDF6FA3DE0</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Panier_id_panier" id="BA3EF6BD-DEDA-A543-08D0-34B63DFC1357">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<generatorID>D7860FAF-1BA9-6E30-F78E-15A7259217EE</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="6E5C3ACC-BB26-741C-6709-2E668CC11984" referredColumn="4D666C39-13F8-15D4-D009-76FF8D96BB66"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="E2EE740B-DD62-8D9F-CDDB-8A5E5F71BB86" name="Utilisateur_PK">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<generatorID>EA023D76-339C-2C18-3EAD-11608013E149</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="261CBCE0-1F3D-909C-8693-8E0B94B6FC74"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="2010B003-26AE-FDB2-DE55-96C1D4639739" name="Utilisateur__IDX">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<relationGeneratorID>3E70988C-BE8C-16D9-1BB4-FA84F0DAD2F3</relationGeneratorID>
+<indexColumnUsage>
+<colUsage columnID="BA3EF6BD-DEDA-A543-08D0-34B63DFC1357"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="DA1261A9-F2D6-0624-6C67-7B1CE9CF934D" name="Utilisateur_Panier_FK">
+<createdBy>o</createdBy>
+<createdTime>2026-02-06 15:43:19 UTC</createdTime>
+<generatorID>3E70988C-BE8C-16D9-1BB4-FA84F0DAD2F3</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="BA3EF6BD-DEDA-A543-08D0-34B63DFC1357"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>
