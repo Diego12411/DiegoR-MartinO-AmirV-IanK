@@ -1,7 +1,7 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="DF3E7D76-53FA-22BF-3036-06C3B72A68F5" name="Categorie">
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="F7ACFD9A-B1BF-5CEC-2C4B-7B20FCD5D382" name="Inventaire">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:15:06 UTC</createdTime>
+<createdTime>2026-01-29 19:34:49 UTC</createdTime>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
 <engineerTo>
 <item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
@@ -15,10 +15,10 @@
 <minVolumes>0</minVolumes>
 <normalForm>Third</normalForm>
 <attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
-<Attribute name="id_categorie" id="4A429F61-B29D-58B8-DC3F-8AAA7AEAD9A0">
+<Attribute name="id_inventaire" id="BCC56AEE-7F1D-03D7-0709-E3D7AF48022B">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:15:27 UTC</createdTime>
-<commentInRDBMS><![CDATA[Le ID unique de la catégorie]]></commentInRDBMS>
+<createdTime>2026-01-29 19:34:56 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le ID unique de l'inventaire.]]></commentInRDBMS>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
 <engineerTo>
 <item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
@@ -28,30 +28,45 @@
 <logicalDatatype>LOGDT011</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="nom_categorie" id="F9DD033C-3744-AF42-64A6-2B7E95ADEB76">
+<Attribute name="id_produit" id="22514280-5E52-2181-03D1-ECAB5002363B">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:19:29 UTC</createdTime>
-<commentInRDBMS><![CDATA[Nom du catégorie]]></commentInRDBMS>
+<createdTime>2026-01-29 19:36:10 UTC</createdTime>
+<generatorID>44F30DE7-BA44-20E3-4FD5-34F126B0115F</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<engineerTo>
+<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
+</engineerTo>
+<referedAttribute>49CF521F-FE3B-2AA7-30A2-005A14372616</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="quantite_stock" id="3DD41AD6-B6B5-D622-54FF-B3D5D50714A4">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 19:35:15 UTC</createdTime>
+<commentInRDBMS><![CDATA[La quantité de stock.]]></commentInRDBMS>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
 <engineerTo>
 <item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 </attributes>
 <identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
-<identifier id="F4D291F1-D27B-7567-D4F0-0FAD139E1DFA" name="Categorie PK">
+<identifier id="BB98E26A-5EC8-392C-0CEE-7DF4E3C9FAC3" name="Inventaire PK">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:15:36 UTC</createdTime>
+<createdTime>2026-01-29 19:35:02 UTC</createdTime>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
 <engineerTo>
 <item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
 </engineerTo>
 <pk>true</pk>
 <usedAttributes>
-<attributeRef>4A429F61-B29D-58B8-DC3F-8AAA7AEAD9A0</attributeRef>
+<attributeRef>BCC56AEE-7F1D-03D7-0709-E3D7AF48022B</attributeRef>
 </usedAttributes>
 </identifier>
 </identifiers>

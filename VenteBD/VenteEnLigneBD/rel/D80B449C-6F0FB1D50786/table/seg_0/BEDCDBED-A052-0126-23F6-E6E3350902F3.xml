@@ -1,0 +1,78 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="BEDCDBED-A052-0126-23F6-E6E3350902F3" name="Produit">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<generatorID>52AB2B07-B66D-E870-C883-8CA60AF1C0A2</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_produit" id="047124A8-E8AA-EF2B-422B-7BE18CD9BD5E">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le ID unique du produit.]]></commentInRDBMS>
+<generatorID>49CF521F-FE3B-2AA7-30A2-005A14372616</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="nom" id="E4C57125-F297-D5F3-BE10-5B498FBD7795">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le nom du produit.]]></commentInRDBMS>
+<generatorID>31AABDB6-E739-5CC6-D886-CD42C6C5431C</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="description" id="C7A8A99C-C4EE-420B-F86D-8AF1D375CD40">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<commentInRDBMS><![CDATA[La description du produit.]]></commentInRDBMS>
+<generatorID>2B37F933-5A8D-2228-701E-975198ECF0CB</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>1000 CHAR</dataTypeSize>
+<ownDataTypeParameters>1000 CHAR,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="prix" id="17A4D704-913D-B3D7-A1A3-BEF0B764D8B4">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le prix en decimal du produit (en $).]]></commentInRDBMS>
+<generatorID>1CC3BC76-5A07-D765-DAC4-E84EED0B5DCA</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT026</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<dataTypeScale>2</dataTypeScale>
+<ownDataTypeParameters>,10,2</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="401D573E-AF06-6C63-690E-6F91369B16A1" name="Produit_PK">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<generatorID>E1831AFB-5AFD-B8AB-94C3-95BF7C0F4986</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="047124A8-E8AA-EF2B-422B-7BE18CD9BD5E"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

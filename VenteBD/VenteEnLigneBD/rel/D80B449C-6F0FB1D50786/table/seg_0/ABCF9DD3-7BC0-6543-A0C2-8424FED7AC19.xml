@@ -1,0 +1,103 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="ABCF9DD3-7BC0-6543-A0C2-8424FED7AC19" name="Panier-Produit">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="Panier_id_panier" id="FC413929-AB17-9CF5-AC77-5E1E05F49322">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="88B980CA-2B6B-E773-175B-5F69BB6A5CE9" referredColumn="C0E145CF-1986-10EE-1DB0-FEF7D0B9C10A"/>
+</associations>
+</Column>
+<Column name="Produit_id_produit" id="D47DD4B1-887E-871B-A85D-98115ACA6EF7">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="B5712B6A-88CF-9970-338A-B1ABFB4F0C1B" referredColumn="047124A8-E8AA-EF2B-422B-7BE18CD9BD5E"/>
+</associations>
+</Column>
+<Column name="quantite" id="0EE2EBD8-E8E4-EC8F-E95C-6024B815C990">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<generatorID>B0EE8146-AF29-BFF7-D470-DDCE71B44DF7</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<isRelationshipColumn>true</isRelationshipColumn>
+<isDependOnFK_AsMandatory>true</isDependOnFK_AsMandatory>
+</Column>
+<Column name="prix" id="695D0DFB-3223-093B-901F-A09507DE0377">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<generatorID>77DF5187-5C3F-744C-A775-4741B4BD3DE3</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT026</logicalDatatype>
+<dataTypePrecision>10</dataTypePrecision>
+<dataTypeScale>2</dataTypeScale>
+<ownDataTypeParameters>,10,2</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<isRelationshipColumn>true</isRelationshipColumn>
+<isDependOnFK_AsMandatory>true</isDependOnFK_AsMandatory>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="C38E7A9A-BAF1-DCE1-02EA-A0858C35FAEC" name="Panier-Produit_PK">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FC413929-AB17-9CF5-AC77-5E1E05F49322"/>
+<colUsage columnID="D47DD4B1-887E-871B-A85D-98115ACA6EF7"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="DC6AE446-111C-526C-6064-32B4E7922503" name="Panier-Produit_Panier_FK">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<generatorID>A73021D0-4D7B-1AC9-6A0E-0B8978075CC3</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FC413929-AB17-9CF5-AC77-5E1E05F49322"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="3137E523-B450-9FDD-9396-EE86AA0922DF" name="Panier-Produit_Produit_FK">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<generatorID>A73021D0-4D7B-1AC9-6A0E-0B8978075CC3</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="D47DD4B1-887E-871B-A85D-98115ACA6EF7"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>
