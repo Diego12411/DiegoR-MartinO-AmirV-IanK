@@ -1,0 +1,87 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="F8F8D9D5-599C-7493-A631-479F383158FD" name="Commande">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<generatorID>929F986F-4E2B-16B3-10E6-FBD2F00C6A35</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_commande" id="71F5076E-C4E3-587C-37F0-30BD2BB3A90D">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le ID unique de la commande.]]></commentInRDBMS>
+<generatorID>A0E84203-5765-67DA-9D17-69627713C356</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Utilisateur_id_utilisateur" id="0CB55173-120E-0558-5658-827CCF6B2E23">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<generatorID>56461B9E-D552-B783-9A40-7F1E95384D83</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="670168F7-FC43-A908-AEBC-04B95243393E" referredColumn="3ACD7FCC-06AC-2EDF-BF92-17F18DB7A1E9"/>
+</associations>
+</Column>
+<Column name="date_commande" id="3169DD1D-B09F-1FB3-A7C1-482507BC56E1">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<commentInRDBMS><![CDATA[La date du départ de la commande.]]></commentInRDBMS>
+<generatorID>D2D14ADD-4981-224F-73A1-82F37AC4257D</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="statut" id="2D4E89FA-0E00-D0E5-A553-54EB7D1A1CC5">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le statut de la commande (Payé, livré, en cours)]]></commentInRDBMS>
+<generatorID>2171D63A-04BA-BBE0-374E-8C501AF6479F</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="141E42B7-F287-0B91-8F7A-D8733FF673C7" name="Commande_PK">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<generatorID>EB9A1BAB-3C92-F5F1-17EE-3A291F4A2BCF</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="71F5076E-C4E3-587C-37F0-30BD2BB3A90D"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="09545AF9-1D29-A5A1-363F-73AF29618A29" name="Commande_Utilisateur_FK">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<generatorID>173CE33B-E16A-6C61-E61E-5E3161E6B80D</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="0CB55173-120E-0558-5658-827CCF6B2E23"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

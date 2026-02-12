@@ -1,16 +1,16 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="2C9D692C-F8E1-7D8D-C571-2980939BC818" name="Specs">
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="9126C56D-89A3-F6BF-BB5E-57B75EAC0068" name="Specs">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
 <generatorID>6786272B-8108-B891-9733-CB4BFFB4052E</generatorID>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
 <allowColumnReorder>false</allowColumnReorder>
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
 <parsed>true</parsed>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
-<Column name="id_specs" id="D080C34D-FC86-7175-0DCC-6417A5474148">
+<Column name="id_specs" id="B3A83E0E-7865-6300-8049-047E04645038">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
 <commentInRDBMS><![CDATA[Le ID unique de spec.]]></commentInRDBMS>
 <generatorID>AD55562C-115D-6F6F-1FF1-AAA73B9D713D</generatorID>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
@@ -20,9 +20,9 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="Produit_id_produit" id="89D968ED-C49F-806A-5AAE-C304D6418110">
+<Column name="Produit_id_produit" id="972F448A-E744-236C-00B3-3E8AF840D304">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
 <generatorID>8176B366-0784-112F-16BC-F95A28059B2E</generatorID>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
@@ -32,12 +32,12 @@
 <previousColumn>false</previousColumn>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>
-<colAssociation fkAssociation="561C7501-DC45-A663-A862-E893D6A4D7AE" referredColumn="2CF5873C-6631-2B30-3CEC-3170BEAE8A79"/>
+<colAssociation fkAssociation="B32F535C-2002-4C4A-A3B5-82753720BBA6" referredColumn="047124A8-E8AA-EF2B-422B-7BE18CD9BD5E"/>
 </associations>
 </Column>
-<Column name="type_produit" id="4A5B3CC3-A035-4A89-C2B9-00B60DB7A0BF">
+<Column name="type_produit" id="B3401BCA-DED2-D6D4-F1E4-FD3C87E64DD3">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
 <commentInRDBMS><![CDATA[Type du produit (ordinateur ou composant)]]></commentInRDBMS>
 <generatorID>D8BB24A9-F918-C968-4A60-77872C2611BA</generatorID>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
@@ -48,9 +48,9 @@
 <ownDataTypeParameters>20 CHAR,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="processeur" id="254C6A8D-749B-73F1-E36D-3D0459EB325C">
+<Column name="processeur" id="BE7E18B6-4B07-C95B-66D0-E9245D0DBB59">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
 <commentInRDBMS><![CDATA[Composant: processeur/CPU. Nom]]></commentInRDBMS>
 <generatorID>2C1D049E-ABBB-BEF1-615A-1063A9DA72FD</generatorID>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
@@ -62,22 +62,9 @@
 <ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="frequence_processeur" id="B30420FB-078D-9581-858A-1A97F07CA636">
+<Column name="taille_ram" id="B3822CB9-C14A-1BF2-F9DE-C0CACC3A16B3">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
-<commentInRDBMS><![CDATA[Composant: Processeur. Fréquence (en GHz)]]></commentInRDBMS>
-<generatorID>B2323B81-9187-5E2E-1475-610D7BAEF42B</generatorID>
-<ownerDesignName>VenteEnLigneBD</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="taille_ram" id="6DCB86FB-A397-C52B-C903-09DD0CDADB21">
-<createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
 <commentInRDBMS><![CDATA[Composant: RAM. Taille (en Go)]]></commentInRDBMS>
 <generatorID>099FB523-D16D-C237-A1B6-E1D54D62B7F8</generatorID>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
@@ -88,23 +75,9 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="type_ram" id="DE436DE5-7AB6-EC42-B9B7-2AC84E6003E6">
+<Column name="taille_stockage" id="3B50CFFB-93C3-911E-2C79-C8E6BBD99E7B">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
-<commentInRDBMS><![CDATA[Composant: RAM. Type (DRAM: dynamique, SRAM: statique...)]]></commentInRDBMS>
-<generatorID>7AF5E303-EA4C-D8E8-8019-4DC697246A25</generatorID>
-<ownerDesignName>VenteEnLigneBD</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>50 CHAR</dataTypeSize>
-<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="taille_stockage" id="BB42516F-73B8-2D19-9E6D-15F9F1BAA88F">
-<createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
 <commentInRDBMS><![CDATA[Composant: stockage. Taille (en Go)]]></commentInRDBMS>
 <generatorID>8A2ED1E4-98A4-8809-80E3-2708D048273E</generatorID>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
@@ -115,23 +88,9 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="type_stockage" id="D5130486-963B-B576-B71D-E858DDC96523">
+<Column name="carte_graphique" id="EAA76738-ECA2-7D86-6F7A-634F7292694B">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
-<commentInRDBMS><![CDATA[Composant: stockage. Type (SSD, HDD...)]]></commentInRDBMS>
-<generatorID>394D6776-416C-7E7E-A3DF-9EB26A0FFA30</generatorID>
-<ownerDesignName>VenteEnLigneBD</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>50 CHAR</dataTypeSize>
-<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="carte_graphique" id="7CF1E837-14AB-6E7F-4ABB-24F69251F506">
-<createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
 <commentInRDBMS><![CDATA[Composant: Carte graphique/GPU: Nom]]></commentInRDBMS>
 <generatorID>AAF7947B-E599-A911-AE82-F484689E0052</generatorID>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
@@ -145,38 +104,38 @@
 </Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
-<ind_PK_UK id="98B2F0E1-763C-D586-9F55-489B252658E9" name="Specs_PK">
+<ind_PK_UK id="39D9FAB9-F63C-5DCB-1056-E128DB94D104" name="Specs_PK">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
 <generatorID>04BE2F50-F9C3-7FCE-E66D-52F0A9480D65</generatorID>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
 <pk>true</pk>
 <indexState>Primary Constraint</indexState>
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
-<colUsage columnID="D080C34D-FC86-7175-0DCC-6417A5474148"/>
+<colUsage columnID="B3A83E0E-7865-6300-8049-047E04645038"/>
 </indexColumnUsage>
 </ind_PK_UK>
-<ind_PK_UK id="E21E8A8A-3ACF-B1B7-1788-850810B03E98" name="Specs__IDX">
+<ind_PK_UK id="5C6AE128-FC89-C896-96BE-0A6AE045F9B4" name="Specs__IDX">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
 <indexState>Unique Plain Index</indexState>
 <isSurrogateKey>false</isSurrogateKey>
 <relationGeneratorID>ED05BF6A-FED8-DC3E-1C33-6BB9640E1990</relationGeneratorID>
 <indexColumnUsage>
-<colUsage columnID="89D968ED-C49F-806A-5AAE-C304D6418110"/>
+<colUsage columnID="972F448A-E744-236C-00B3-3E8AF840D304"/>
 </indexColumnUsage>
 </ind_PK_UK>
-<ind_PK_UK id="08B77880-2D77-320D-9F39-2CA047A7DB49" name="Specs_Produit_FK">
+<ind_PK_UK id="D1C2D2DD-1D2B-9A80-12A2-84055B8A4007" name="Specs_Produit_FK">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:43:19 UTC</createdTime>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
 <generatorID>ED05BF6A-FED8-DC3E-1C33-6BB9640E1990</generatorID>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
 <indexState>Foreign Key</indexState>
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
-<colUsage columnID="89D968ED-C49F-806A-5AAE-C304D6418110"/>
+<colUsage columnID="972F448A-E744-236C-00B3-3E8AF840D304"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>

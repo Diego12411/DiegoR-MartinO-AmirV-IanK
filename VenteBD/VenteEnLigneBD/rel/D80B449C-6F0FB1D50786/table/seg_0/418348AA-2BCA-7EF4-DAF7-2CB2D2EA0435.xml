@@ -1,15 +1,29 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="D02CAF6F-9749-44C9-82D3-4752DBC7C6E6" name="Panier-Produit">
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="418348AA-2BCA-7EF4-DAF7-2CB2D2EA0435" name="Inventaire">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<generatorID>F7ACFD9A-B1BF-5CEC-2C4B-7B20FCD5D382</generatorID>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
 <allowColumnReorder>false</allowColumnReorder>
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
 <parsed>true</parsed>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
-<Column name="Panier_id_panier" id="E3171FE5-AD32-DC8F-4340-AB53CD4777D9">
+<Column name="id_inventaire" id="B880F1F6-8554-A410-7E01-0086D760DF12">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<commentInRDBMS><![CDATA[Le ID unique de l'inventaire.]]></commentInRDBMS>
+<generatorID>BCC56AEE-7F1D-03D7-0709-E3D7AF48022B</generatorID>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Produit_id_produit" id="7DE4CF23-CD20-9912-ACD1-BC2A9D65A077">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<generatorID>22514280-5E52-2181-03D1-ECAB5002363B</generatorID>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
@@ -18,70 +32,55 @@
 <previousColumn>false</previousColumn>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>
-<colAssociation fkAssociation="49D8474F-0084-6CC1-CF2F-3B3815A18A57" referredColumn="4D666C39-13F8-15D4-D009-76FF8D96BB66"/>
+<colAssociation fkAssociation="B017FE48-87F3-DF00-8DC1-A76A58077597" referredColumn="047124A8-E8AA-EF2B-422B-7BE18CD9BD5E"/>
 </associations>
 </Column>
-<Column name="Produit_id_produit" id="14B2C6F7-88E0-BDAE-DA03-6C153076590E">
+<Column name="quantite_stock" id="F0288A01-59BC-A517-7A33-5E10719D25B6">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<commentInRDBMS><![CDATA[La quantité de stock.]]></commentInRDBMS>
+<generatorID>3DD41AD6-B6B5-D622-54FF-B3D5D50714A4</generatorID>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT011</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
-<previousColumn>false</previousColumn>
 <autoIncrementCycle>false</autoIncrementCycle>
-<associations>
-<colAssociation fkAssociation="309864D2-53F8-803D-D54E-023E7EC4B0F5" referredColumn="2CF5873C-6631-2B30-3CEC-3170BEAE8A79"/>
-</associations>
-</Column>
-<Column name="quantite" id="53966DD7-2230-8A09-A5F0-B11371F4E9A1">
-<createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
-<generatorID>541EB0DF-9183-454E-F450-12162391232D</generatorID>
-<ownerDesignName>VenteEnLigneBD</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-<autoIncrementCycle>false</autoIncrementCycle>
-<isRelationshipColumn>true</isRelationshipColumn>
 </Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
-<ind_PK_UK id="F49CAD57-F035-3814-EE0A-5145F1640E8D" name="Panier-Produit_PK">
+<ind_PK_UK id="70E74DC5-2A38-20F0-75B4-750DC9A3BE7D" name="Inventaire_PK">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<generatorID>BB98E26A-5EC8-392C-0CEE-7DF4E3C9FAC3</generatorID>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
 <pk>true</pk>
 <indexState>Primary Constraint</indexState>
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
-<colUsage columnID="E3171FE5-AD32-DC8F-4340-AB53CD4777D9"/>
-<colUsage columnID="14B2C6F7-88E0-BDAE-DA03-6C153076590E"/>
+<colUsage columnID="B880F1F6-8554-A410-7E01-0086D760DF12"/>
 </indexColumnUsage>
 </ind_PK_UK>
-<ind_PK_UK id="6FB222AF-636E-826C-743B-3DDE58BD36B2" name="Panier-Produit_Panier_FK">
+<ind_PK_UK id="F2308D66-251B-0B63-7804-37DDD4CAE839" name="Inventaire__IDX">
 <createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
-<generatorID>3BA935D2-A3AE-E8D4-3463-58FEDCBD1C08</generatorID>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<ownerDesignName>VenteEnLigneBD</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<relationGeneratorID>44F30DE7-BA44-20E3-4FD5-34F126B0115F</relationGeneratorID>
+<indexColumnUsage>
+<colUsage columnID="7DE4CF23-CD20-9912-ACD1-BC2A9D65A077"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="82333277-FBFD-9BAD-A0C3-B24A09D30642" name="Inventaire_Produit_FK">
+<createdBy>o</createdBy>
+<createdTime>2026-01-29 21:23:24 UTC</createdTime>
+<generatorID>44F30DE7-BA44-20E3-4FD5-34F126B0115F</generatorID>
 <ownerDesignName>VenteEnLigneBD</ownerDesignName>
 <indexState>Foreign Key</indexState>
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
-<colUsage columnID="E3171FE5-AD32-DC8F-4340-AB53CD4777D9"/>
-</indexColumnUsage>
-</ind_PK_UK>
-<ind_PK_UK id="399BAFEA-7B7B-F2C1-C40E-2BD86F9B3FD2" name="Panier-Produit_Produit_FK">
-<createdBy>o</createdBy>
-<createdTime>2026-02-06 15:31:24 UTC</createdTime>
-<generatorID>3BA935D2-A3AE-E8D4-3463-58FEDCBD1C08</generatorID>
-<ownerDesignName>VenteEnLigneBD</ownerDesignName>
-<indexState>Foreign Key</indexState>
-<isSurrogateKey>false</isSurrogateKey>
-<indexColumnUsage>
-<colUsage columnID="14B2C6F7-88E0-BDAE-DA03-6C153076590E"/>
+<colUsage columnID="7DE4CF23-CD20-9912-ACD1-BC2A9D65A077"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>

@@ -71,20 +71,6 @@
 <dataTypeSize>50 CHAR</dataTypeSize>
 <ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="frequence_processeur" id="B2323B81-9187-5E2E-1475-610D7BAEF42B">
-<createdBy>o</createdBy>
-<createdTime>2026-01-29 20:25:24 UTC</createdTime>
-<commentInRDBMS><![CDATA[Composant: Processeur. Fréquence (en GHz)]]></commentInRDBMS>
-<ownerDesignName>VenteEnLigneBD</ownerDesignName>
-<engineerTo>
-<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
-</engineerTo>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-</Attribute>
 <Attribute name="taille_ram" id="099FB523-D16D-C237-A1B6-E1D54D62B7F8">
 <createdBy>o</createdBy>
 <createdTime>2026-01-29 20:11:18 UTC</createdTime>
@@ -99,21 +85,6 @@
 <logicalDatatype>LOGDT011</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="type_ram" id="7AF5E303-EA4C-D8E8-8019-4DC697246A25">
-<createdBy>o</createdBy>
-<createdTime>2026-01-29 20:11:35 UTC</createdTime>
-<commentInRDBMS><![CDATA[Composant: RAM. Type (DRAM: dynamique, SRAM: statique...)]]></commentInRDBMS>
-<ownerDesignName>VenteEnLigneBD</ownerDesignName>
-<engineerTo>
-<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
-</engineerTo>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>50 CHAR</dataTypeSize>
-<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
-</Attribute>
 <Attribute name="taille_stockage" id="8A2ED1E4-98A4-8809-80E3-2708D048273E">
 <createdBy>o</createdBy>
 <createdTime>2026-01-29 20:13:49 UTC</createdTime>
@@ -127,21 +98,6 @@
 <use>1</use>
 <logicalDatatype>LOGDT011</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
-</Attribute>
-<Attribute name="type_stockage" id="394D6776-416C-7E7E-A3DF-9EB26A0FFA30">
-<createdBy>o</createdBy>
-<createdTime>2026-01-29 20:14:40 UTC</createdTime>
-<commentInRDBMS><![CDATA[Composant: stockage. Type (SSD, HDD...)]]></commentInRDBMS>
-<ownerDesignName>VenteEnLigneBD</ownerDesignName>
-<engineerTo>
-<item key="D80B449C-EF81-4148-61B2-6F0FB1D50786" value="true"/>
-</engineerTo>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>50 CHAR</dataTypeSize>
-<ownDataTypeParameters>50 CHAR,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="carte_graphique" id="AAF7947B-E599-A911-AE82-F484689E0052">
 <createdBy>o</createdBy>
