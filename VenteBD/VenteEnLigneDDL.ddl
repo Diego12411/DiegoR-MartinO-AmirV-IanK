@@ -10,185 +10,96 @@
 -- predefined type, no DDL - XMLTYPE
 
 CREATE TABLE categorie (
-    id_categorie  INTEGER NOT NULL,
-    nom_categorie VARCHAR2(50 CHAR) NOT NULL
+    id_categorie INTEGER NOT NULL,
+    nom_categorie VARCHAR(50) NOT NULL
 );
 
-COMMENT ON COLUMN categorie.id_categorie IS
-    'Le ID unique de la catégorie';
-
-COMMENT ON COLUMN categorie.nom_categorie IS
-    'Nom du catégorie';
-
-ALTER TABLE categorie ADD CONSTRAINT categorie_pk PRIMARY KEY ( id_categorie );
+ALTER TABLE categorie ADD CONSTRAINT categorie_pk PRIMARY KEY (id_categorie);
 
 CREATE TABLE commande (
-    id_commande      INTEGER NOT NULL,
-    date_commande    DATE NOT NULL,
-    statut           VARCHAR2(50 CHAR) NOT NULL,
+    id_commande INTEGER NOT NULL,
+    date_commande DATE NOT NULL,
+    statut VARCHAR(50) NOT NULL,
     panier_id_panier INTEGER NOT NULL,
-    quantite         INTEGER NOT NULL,
-    prix             NUMBER(10, 2) NOT NULL
+    quantite INTEGER NOT NULL,
+    prix DECIMAL(10, 2) NOT NULL
 );
-
-COMMENT ON COLUMN commande.id_commande IS
-    'Le ID unique de la commande.';
-
-COMMENT ON COLUMN commande.date_commande IS
-    'La date du départ de la commande.';
-
-COMMENT ON COLUMN commande.statut IS
-    'Le statut de la commande (Payé, livré, en cours)';
 
 CREATE UNIQUE INDEX commande__idx ON
     commande (
         panier_id_panier
     ASC );
 
-ALTER TABLE commande ADD CONSTRAINT commande_pk PRIMARY KEY ( id_commande );
+ALTER TABLE commande ADD CONSTRAINT commande_pk PRIMARY KEY (id_commande);
 
 CREATE TABLE panier (
-    id_panier                  INTEGER NOT NULL,
+    id_panier INTEGER NOT NULL,
     utilisateur_id_utilisateur INTEGER NOT NULL,
-    date_creation              DATE NOT NULL
+    date_creation DATE NOT NULL
 );
 
-COMMENT ON COLUMN panier.id_panier IS
-    'Le ID unique du panier créée par un utilisateur';
+ALTER TABLE panier ADD CONSTRAINT panier_pk PRIMARY KEY (id_panier);
 
-COMMENT ON COLUMN panier.date_creation IS
-    'Date de création du panier';
-
-CREATE UNIQUE INDEX panier__idx ON
-    panier (
-        utilisateur_id_utilisateur
-    ASC );
-
-ALTER TABLE panier ADD CONSTRAINT panier_pk PRIMARY KEY ( id_panier );
-
-CREATE TABLE "Panier-Produit" (
-    panier_id_panier   INTEGER NOT NULL,
+CREATE TABLE Panier_Produit (
+    panier_id_panier INTEGER NOT NULL,
     produit_id_produit INTEGER NOT NULL,
-    quantite           INTEGER
+    quantite INTEGER
 );
 
-ALTER TABLE "Panier-Produit" ADD CONSTRAINT "Panier-Produit_PK" PRIMARY KEY ( panier_id_panier,
-                                                                              produit_id_produit );
+ALTER TABLE Panier_Produit ADD CONSTRAINT Panier_Produit_PK PRIMARY KEY (panier_id_panier, produit_id_produit);
 
 CREATE TABLE produit (
-    id_produit     INTEGER NOT NULL,
+    id_produit INTEGER NOT NULL,
     specs_id_specs INTEGER NOT NULL,
-    nom            VARCHAR2(50 CHAR) NOT NULL,
-    description    VARCHAR2(1000 CHAR),
-    prix           NUMBER(10, 2) NOT NULL,
-    stock          INTEGER NOT NULL
+    nom VARCHAR(50) NOT NULL,
+    description VARCHAR(1000),
+    prix DECIMAL(10, 2) NOT NULL,
+    stock INTEGER NOT NULL
 );
 
-COMMENT ON COLUMN produit.id_produit IS
-    'Le ID unique du produit.';
-
-COMMENT ON COLUMN produit.nom IS
-    'Le nom du produit.';
-
-COMMENT ON COLUMN produit.description IS
-    'La description du produit.';
-
-COMMENT ON COLUMN produit.prix IS
-    'Le prix en decimal du produit (en $).';
-
-COMMENT ON COLUMN produit.stock IS
-    'Nombre de stock';
-
 CREATE UNIQUE INDEX produit__idx ON
-    produit (
-        specs_id_specs
-    ASC );
+    produit (specs_id_specs ASC
+);
 
-ALTER TABLE produit ADD CONSTRAINT produit_pk PRIMARY KEY ( id_produit );
+ALTER TABLE produit ADD CONSTRAINT produit_pk PRIMARY KEY (id_produit);
 
-CREATE TABLE "Produit-Categorie" (
-    produit_id_produit     INTEGER NOT NULL,
+CREATE TABLE Produit_Categorie (
+    produit_id_produit INTEGER NOT NULL,
     categorie_id_categorie INTEGER NOT NULL
 );
 
-ALTER TABLE "Produit-Categorie" ADD CONSTRAINT "Produit-Categorie_PK" PRIMARY KEY ( produit_id_produit,
-                                                                                    categorie_id_categorie );
+ALTER TABLE Produit_Categorie ADD CONSTRAINT Produit_Categorie_PK PRIMARY KEY (produit_id_produit, categorie_id_categorie);
 
 CREATE TABLE specs (
-    id_specs             INTEGER NOT NULL,
-    produit_id_produit   INTEGER NOT NULL,
-    type_produit         VARCHAR2(20 CHAR) NOT NULL,
-    processeur           VARCHAR2(50 CHAR),
+    id_specs INTEGER NOT NULL,
+    produit_id_produit INTEGER NOT NULL,
+    type_produit VARCHAR(20) NOT NULL,
+    processeur VARCHAR(50),
     frequence_processeur INTEGER,
-    taille_ram           INTEGER,
-    type_ram             VARCHAR2(50 CHAR),
-    taille_stockage      INTEGER,
-    type_stockage        VARCHAR2(50 CHAR),
-    carte_graphique      VARCHAR2(50 CHAR)
+    taille_ram INTEGER,
+    type_ram VARCHAR(50),
+    taille_stockage INTEGER,
+    type_stockage VARCHAR(50),
+    carte_graphique VARCHAR(50)
 );
-
-COMMENT ON COLUMN specs.id_specs IS
-    'Le ID unique de spec.';
-
-COMMENT ON COLUMN specs.type_produit IS
-    'Type du produit (ordinateur ou composant)';
-
-COMMENT ON COLUMN specs.processeur IS
-    'Composant: processeur/CPU. Nom';
-
-COMMENT ON COLUMN specs.frequence_processeur IS
-    'Composant: Processeur. Fréquence (en GHz)';
-
-COMMENT ON COLUMN specs.taille_ram IS
-    'Composant: RAM. Taille (en Go)';
-
-COMMENT ON COLUMN specs.type_ram IS
-    'Composant: RAM. Type (DRAM: dynamique, SRAM: statique...)';
-
-COMMENT ON COLUMN specs.taille_stockage IS
-    'Composant: stockage. Taille (en Go)';
-
-COMMENT ON COLUMN specs.type_stockage IS
-    'Composant: stockage. Type (SSD, HDD...)';
-
-COMMENT ON COLUMN specs.carte_graphique IS
-    'Composant: Carte graphique/GPU: Nom';
 
 CREATE UNIQUE INDEX specs__idx ON
     specs (
         produit_id_produit
     ASC );
 
-ALTER TABLE specs ADD CONSTRAINT specs_pk PRIMARY KEY ( id_specs );
+ALTER TABLE specs ADD CONSTRAINT specs_pk PRIMARY KEY (id_specs);
 
 CREATE TABLE utilisateur (
-    id_utilisateur   INTEGER NOT NULL,
-    nom              VARCHAR2(50 CHAR) NOT NULL,
-    prenom           VARCHAR2(50 CHAR) NOT NULL,
-    mot_de_passe     VARCHAR2(100 CHAR) NOT NULL,
-    courriel         VARCHAR2(50 CHAR) NOT NULL,
-    adresse          VARCHAR2(50 CHAR),
-    role             VARCHAR2(50 CHAR) NOT NULL,
+    id_utilisateur INTEGER NOT NULL,
+    nom VARCHAR(50) NOT NULL,
+    prenom VARCHAR(50) NOT NULL,
+    mot_de_passe VARCHAR(100) NOT NULL,
+    courriel VARCHAR(50) NOT NULL,
+    adresse VARCHAR(50),
+    role VARCHAR(50) NOT NULL,
     panier_id_panier INTEGER NOT NULL
 );
-
-COMMENT ON COLUMN utilisateur.id_utilisateur IS
-    'Le ID unique de l''utilisateur';
-
-COMMENT ON COLUMN utilisateur.nom IS
-    'Le nom de famille de l''utilisateur.';
-
-COMMENT ON COLUMN utilisateur.prenom IS
-    'Le prénom de l''utilisateur.';
-
-COMMENT ON COLUMN utilisateur.mot_de_passe IS
-    'Le mot de passe associé au compte de l''utilisateur.';
-
-COMMENT ON COLUMN utilisateur.courriel IS
-    'Le courriel associé au compte de l''utilisateur';
-
-COMMENT ON COLUMN utilisateur.role IS
-    'Le role de l''utilisateur (client, admin)';
 
 CREATE UNIQUE INDEX utilisateur__idx ON
     utilisateur (
@@ -205,24 +116,24 @@ ALTER TABLE panier
     ADD CONSTRAINT panier_utilisateur_fk FOREIGN KEY ( utilisateur_id_utilisateur )
         REFERENCES utilisateur ( id_utilisateur );
 
-ALTER TABLE "Panier-Produit"
-    ADD CONSTRAINT "Panier-Produit_Panier_FK" FOREIGN KEY ( panier_id_panier )
+ALTER TABLE Panier_Produit
+    ADD CONSTRAINT Panier_Produit_Panier_FK FOREIGN KEY ( panier_id_panier )
         REFERENCES panier ( id_panier );
 
-ALTER TABLE "Panier-Produit"
-    ADD CONSTRAINT "Panier-Produit_Produit_FK" FOREIGN KEY ( produit_id_produit )
+ALTER TABLE Panier_Produit
+    ADD CONSTRAINT Panier_Produit_Produit_FK FOREIGN KEY ( produit_id_produit )
         REFERENCES produit ( id_produit );
 
 ALTER TABLE produit
     ADD CONSTRAINT produit_specs_fk FOREIGN KEY ( specs_id_specs )
         REFERENCES specs ( id_specs );
 
-ALTER TABLE "Produit-Categorie"
-    ADD CONSTRAINT "Produit-Categorie_Categorie_FK" FOREIGN KEY ( categorie_id_categorie )
+ALTER TABLE ProduitCategorie
+    ADD CONSTRAINT "Produit_Categorie_Categorie_FK FOREIGN KEY ( categorie_id_categorie )
         REFERENCES categorie ( id_categorie );
 
-ALTER TABLE "Produit-Categorie"
-    ADD CONSTRAINT "Produit-Categorie_Produit_FK" FOREIGN KEY ( produit_id_produit )
+ALTER TABLE Produit_Categorie
+    ADD CONSTRAINT Produit_Categorie_Produit_FK FOREIGN KEY ( produit_id_produit )
         REFERENCES produit ( id_produit );
 
 ALTER TABLE specs
@@ -231,7 +142,7 @@ ALTER TABLE specs
 
 ALTER TABLE utilisateur
     ADD CONSTRAINT utilisateur_panier_fk FOREIGN KEY ( panier_id_panier )
-        REFERENCES panier ( id_panier );
+        REFERENCES panier (id_panier);
 
 
 
