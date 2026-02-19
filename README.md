@@ -3,4 +3,4 @@
 * page inscription --> **Diego**
 * page connexion --> **Amir**
 * page produit détails --> **Martin**
-* page compte utilisateur/admin --> **Ian** 
+* page compte affichage principal --> **Ian** 
