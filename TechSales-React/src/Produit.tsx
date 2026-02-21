@@ -1,6 +1,8 @@
+import { Link } from "react-router";
+
 export default function ProduitDetails() {
   return (
-    <main className="container-fluid">
+    <main className="container-fluid vw-100 px-5">
       <h5>Produit</h5>
 
       <div className="row">
@@ -54,7 +56,7 @@ export default function ProduitDetails() {
             </ul>
           </div>
 
-          {/* Affichage de la selection de la quantite et boutton acheter */}
+          {/* Affichage de la selection de la quantite et du boutton acheter */}
           <div className="d-flex gap-2">
             <input
               type="number"
@@ -64,13 +66,15 @@ export default function ProduitDetails() {
               placeholder="1"
             ></input>
             <button type="button" className=" col btn btn-dark">
-              Acheter
+              <Link to="/pagePanier" className="text-white">
+                Acheter
+              </Link>
             </button>
           </div>
         </div>
       </div>
 
-      <div className="row">
+      <div className="row px-5 mx-5">
         <h1>Patate</h1>
       </div>
     </main>

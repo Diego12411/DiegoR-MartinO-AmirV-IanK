@@ -5,10 +5,12 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./index.css";
 
 import ProduitDetails from "./Produit.tsx";
+import PagePanier from "./PagePanier.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router";
 
 const router = createBrowserRouter([
-  { path: "/produitDetails", element: <ProduitDetails /> },
+  { path: "/detailsProduit", element: <ProduitDetails /> },
+  { path: "/pagePanier", element: <PagePanier /> },
 ]);
 
 createRoot(document.getElementById("root")!).render(
