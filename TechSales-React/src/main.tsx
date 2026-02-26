@@ -6,7 +6,6 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./index.css";
 import AffichagePrincipalProduit from "./AffichagePrincipalProduit";
 import ProduitDetails from "./Produit.tsx";
-import { createBrowserRouter, RouterProvider } from "react-router";
 
 const router = createBrowserRouter([
   { path: "/detailsProduit", element: <ProduitDetails /> },
