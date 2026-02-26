@@ -1,6 +1,10 @@
 import { Link } from "react-router";
+import { useState } from "react";
 
 export default function ProduitDetails() {
+  // state qui contient la quantite de produit a acheter
+  const [quantiteAcheter, setQuantiteAcheter] = useState(1);
+
   return (
     <main className="container-fluid vw-100 px-5">
       <h5>Produit</h5>
@@ -100,9 +104,9 @@ export default function ProduitDetails() {
             <input
               type="number"
               className="w-25 form-control-sm"
-              id="quantite"
               min={1}
-              placeholder="1"
+              value={quantiteAcheter}
+              onChange={(e) => setQuantiteAcheter(Number(e.target.value))}
             />
             <Link to="/" className="flex-fill">
               <button type="button" className="btn btn-dark w-100">
