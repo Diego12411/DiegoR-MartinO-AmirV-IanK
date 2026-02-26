@@ -1,4 +1,4 @@
-import { HeaderPage } from "./main";
+import { HeaderComponent } from "./main";
 import logo from "./assets/logo.png";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -52,7 +52,7 @@ export default function AfficherCreerCompte() {
       }}
     >
       <main className="container-fluid text-center">
-        <HeaderPage />
+        <HeaderComponent />
         <div className="d-flex justify-content-center align-items-center vh-100">
           <div className="row">
             {/*Formulaire De Creation Compte*/}
