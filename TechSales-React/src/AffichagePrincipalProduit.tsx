@@ -1,4 +1,6 @@
-function CarteProduit() {
+import { FooterComponent } from "./main.tsx";
+
+function BoutonProduit() {
   return (
     <div className="col mb-4">
       <div className="card shadow border-dark bg-light col p-0">
@@ -27,7 +29,7 @@ export default function AffichagePrincipalProduit() {
         <div className="row">
           <nav className="navbar bg-primary ps-2 pe-2" data-bs-theme="dark">
             <a href="#" className="navbar-brand">
-              Navigation
+              TECHSALES
             </a>
           </nav>
         </div>
@@ -36,7 +38,12 @@ export default function AffichagePrincipalProduit() {
             <div className="card shadow-lg bg-dark bg-gradient col p-0">
               <div className="row card-body text-dark">
                 <div className="col-9">
-                  <h5 className="text-light">Nom de Produit</h5>
+                  <img
+                    className="col-3 img-fluid mt-5"
+                    src="../Images/AsusLogo.png"
+                    alt="Image"
+                  ></img>
+                  <h5 className="text-light">Ordinateur portable de jeu</h5>
                   <h1 className="text-light">9999.99$</h1>
                 </div>
                 <div className="col">
@@ -57,33 +64,20 @@ export default function AffichagePrincipalProduit() {
               <p className="fw-bold">█ Nos produits</p>
             </div>
             <div className="col d-flex justify-content-end">
-              <button className="btn btn-light rounded-circle text-dark m-1">
+              <button className="btn btn-light rounded-circle border border-dark text-dark m-1">
                 ←
               </button>
-              <button className="btn btn-light rounded-circle text-dark m-1">
+              <button className="btn btn-light rounded-circle tborder border-dark ext-dark m-1">
                 →
               </button>
             </div>
             <h3>Explorez nos produits</h3>
           </div>
           <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-2">
-            <CarteProduit />
-            <CarteProduit />
-            <CarteProduit />
-            <CarteProduit />
-            <CarteProduit />
-            <CarteProduit />
-            <CarteProduit />
-            <CarteProduit />
+            <BoutonProduit />
           </div>
         </div>
-        <div className="row">
-          <footer className="bg-primary text-white mt-5 p-5">
-            <div className="container">
-              <p className="text-center mb-0">&copy; TECHSALES</p>
-            </div>
-          </footer>
-        </div>
+        <FooterComponent />
       </div>
     </>
   );
