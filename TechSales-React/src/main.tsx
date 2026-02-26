@@ -5,8 +5,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./index.css";
 import AffichagePrincipalProduit from "./AffichagePrincipalProduit";
+import ProduitDetails from "./Produit.tsx";
+import { createBrowserRouter, RouterProvider } from "react-router";
 
 const router = createBrowserRouter([
+  { path: "/detailsProduit", element: <ProduitDetails /> },
   {
     path: "/affichageprincipalproduit",
     element: <AffichagePrincipalProduit />,
@@ -16,8 +19,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>
+  </StrictMode>,
 );
+
 
 export const FooterComponent = () => {
   return (
