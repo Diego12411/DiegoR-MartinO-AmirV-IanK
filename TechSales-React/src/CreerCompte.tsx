@@ -1,13 +1,18 @@
+import { Link } from "react-router";
 import logo from "./assets/logo.png";
 import {useState} from "react";
+import { useNavigate } from "react-router";
 
 {
   /*source Card : https://getbootstrap.com/docs/4.0/components/card/
-    source Flex : https://getbootstrap.com/docs/4.0/utilities/flex/ */
+    source Flex : https://getbootstrap.com/docs/4.0/utilities/flex/ 
+    source useNavigate : https://reactrouter.com/api/hooks/useNavigate 
+    source OnChange : https://www.geeksforgeeks.org/reactjs/react-onchange-event/ https://stackoverflow.com/questions/71039088/what-is-onchange-e-setnamee-target-value-in-react-mean  */
 }
 
 
 export default function AfficherCreerCompte() {
+  const navigate = useNavigate();
   const[nom, setNom] = useState("");
   const[prenom, setPrenom] = useState("");
   const[email, setEmail] = useState("");
@@ -18,30 +23,23 @@ function afficherMessageInscriptionMauvaise() {
   setMessageInscriptionMauvaise(true);
 }
 
-function lireInfosInscription() {
-  const nom = document.getElementById("Nom") as HTMLInputElement;
-  const prenom = document.getElementById("Prenom") as HTMLInputElement;
-  const email = document.getElementById("Email") as HTMLInputElement;
-  const motDePasse = document.getElementById("MotDePasse") as HTMLInputElement;
-  console.log("Nom:", nom.value);
-  console.log("Prénom:", prenom.value);
-  console.log("Email:", email.value);
-  console.log("Mot de Passe:", motDePasse.value);
-  setNom(nom.value);
-  setPrenom(prenom.value);
-  setEmail(email.value);
-  setMotDePasse(motDePasse.value);
+function lireInfosInscription() { 
+  console.log("Nom:", nom);
+  console.log("Prénom:", prenom);
+  console.log("Email:", email);
+  console.log("Mot de Passe:", motDePasse);
+  setNom(nom);
+  setPrenom(prenom);
+  setEmail(email);
+  setMotDePasse(motDePasse);
 }
 
 function CreationCompteBouttonClicked() {
-  const nom = document.getElementById("Nom") as HTMLInputElement;
-  const prenom = document.getElementById("Prenom") as HTMLInputElement;
-  const email = document.getElementById("Email") as HTMLInputElement;
-  const motDePasse = document.getElementById("MotDePasse") as HTMLInputElement;
     const boutton = document.getElementById("CreationCompte") as HTMLButtonElement;
-    if (boutton && nom.value !== "" && prenom.value !== "" && email.value !== "" && motDePasse.value !== "") {
+    if (boutton && nom && prenom && email && motDePasse) {
       boutton.disabled = true;
-    } else { setMessageInscriptionMauvaise("true"); }
+      navigate("/Compte");
+    } else { setMessageInscriptionMauvaise(true); }
 }
 
   return (
@@ -73,8 +71,9 @@ function CreationCompteBouttonClicked() {
                     <input
                       type="text"
                       className="form-control"
-                      id="Nom"
+                      value={nom}
                       placeholder="Entrez votre Nom"
+                      onChange={(e) => setNom(e.target.value)}
                     ></input>
                     <br />
                   </div>
@@ -83,8 +82,9 @@ function CreationCompteBouttonClicked() {
                     <input
                       type="text"
                       className="form-control"
-                      id="Prenom"
+                      value={prenom}
                       placeholder="Entrez votre Prénom"
+                      onChange={(e) => setPrenom(e.target.value)}
                     ></input>
                     <br />
                   </div>
@@ -93,8 +93,9 @@ function CreationCompteBouttonClicked() {
                     <input
                       type="text"
                       className="form-control"
-                      id="Email"
+                      value={email}
                       placeholder="Entrez votre Email"
+                      onChange={(e) => setEmail(e.target.value)}
                     ></input>
                     <br />
                   </div>
@@ -103,8 +104,9 @@ function CreationCompteBouttonClicked() {
                     <input
                       type="password"
                       className="form-control"
-                      id="MotDePasse"
+                      value={motDePasse}
                       placeholder="Entrez un mot de passe"
+                      onChange={(e) => setMotDePasse(e.target.value)}
                     ></input>
                     <br />
                   </div>
