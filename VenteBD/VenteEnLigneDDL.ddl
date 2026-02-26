@@ -54,7 +54,8 @@ CREATE TABLE produit (
     nom VARCHAR(50) NOT NULL,
     description VARCHAR(1000),
     prix DECIMAL(10, 2) NOT NULL,
-    stock INTEGER NOT NULL
+    stock INTEGER NOT NULL,
+    image_url VARCHAR(1000),
 );
 
 CREATE UNIQUE INDEX produit__idx ON
@@ -72,7 +73,6 @@ ALTER TABLE Produit_Categorie ADD CONSTRAINT Produit_Categorie_PK PRIMARY KEY (p
 
 CREATE TABLE specs (
     id_specs INTEGER NOT NULL,
-    produit_id_produit INTEGER NOT NULL,
     type_produit VARCHAR(20) NOT NULL,
     processeur VARCHAR(50),
     frequence_processeur INTEGER,
@@ -82,11 +82,6 @@ CREATE TABLE specs (
     type_stockage VARCHAR(50),
     carte_graphique VARCHAR(50)
 );
-
-CREATE UNIQUE INDEX specs__idx ON
-    specs (
-        produit_id_produit
-    ASC );
 
 ALTER TABLE specs ADD CONSTRAINT specs_pk PRIMARY KEY (id_specs);
 
@@ -98,13 +93,10 @@ CREATE TABLE utilisateur (
     courriel VARCHAR(50) NOT NULL,
     adresse VARCHAR(50),
     role VARCHAR(50) NOT NULL,
-    panier_id_panier INTEGER NOT NULL
 );
 
-CREATE UNIQUE INDEX utilisateur__idx ON
-    utilisateur (
-        panier_id_panier
-    ASC );
+
+ALTER TABLE utilisateur DROP column panier_id_panier;
 
 ALTER TABLE utilisateur ADD CONSTRAINT utilisateur_pk PRIMARY KEY ( id_utilisateur );
 
@@ -135,15 +127,6 @@ ALTER TABLE ProduitCategorie
 ALTER TABLE Produit_Categorie
     ADD CONSTRAINT Produit_Categorie_Produit_FK FOREIGN KEY ( produit_id_produit )
         REFERENCES produit ( id_produit );
-
-ALTER TABLE specs
-    ADD CONSTRAINT specs_produit_fk FOREIGN KEY ( produit_id_produit )
-        REFERENCES produit ( id_produit );
-
-ALTER TABLE utilisateur
-    ADD CONSTRAINT utilisateur_panier_fk FOREIGN KEY ( panier_id_panier )
-        REFERENCES panier (id_panier);
-
 
 
 -- Oracle SQL Developer Data Modeler Summary Report: 
