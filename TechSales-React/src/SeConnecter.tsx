@@ -1,4 +1,5 @@
 import logo from "./assets/logo.png";
+import "./SeConnecter.css";
 
 export default function SeConnecter() {
   return (
@@ -25,21 +26,17 @@ export default function SeConnecter() {
                   </h2>
                 </div>
                 <br />
-                <div className="form-group mb-4">
+                <div className="d-flex flex-column align-items-center gap-4">
                   <input
                     type="email"
-                    className="custom-input"
+                    className="seconnecter-input"
                     placeholder="Entrez votre Email"
                   />
-                </div>
-
-                <div className="form-group text-start">
                   <input
                     type="password"
-                    className="form-control"
+                    className="seconnecter-input"
                     placeholder="Entrez votre mot de passe"
                   />
-                  <br />
                 </div>
               </div>
             </div>
