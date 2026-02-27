@@ -1,5 +1,6 @@
 import logo from "./assets/logo.png";
 import "./SeConnecter.css";
+import { Link } from "react-router";
 
 export default function SeConnecter() {
   return (
@@ -38,6 +39,12 @@ export default function SeConnecter() {
                     placeholder="Entrez votre mot de passe"
                   />
                 </div>
+                <p className="mt-3">
+                  Pas de compte ?{" "}
+                  <Link to="/inscription" className="seconnecter-link">
+                    Créer un compte
+                  </Link>
+                </p>
               </div>
             </div>
           </div>
