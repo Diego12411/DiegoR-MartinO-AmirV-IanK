@@ -24,14 +24,13 @@ export default function SeConnecter() {
                     Se Connecter
                   </h2>
                 </div>
-
-                <div className="form-group text-start">
+                <br />
+                <div className="form-group mb-4">
                   <input
-                    type="text"
-                    className="form-control"
+                    type="email"
+                    className="custom-input"
                     placeholder="Entrez votre Email"
                   />
-                  <br />
                 </div>
 
                 <div className="form-group text-start">
