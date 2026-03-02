@@ -55,7 +55,7 @@ CREATE TABLE produit (
     description VARCHAR(1000),
     prix DECIMAL(10, 2) NOT NULL,
     stock INTEGER NOT NULL,
-    image_url VARCHAR(1000),
+    image_url VARCHAR(1000)
 );
 
 CREATE UNIQUE INDEX produit__idx ON
@@ -92,11 +92,8 @@ CREATE TABLE utilisateur (
     mot_de_passe VARCHAR(100) NOT NULL,
     courriel VARCHAR(50) NOT NULL,
     adresse VARCHAR(50),
-    role VARCHAR(50) NOT NULL,
+    role VARCHAR(50) NOT NULL
 );
-
-
-ALTER TABLE utilisateur DROP column panier_id_panier;
 
 ALTER TABLE utilisateur ADD CONSTRAINT utilisateur_pk PRIMARY KEY ( id_utilisateur );
 
@@ -120,8 +117,8 @@ ALTER TABLE produit
     ADD CONSTRAINT produit_specs_fk FOREIGN KEY ( specs_id_specs )
         REFERENCES specs ( id_specs );
 
-ALTER TABLE ProduitCategorie
-    ADD CONSTRAINT "Produit_Categorie_Categorie_FK FOREIGN KEY ( categorie_id_categorie )
+ALTER TABLE Produit_Categorie
+    ADD CONSTRAINT Produit_Categorie_Categorie_FK FOREIGN KEY ( categorie_id_categorie )
         REFERENCES categorie ( id_categorie );
 
 ALTER TABLE Produit_Categorie
