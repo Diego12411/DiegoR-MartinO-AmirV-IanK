@@ -36,13 +36,13 @@ app.post("/utilisateur", async (req, res) => {
   try {
     const { id_utilisateur, nom, prenom, mot_de_passe, courriel, adresse, role } = req.body;
 
-    const [result] = await pool.query(
-      `INSERT INTO utilisateur (id_utilisateur, nom, prenom, mot_de_passe, courriel, adresse, role)
-             VALUES (?, ?, ?, ?, ?)`,
-      [id_utilisateur, nom, prenom, mot_de_passe, courriel, adresse, role],
+    const [result] = await pool.query( //Pour l'instant Je ne crée pas de role ou adresse car n'existe pas dans le formulaire de création compte. Id user est auto incrémenté
+      `INSERT INTO utilisateur (nom, prenom, mot_de_passe, courriel)
+             VALUES (?, ?, ?, ?)`,
+      [nom, prenom, mot_de_passe, courriel],
     );
 
-    res.status(201).json({ message: "Event created" });
+    res.status(201).json({ message: "Utilisateur créé" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Database error" });

@@ -20,30 +20,30 @@ export default function AfficherCreerCompte() {
   const [messageInscriptionMauvaise, setMessageInscriptionMauvaise] =
     useState(false);
 
-  function afficherMessageInscriptionMauvaise() {
-    setMessageInscriptionMauvaise(true);
-  }
-
-  function lireInfosInscription() {
-    console.log("Nom:", nom);
-    console.log("Prénom:", prenom);
-    console.log("Email:", email);
-    console.log("Mot de Passe:", motDePasse);
-    setNom(nom);
-    setPrenom(prenom);
-    setEmail(email);
-    setMotDePasse(motDePasse);
-  }
-
   function CreationCompteBouttonClicked() {
-    if (nom && prenom && email && motDePasse) {
-      setBouttonDisabled(true);
-      navigate("/Compte");
-    } else {
+    if (!nom || !prenom || !email || !motDePasse) {
       setMessageInscriptionMauvaise(true);
+      return;
     }
+    fetch("http://localhost:4000/utilisateur", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nom: nom,
+        prenom: prenom,
+        mot_de_passe: motDePasse,
+        courriel: email,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        navigate("/Compte");
+      })
+      .catch((err) => console.error(err));
   }
-
   return (
     <div
       className="rectangle"
@@ -119,7 +119,6 @@ export default function AfficherCreerCompte() {
                     disabled={BouttonDisabled}
                     onClick={() => {
                       CreationCompteBouttonClicked();
-                      lireInfosInscription();
                     }}
                   >
                     Créer Mon Compte
