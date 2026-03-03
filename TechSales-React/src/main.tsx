@@ -6,10 +6,12 @@ import "./index.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router";
 import SeConnecter from "./SeConnecter";
+import MotPasseOublie from "./MotPasseOublie";
 
 // routage des pages de l'application
 const router = createBrowserRouter([
   { path: "/seConnecter", element: <SeConnecter /> },
+  { path: "/motPasseOublie", element: <MotPasseOublie /> },
 ]);
 
 createRoot(document.getElementById("root")!).render(
