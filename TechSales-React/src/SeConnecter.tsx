@@ -51,14 +51,20 @@ export default function SeConnecter() {
                     className="seconnecter-input"
                     placeholder="Entrez votre Email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setMessageErreur("");
+                    }}
                   />
                   <input
                     type="password"
                     className="seconnecter-input"
                     placeholder="Entrez votre mot de passe"
                     value={motDePasse}
-                    onChange={(e) => setMotDePasse(e.target.value)}
+                    onChange={(e) => {
+                      setMotDePasse(e.target.value);
+                      setMessageErreur("");
+                    }}
                   />
                 </div>
                 {/* bouton de connexion et affichage des messages d'erreur */}
