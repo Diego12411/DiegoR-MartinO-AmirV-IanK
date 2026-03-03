@@ -2,6 +2,8 @@ import logo from "./assets/logo.png";
 import "./SeConnecter.css";
 import { Link } from "react-router";
 import { useState } from "react";
+// FooterComponent et HeaderComponent sont les codes écrits par mes coéquipiers.
+// Je les ai importés pour les utiliser dans cette page de connexion, afin de garder une cohérence dans le design et la navigation du site.
 import { FooterComponent, HeaderComponent } from "./main";
 
 export default function SeConnecter() {
