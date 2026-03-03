@@ -16,6 +16,7 @@ export default function SeConnecter() {
       return;
     }
     setMessageErreur("");
+    // ici est pour ajouter la logique de connexion
     console.log("Connexion réussie !");
   }
 
