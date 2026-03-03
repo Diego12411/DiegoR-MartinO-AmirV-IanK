@@ -2,6 +2,7 @@ import logo from "./assets/logo.png";
 import "./SeConnecter.css";
 import { Link } from "react-router";
 import { useState } from "react";
+import { FooterComponent, HeaderComponent } from "./main";
 
 export default function SeConnecter() {
   // états pour les champs de saisie et les messages d'erreur
@@ -23,6 +24,7 @@ export default function SeConnecter() {
   return (
     <div className="rectangle" style={{ backgroundColor: "#40365a" }}>
       <main className="container-fluid text-center">
+        <HeaderComponent />
         <div className="d-flex justify-content-center align-items-center vh-100">
           <div className="row">
             <div className="col-12 my-3 p-5">
@@ -95,6 +97,7 @@ export default function SeConnecter() {
             </div>
           </div>
         </div>
+        <FooterComponent />
       </main>
     </div>
   );
