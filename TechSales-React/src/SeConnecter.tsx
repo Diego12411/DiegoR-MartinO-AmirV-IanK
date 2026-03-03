@@ -75,9 +75,9 @@ export default function SeConnecter() {
                 >
                   Se connecter
                 </button>
-                {messageErreur && (
-                  <p className="text-danger mt-2">{messageErreur}</p>
-                )}
+                {messageErreur ? (
+                  <p className="text-danger mt-2 text-start">{messageErreur}</p>
+                ) : null}
                 {/* liens pour la création de compte et la récupération du mot de passe */}
                 <div className="mt-3 text-start seconnecter-links">
                   <p className="mb-1 " style={{ fontSize: "12px" }}>
