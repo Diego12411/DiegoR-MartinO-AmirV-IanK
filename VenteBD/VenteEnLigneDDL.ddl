@@ -5,40 +5,57 @@
 
 
 
+
+
+
 -- predefined type, no DDL - MDSYS.SDO_GEOMETRY
+
 
 -- predefined type, no DDL - XMLTYPE
 
+
 CREATE TABLE categorie (
-    id_categorie INTEGER NOT NULL,
-    nom_categorie VARCHAR(50) NOT NULL
+    id_categorie INTEGER NOT NULL AUTO_INCREMENT,
+    nom_categorie VARCHAR(50) NOT NULL,
+    PRIMARY KEY (id_categorie)
 );
 
-ALTER TABLE categorie ADD CONSTRAINT categorie_pk PRIMARY KEY (id_categorie);
+
+-- ALTER TABLE categorie ADD CONSTRAINT categorie_pk PRIMARY KEY (id_categorie);
+
 
 CREATE TABLE commande (
-    id_commande INTEGER NOT NULL,
+    id_commande INTEGER NOT NULL AUTO_INCREMENT,
     date_commande DATE NOT NULL,
     statut VARCHAR(50) NOT NULL,
     panier_id_panier INTEGER NOT NULL,
     quantite INTEGER NOT NULL,
-    prix DECIMAL(10, 2) NOT NULL
+    prix DECIMAL(10, 2) NOT NULL,
+    PRIMARY KEY (id_commande)
+
 );
+
 
 CREATE UNIQUE INDEX commande__idx ON
     commande (
         panier_id_panier
     ASC );
 
-ALTER TABLE commande ADD CONSTRAINT commande_pk PRIMARY KEY (id_commande);
+
+-- ALTER TABLE commande ADD CONSTRAINT commande_pk PRIMARY KEY (id_commande);
+
 
 CREATE TABLE panier (
-    id_panier INTEGER NOT NULL,
+    id_panier INTEGER NOT NULL AUTO_INCREMENT,
     utilisateur_id_utilisateur INTEGER NOT NULL,
-    date_creation DATE NOT NULL
+    date_creation DATE NOT NULL,
+    PRIMARY KEY (id_panier)
+
 );
 
-ALTER TABLE panier ADD CONSTRAINT panier_pk PRIMARY KEY (id_panier);
+
+-- ALTER TABLE panier ADD CONSTRAINT panier_pk PRIMARY KEY (id_panier);
+
 
 CREATE TABLE Panier_Produit (
     panier_id_panier INTEGER NOT NULL,
@@ -46,33 +63,42 @@ CREATE TABLE Panier_Produit (
     quantite INTEGER
 );
 
+
 ALTER TABLE Panier_Produit ADD CONSTRAINT Panier_Produit_PK PRIMARY KEY (panier_id_panier, produit_id_produit);
 
+
 CREATE TABLE produit (
-    id_produit INTEGER NOT NULL,
+    id_produit INTEGER NOT NULL AUTO_INCREMENT,
     specs_id_specs INTEGER NOT NULL,
     nom VARCHAR(50) NOT NULL,
     description VARCHAR(1000),
     prix DECIMAL(10, 2) NOT NULL,
-    stock INTEGER NOT NULL
+    stock INTEGER NOT NULL,
+    image_url VARCHAR(1000),
+    PRIMARY KEY (id_produit)
+
 );
+
 
 CREATE UNIQUE INDEX produit__idx ON
     produit (specs_id_specs ASC
 );
 
-ALTER TABLE produit ADD CONSTRAINT produit_pk PRIMARY KEY (id_produit);
+
+-- ALTER TABLE produit ADD CONSTRAINT produit_pk PRIMARY KEY (id_produit);
+
 
 CREATE TABLE Produit_Categorie (
     produit_id_produit INTEGER NOT NULL,
     categorie_id_categorie INTEGER NOT NULL
 );
 
+
 ALTER TABLE Produit_Categorie ADD CONSTRAINT Produit_Categorie_PK PRIMARY KEY (produit_id_produit, categorie_id_categorie);
 
+
 CREATE TABLE specs (
-    id_specs INTEGER NOT NULL,
-    produit_id_produit INTEGER NOT NULL,
+    id_specs INTEGER NOT NULL AUTO_INCREMENT,
     type_produit VARCHAR(20) NOT NULL,
     processeur VARCHAR(50),
     frequence_processeur INTEGER,
@@ -80,69 +106,65 @@ CREATE TABLE specs (
     type_ram VARCHAR(50),
     taille_stockage INTEGER,
     type_stockage VARCHAR(50),
-    carte_graphique VARCHAR(50)
+    carte_graphique VARCHAR(50),
+    PRIMARY KEY (id_specs)
+
 );
 
-CREATE UNIQUE INDEX specs__idx ON
-    specs (
-        produit_id_produit
-    ASC );
 
-ALTER TABLE specs ADD CONSTRAINT specs_pk PRIMARY KEY (id_specs);
+-- ALTER TABLE specs ADD CONSTRAINT specs_pk PRIMARY KEY (id_specs);
+
 
 CREATE TABLE utilisateur (
-    id_utilisateur INTEGER NOT NULL,
+    id_utilisateur INTEGER NOT NULL AUTO_INCREMENT,
     nom VARCHAR(50) NOT NULL,
     prenom VARCHAR(50) NOT NULL,
     mot_de_passe VARCHAR(100) NOT NULL,
     courriel VARCHAR(50) NOT NULL,
     adresse VARCHAR(50),
     role VARCHAR(50) NOT NULL,
-    panier_id_panier INTEGER NOT NULL
+    PRIMARY KEY (id_utilisateur)
+
 );
 
-CREATE UNIQUE INDEX utilisateur__idx ON
-    utilisateur (
-        panier_id_panier
-    ASC );
 
-ALTER TABLE utilisateur ADD CONSTRAINT utilisateur_pk PRIMARY KEY ( id_utilisateur );
+-- ALTER TABLE utilisateur ADD CONSTRAINT utilisateur_pk PRIMARY KEY ( id_utilisateur );
+
 
 ALTER TABLE commande
     ADD CONSTRAINT commande_panier_fk FOREIGN KEY ( panier_id_panier )
         REFERENCES panier ( id_panier );
 
+
 ALTER TABLE panier
     ADD CONSTRAINT panier_utilisateur_fk FOREIGN KEY ( utilisateur_id_utilisateur )
         REFERENCES utilisateur ( id_utilisateur );
+
 
 ALTER TABLE Panier_Produit
     ADD CONSTRAINT Panier_Produit_Panier_FK FOREIGN KEY ( panier_id_panier )
         REFERENCES panier ( id_panier );
 
+
 ALTER TABLE Panier_Produit
     ADD CONSTRAINT Panier_Produit_Produit_FK FOREIGN KEY ( produit_id_produit )
         REFERENCES produit ( id_produit );
+
 
 ALTER TABLE produit
     ADD CONSTRAINT produit_specs_fk FOREIGN KEY ( specs_id_specs )
         REFERENCES specs ( id_specs );
 
-ALTER TABLE ProduitCategorie
-    ADD CONSTRAINT "Produit_Categorie_Categorie_FK FOREIGN KEY ( categorie_id_categorie )
+
+ALTER TABLE Produit_Categorie
+    ADD CONSTRAINT Produit_Categorie_Categorie_FK FOREIGN KEY ( categorie_id_categorie )
         REFERENCES categorie ( id_categorie );
+
 
 ALTER TABLE Produit_Categorie
     ADD CONSTRAINT Produit_Categorie_Produit_FK FOREIGN KEY ( produit_id_produit )
         REFERENCES produit ( id_produit );
 
-ALTER TABLE specs
-    ADD CONSTRAINT specs_produit_fk FOREIGN KEY ( produit_id_produit )
-        REFERENCES produit ( id_produit );
-
-ALTER TABLE utilisateur
-    ADD CONSTRAINT utilisateur_panier_fk FOREIGN KEY ( panier_id_panier )
-        REFERENCES panier (id_panier);
 
 
 
