@@ -1,0 +1,47 @@
+/* css pour les champs de saisie */
+.seconnecter-input {
+  width: 400px;
+  padding: 10px;
+  border: none;
+  border-bottom: 2px solid #333;
+  background-color: #ffffff;
+  border-radius: 2px;
+  font-size: 14px;
+  outline: none;
+}
+
+.seconnecter-input::placeholder {
+  color: #777;
+}
+
+.seconnecter-input:focus {
+  border-bottom: 2px solid #000;
+  background-color: #eceaea;
+}
+
+/*css pour les liens */
+.seconnecter-link {
+  color: #2e6bd8;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.seconnecter-link:hover {
+  text-decoration: underline;
+}
+
+/* css pour le bouton */
+.seconnecter-btn {
+  width: 140px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #212529;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.seconnecter-btn:hover {
+  opacity: 0.80;
+}
