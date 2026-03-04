@@ -24,10 +24,8 @@ app.listen(PORT, () => {
 
 app.get("/utilisateur", async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT * FROM utilisateur");
-    res.status(201).json(rows);
+    const [rows] = await pool.query("SELECT * FROM utilisateur WHERE id_utilisateur = 2"    );
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Database error" });
   }
 });
@@ -37,8 +35,8 @@ app.post("/utilisateur", async (req, res) => {
     const { id_utilisateur, nom, prenom, mot_de_passe, courriel, adresse, role } = req.body;
 
     const [result] = await pool.query( //Pour l'instant Je ne crée pas de role ou adresse car n'existe pas dans le formulaire de création compte. Id user est auto incrémenté
-      `INSERT INTO utilisateur (nom, prenom, mot_de_passe, courriel)
-             VALUES (?, ?, ?, ?)`,
+      `INSERT INTO utilisateur (nom, prenom, mot_de_passe, courriel, role)
+             VALUES (?, ?, ?, ?, "client")`,
       [nom, prenom, mot_de_passe, courriel],
     );
 
