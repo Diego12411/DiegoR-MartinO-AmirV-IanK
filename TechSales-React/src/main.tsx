@@ -8,10 +8,6 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./index.css";
-import logo from "./assets/logo.png";
-import user from "./assets/user.png";
-import panier from "./assets/panier.png";
-import { Link } from "react-router";
 
 // Importation des pages
 import AffichagePrincipalProduit from "./AffichagePrincipalProduit";
@@ -31,7 +27,7 @@ const router = createBrowserRouter([
   { path: "/creerCompte", element: <CreerCompte /> },
   { path: "/compte", element: <Compte /> },
   { path: "/seConnecter", element: <SeConnecter /> },
-  { path: "/motPasseOublie", element: <MotPasseOublie /> }
+  { path: "/motPasseOublie", element: <MotPasseOublie /> },
 ]);
 
 createRoot(document.getElementById("root")!).render(
