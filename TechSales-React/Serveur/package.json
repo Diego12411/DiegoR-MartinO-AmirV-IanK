@@ -7,7 +7,7 @@
   "type": "module",
   "main": "server.ts",
 "scripts": {
-  "dev": "tsx serveur.ts"
+  "dev": "tsx server.ts"
 },
   "dependencies": {
     "cors": "^2.8.6",
