@@ -14,6 +14,7 @@ import AffichagePrincipalProduit from "./AffichagePrincipalProduit";
 import ProduitDetails from "./Produit.tsx";
 import CreerCompte from "./CreerCompte.tsx";
 import Compte from "./Compte.tsx";
+import PageAdmin from "./PageAdmin.tsx";
 
 // Routage des pages
 const router = createBrowserRouter([
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
   },
   { path: "/creerCompte", element: <CreerCompte /> },
   { path: "/compte", element: <Compte /> },
+  { path: "/PageAdmin", element: <PageAdmin /> },
 ]);
 
 createRoot(document.getElementById("root")!).render(
