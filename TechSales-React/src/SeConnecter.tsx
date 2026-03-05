@@ -87,7 +87,7 @@ export default function SeConnecter() {
                 <div className="mt-3 text-start seconnecter-links">
                   <p className="mb-1 " style={{ fontSize: "12px" }}>
                     Pas de compte ?{" "}
-                    <Link to="/inscription" className="seconnecter-link">
+                    <Link to="/creerCompte" className="seconnecter-link">
                       Créer un compte
                     </Link>
                   </p>
