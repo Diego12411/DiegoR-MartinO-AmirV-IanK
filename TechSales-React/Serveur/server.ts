@@ -8,10 +8,6 @@ const PORT = 4000;
 app.use(cors());
 app.use(express.json());
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
-
 // Create connection pool (MySQL Docker)
 const pool = mysql.createPool({
   host: "localhost",
@@ -25,11 +21,16 @@ const pool = mysql.createPool({
 app.get("/dbtest", async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM utilisateur");
-    res.status(201).json(rows);
+    res.status(200).json(rows);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Database error" });
   }
+});
+
+// listen est une méthode qui démarre le serveur et écoute les requêtes entrantes sur le port spécifié.
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
 
 
