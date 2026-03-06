@@ -18,27 +18,16 @@ const pool = mysql.createPool({
 
 /**
  * -----------------------------
- * API pour table categorie / Produit-Categorie / Categorie
+ * API pour table categorie
  * @author Martin
  *
  * Commande pour la creation de la DB dans docker
  * docker run -d --name TechSales-server -p 3306:3306 -e MYSQL_ROOT_PASSWORD=oracle -e MYSQL_DATABASE=TechSales -e MYSQL_USER=martin -e MYSQL_PASSWORD=oracle mysql/mysql-server:latest
+ * command to start server : npx tsx server.ts
  * -----------------------------
  */
 
-/**
- * la table Produit-Categorie est une table qui joint Produit_id_produit et Categorie_id_categorie
- * Logique :
- *  -> La table categorie doit deja contenir differentes categories de laptop
- *  -> la table Produit contient au moins 1 produit pour test
- *  -> la table Specs doit contenir 1 data pour pouvoir crer un produit
- *  -> Lorsqu'on cree une nouvelle entree de laptop :
- *    --> on doit aussi creer un specs pour le laptop cree (CRUD)
- *    --> l'association doit etre fait dans la table Produit-Categorie
- */
-
-// command to start server : npx tsx server.ts
-
+// validates the server is up and running
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
