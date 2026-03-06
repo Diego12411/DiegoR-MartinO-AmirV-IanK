@@ -8,6 +8,13 @@ const PORT = 4000;
 app.use(cors());
 app.use(express.json());
 
+type Utilisateur = {
+  id_utilisateur: number;
+  courriel: string;
+  mot_de_passe: string;
+  role: string;
+};
+
 // Créer une connexion à la base de données MySQL
 const pool = mysql.createPool({
   host: "localhost",
@@ -45,11 +52,13 @@ app.post("/login", async (req, res) => {
     }
 
     const [rows] = await pool.query(
-      "SELECT * FROM utilisateur WHERE courriel = ?",
+      `SELECT id_utilisateur, courriel, mot_de_passe, role
+       FROM utilisateur
+       WHERE courriel = ?`,
       [courriel]
     );
 
-    const users = rows as any[];
+    const users = rows as Utilisateur[];
 
     if (users.length === 0) {
       return res.status(401).json({
@@ -65,10 +74,10 @@ app.post("/login", async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "Connexion réussie",
       utilisateur: {
-        id: user.id_utilisateur,
+        id_utilisateur: user.id_utilisateur,
         courriel: user.courriel,
         role: user.role,
       },
