@@ -8,7 +8,7 @@ const PORT = 4000;
 app.use(cors());
 app.use(express.json());
 
-// Create connection pool (MySQL Docker)
+// Créer une connexion à la base de données MySQL
 const pool = mysql.createPool({
   host: "localhost",
   user: "amir",
@@ -17,7 +17,7 @@ const pool = mysql.createPool({
   port: 3306,
 });
 
-// Test database connection
+// tester la connexion à la base de données
 app.get("/dbtest", async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM utilisateur");
