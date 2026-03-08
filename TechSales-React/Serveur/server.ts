@@ -8,6 +8,17 @@ const PORT = 4000;
 app.use(cors());
 app.use(express.json());
 
+/**
+ * API pour la gestion des utilisateurs de TechSales
+ * @author Amir
+ *
+ * Cette API fournit des endpoints pour la connexion des utilisateurs et la gestion de leurs données.
+ * Elle utilise Express pour le serveur web et MySQL pour la base de données.
+ * Endpoints disponibles :
+ * - POST /login : Permet aux utilisateurs de se connecter en fournissant leur courriel et mot de passe.
+ * - GET /dbtest : Permet de tester la connexion à la base de données en récupérant tous les utilisateurs.
+ */
+
 type Utilisateur = {
   id_utilisateur: number;
   courriel: string;
@@ -15,12 +26,23 @@ type Utilisateur = {
   role: string;
 };
 
-// Route de test pour vérifier que le serveur fonctionne
+/*
+ * Route de test pour vérifier que le serveur fonctionne
+ * Action : Lorsque cette route est appelée, elle retourne un message indiquant que l'API fonctionne.
+ * Méthode : GET
+ * URL : http://localhost:4000/
+ */
 app.get("/", (req, res) => {
   res.send("TechSales API running");
 });
 
-// tester la connexion à la base de données
+/*
+ * Route de test pour vérifier la connexion à la base de données et récupérer tous les utilisateurs
+ * Action : Exécute une requête SQL pour sélectionner tous les utilisateurs de la table "utilisateur"
+ * et retourne les résultats au format JSON.
+ * Méthode : GET
+ * URL : http://localhost:4000/dbtest
+ */
 app.get("/dbtest", async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM utilisateur");
@@ -31,7 +53,15 @@ app.get("/dbtest", async (req, res) => {
   }
 });
 
-// Route pour gérer la connexion des utilisateurs
+/*
+ * Route pour la connexion des utilisateurs
+ * Action : Permet aux utilisateurs de se connecter en fournissant leur courriel et mot de passe.
+ * La route vérifie que les champs sont remplis, puis exécute une requête SQL pour trouver l'utilisateur
+ * correspondant. Si l'utilisateur est trouvé et que le mot de passe correspond, une réponse de succès
+ * est retournée avec les informations de l'utilisateur. Sinon, une réponse d'erreur est retournée.
+ * Méthode : POST
+ * URL : http://localhost:4000/login
+ */
 app.post("/login", async (req, res) => {
   try {
     const { courriel, mot_de_passe } = req.body;
