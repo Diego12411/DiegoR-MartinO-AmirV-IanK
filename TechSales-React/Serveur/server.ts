@@ -17,6 +17,7 @@ app.use(express.json());
  * Endpoints disponibles :
  * - POST /login : Permet aux utilisateurs de se connecter en fournissant leur courriel et mot de passe.
  * - GET /dbtest : Permet de tester la connexion à la base de données en récupérant tous les utilisateurs.
+ * - GET / : Permet de vérifier que l'API fonctionne en retournant un message de confirmation.
  */
 
 type Utilisateur = {
