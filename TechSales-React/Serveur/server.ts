@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import mysql from "mysql2/promise";
+import pool from "./db.js";
 
 const app = express();
 const PORT = 4000;
@@ -15,14 +15,14 @@ type Utilisateur = {
   role: string;
 };
 
-// Créer une connexion à la base de données MySQL
-const pool = mysql.createPool({
-  host: "localhost",
-  user: "amir",
-  password: "oracle",  
-  database: "techsales",
-  port: 3306,
-});
+// // Créer une connexion à la base de données MySQL
+// const pool = mysql.createPool({
+//   host: "localhost",
+//   user: "amir",
+//   password: "oracle",  
+//   database: "techsales",
+//   port: 3306,
+// });
 
 // Route de test pour vérifier que le serveur fonctionne
 app.get("/", (req, res) => {
