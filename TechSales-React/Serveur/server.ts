@@ -46,7 +46,7 @@ app.post("/login", async (req, res) => {
       `SELECT id_utilisateur, courriel, mot_de_passe, role
        FROM utilisateur
        WHERE courriel = ?`,
-      [courriel]
+      [courriel],
     );
 
     const users = rows as Utilisateur[];
@@ -81,8 +81,5 @@ app.post("/login", async (req, res) => {
 
 // listen est une méthode qui démarre le serveur et écoute les requêtes entrantes sur le port spécifié.
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
-
-
-
