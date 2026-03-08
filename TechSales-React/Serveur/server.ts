@@ -15,15 +15,6 @@ type Utilisateur = {
   role: string;
 };
 
-// // Créer une connexion à la base de données MySQL
-// const pool = mysql.createPool({
-//   host: "localhost",
-//   user: "amir",
-//   password: "oracle",  
-//   database: "techsales",
-//   port: 3306,
-// });
-
 // Route de test pour vérifier que le serveur fonctionne
 app.get("/", (req, res) => {
   res.send("TechSales API running");
