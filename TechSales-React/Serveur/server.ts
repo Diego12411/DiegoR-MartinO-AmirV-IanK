@@ -1,6 +1,10 @@
 import express from "express";
 import cors from "cors";
-import pool from "./db.js";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import { pool } from "./db.js";
+
+dotenv.config();
 
 const app = express();
 const PORT = 4000;
