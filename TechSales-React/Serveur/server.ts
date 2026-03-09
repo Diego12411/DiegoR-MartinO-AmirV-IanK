@@ -76,3 +76,25 @@ app.delete("/utilisateur", async (req, res) => {
   }
 });
 
+//Update
+app.put("/utilisateur", async (req, res) => {
+  try {
+    const { id_utilisateur, nom, prenom, mot_de_passe, courriel, role } = req.body;
+
+    const [result] = await pool.query(
+      `UPDATE utilisateur
+       SET nom = ?,
+           prenom = ?,
+           mot_de_passe = ?,
+           courriel = ?,
+           role = ?
+       WHERE id_utilisateur = ?;`,
+      [nom, prenom, mot_de_passe, courriel, role, id_utilisateur]
+    );
+
+    res.status(200).json({ message: "Utilisateur changé" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Database error" });
+  }
+});

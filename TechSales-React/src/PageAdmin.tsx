@@ -1,18 +1,16 @@
 import { HeaderComponent } from "./main";
 import logo from "./assets/logo.png";
 import { useState } from "react";
-import { useNavigate } from "react-router";
 
 export default function AfficherPageAdmin() {
-  const navigate = useNavigate();
   const [BouttonDisabled, setBouttonDisabled] = useState(false);
   const [id, setId] = useState("");
-  const [messageInscriptionMauvaise, setMessageInscriptionMauvaise] =
-    useState(false);
+  const [messageIdVide, setMessageIdVide] = useState("");
+  const [messageDelete, setMessageDelete] = useState(false);
 
   function supprimerUtilisateurBouttonClicked() {
     if (!id) {
-      setMessageInscriptionMauvaise(true);
+      setMessageIdVide("*Il manque des champs obligatoires*");
       return;
     }
     fetch("http://localhost:4000/utilisateur", {
@@ -27,7 +25,6 @@ export default function AfficherPageAdmin() {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        navigate("/Compte");
       })
       .catch((err) => console.error(err));
   }
@@ -36,7 +33,7 @@ export default function AfficherPageAdmin() {
       <HeaderComponent />
       <div className="d-flex justify-content-center align-items-left vh-100">
         <div className="row">
-          {/*Formulaire De delete utilisateur*/}
+          {/*Formulaire de delete utilisateur*/}
           <div className="col-12 my-3 p-5">
             <div
               className="card shadow-lg p-3"
@@ -53,7 +50,10 @@ export default function AfficherPageAdmin() {
                     className="form-control"
                     value={id}
                     placeholder="Id"
-                    onChange={(e) => setId(e.target.value)}
+                    onChange={(e) => {
+                      setId(e.target.value);
+                      setMessageIdVide(""); // efface le message automatiquement
+                    }}
                   ></input>
                   <button
                     type="button"
@@ -65,10 +65,50 @@ export default function AfficherPageAdmin() {
                   >
                     Supprimer l'utilisateur
                   </button>
-                  {messageInscriptionMauvaise && (
-                    <p className="text-danger">
-                      *Il manque des champs obligatoires*
-                    </p>
+                  {messageIdVide && (
+                    <p className="text-danger">{messageIdVide}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="row">
+          {/*Formulaire de modification utilisateur*/}
+          <div className="col-12 my-3 p-5">
+            <div
+              className="card shadow-lg p-3"
+              style={{ backgroundColor: "#000000", color: "white" }}
+            >
+              <h3 className="card-title text-white">
+                <br />
+                Modifier un Utilisateur :
+              </h3>
+              <div className="card shadow-lg m-4 mx-4 p-4">
+                <div className="form-group text-start">
+                  <input
+                    type="number"
+                    className="form-control"
+                    value={id}
+                    placeholder="Id"
+                    onChange={(e) => {
+                      setId(e.target.value);
+                      setMessageIdVide(""); // efface le message automatiquement
+                    }}
+                  ></input>
+                  <button
+                    type="button"
+                    className="btn btn-dark"
+                    disabled={BouttonDisabled}
+                    onClick={() => {
+                      supprimerUtilisateurBouttonClicked();
+                    }}
+                  >
+                    Modifier l'utilisateur
+                  </button>
+                  {messageIdVide && (
+                    <p className="text-danger">{messageIdVide}</p>
                   )}
                 </div>
               </div>
