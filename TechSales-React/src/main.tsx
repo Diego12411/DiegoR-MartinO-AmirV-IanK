@@ -16,6 +16,7 @@ import CreerCompte from "./CreerCompte.tsx";
 import Compte from "./Compte.tsx";
 import SeConnecter from "./SeConnecter";
 import MotPasseOublie from "./MotPasseOublie";
+import AdminPage from "./AdminPage";
 
 // Routage des pages
 const router = createBrowserRouter([
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
   { path: "/compte", element: <Compte /> },
   { path: "/seConnecter", element: <SeConnecter /> },
   { path: "/motPasseOublie", element: <MotPasseOublie /> },
+  { path: "/adminPage", element: <AdminPage /> },
 ]);
 
 createRoot(document.getElementById("root")!).render(
