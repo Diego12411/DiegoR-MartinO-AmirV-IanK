@@ -119,11 +119,54 @@ app.post("/login", async (req, res) => {
 
     return res.status(200).json({
       message: "Connexion réussie",
+      token: token,
       utilisateur: {
         id_utilisateur: user.id_utilisateur,
         courriel: user.courriel,
         role: user.role,
       },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Database error" });
+  }
+});
+
+/*
+ * Route pour la mise à jour des informations d'un utilisateur
+ * Action : Permet de mettre à jour les informations d'un utilisateur en fournissant son ID dans l'URL
+ * La route vérifie que les champs obligatoires sont remplis, puis exécute une requête SQL pour mettre
+ * à jour. Si l'utilisateur est trouvé et mis à jour, une réponse de succès est retournée. Sinon, une
+ * réponse d'erreur est retournée.
+ * Méthode : PUT
+ * URL : http://localhost:4000/utilisateur/:id
+ */
+app.put("/utilisateur/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nom, prenom, courriel, adresse, role } = req.body;
+
+    if (!nom || !prenom || !courriel || !role) {
+      return res.status(400).json({
+        message: "Champs obligatoires manquants.",
+      });
+    }
+
+    const [result] = await pool.query(
+      `UPDATE utilisateur
+       SET nom = ?, prenom = ?, courriel = ?, adresse = ?, role = ?
+       WHERE id_utilisateur = ?`,
+      [nom, prenom, courriel, adresse, role, id],
+    );
+
+    if ((result as any).affectedRows === 0) {
+      return res.status(404).json({
+        message: "Utilisateur non trouvé",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Utilisateur mis à jour avec succès",
     });
   } catch (error) {
     console.error(error);
