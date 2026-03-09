@@ -31,6 +31,12 @@ type Utilisateur = {
   role: string;
 };
 
+type JwtPayload = {
+  id_utilisateur: number;
+  courriel: string;
+  role: string;
+};
+
 /*
  * Route de test pour vérifier que le serveur fonctionne
  * Action : Lorsque cette route est appelée, elle retourne un message indiquant que l'API fonctionne.
@@ -99,6 +105,17 @@ app.post("/login", async (req, res) => {
         message: "Courriel ou mot de passe invalide.",
       });
     }
+
+    // Génération d'un token JWT pour l'utilisateur connecté
+    const token = jwt.sign(
+      {
+        id_utilisateur: user.id_utilisateur,
+        courriel: user.courriel,
+        role: user.role,
+      },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "2h" },
+    );
 
     return res.status(200).json({
       message: "Connexion réussie",
