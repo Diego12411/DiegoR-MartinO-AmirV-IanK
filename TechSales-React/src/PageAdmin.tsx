@@ -73,48 +73,6 @@ export default function AfficherPageAdmin() {
             </div>
           </div>
         </div>
-
-        <div className="row">
-          {/*Formulaire de modification utilisateur*/}
-          <div className="col-12 my-3 p-5">
-            <div
-              className="card shadow-lg p-3"
-              style={{ backgroundColor: "#000000", color: "white" }}
-            >
-              <h3 className="card-title text-white">
-                <br />
-                Modifier un Utilisateur :
-              </h3>
-              <div className="card shadow-lg m-4 mx-4 p-4">
-                <div className="form-group text-start">
-                  <input
-                    type="number"
-                    className="form-control"
-                    value={id}
-                    placeholder="Id"
-                    onChange={(e) => {
-                      setId(e.target.value);
-                      setMessageIdVide(""); // efface le message automatiquement
-                    }}
-                  ></input>
-                  <button
-                    type="button"
-                    className="btn btn-dark"
-                    disabled={BouttonDisabled}
-                    onClick={() => {
-                      supprimerUtilisateurBouttonClicked();
-                    }}
-                  >
-                    Modifier l'utilisateur
-                  </button>
-                  {messageIdVide && (
-                    <p className="text-danger">{messageIdVide}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </main>
   );
