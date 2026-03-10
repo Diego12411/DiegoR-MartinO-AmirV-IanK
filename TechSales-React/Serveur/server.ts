@@ -3,7 +3,7 @@ import cors from "cors";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { pool } from "./db.js";
-// import mysql from "mysql2/promise";
+import mysql from "mysql2/promise";
 
 dotenv.config();
 
@@ -177,18 +177,6 @@ app.put("/utilisateur/:id", async (req, res) => {
   }
 });
 
-// listen est une méthode qui démarre le serveur et écoute les requêtes entrantes sur le port spécifié.
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-// Create connection pool
-const pool = mysql.createPool({
-  host: "localhost",
-  user: "martin",
-  password: "oracle",
-  database: "TechSales",
-});
-
 /**
  * =====================================
  * API pour table categorie
@@ -199,6 +187,15 @@ const pool = mysql.createPool({
  * command to start server : npx tsx server.ts
  * ======================================
  */
+
+// Create connection pool
+const pool = mysql.createPool({
+  host: "localhost",
+  user: "martin",
+  password: "oracle",
+  database: "TechSales",
+  port: 3306,
+});
 
 // GET toutes les categories de la table categorie
 app.get("/categories", async (req, res) => {
