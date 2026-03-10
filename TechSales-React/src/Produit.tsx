@@ -1,5 +1,4 @@
 import { Link } from "react-router";
-import { HeaderComponent } from "./main";
 import { useState } from "react";
 import { HeaderComponent } from "./main.tsx";
 import { FooterComponent } from "./main.tsx";
@@ -18,97 +17,6 @@ export default function ProduitDetails() {
         {/* Debut de la page de details d'un produit specifique */}
         <h5>Produit</h5>
 
-          {/* Affichage des caracteristiques du laptop */}
-          <div className="card">
-            <ul className="list-group list-group-flush">
-              {/* Affichage du processeur */}
-              <li className="list-group-item d-flex align-items-center gap-3">
-                <img
-                  src="https://icons.veryicon.com/png/o/internet--web/elegant-linear-icon/cpu-6.png"
-                  alt="image d'un CPU"
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    objectFit: "cover",
-                  }}
-                />
-                <div>
-                  <small className="text-body-secondary">Processeur</small>
-                  <br />
-                  Nom du processeur + frequence
-                </div>
-              </li>
-              {/* Affichage de la carte graphique */}
-              <li className="list-group-item d-flex align-items-center gap-3">
-                <img
-                  src="https://static.vecteezy.com/system/resources/thumbnails/014/935/546/small_2x/chip-gpu-card-icon-simple-graphic-pc-vector.jpg"
-                  alt="image d'un CPU"
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    objectFit: "cover",
-                  }}
-                />
-                <div>
-                  <small className="text-body-secondary">Carte Graphique</small>
-                  <br />
-                  Modele de la carte graphique
-                </div>
-              </li>
-              {/* Affichage de la memoire */}
-              <li className="list-group-item d-flex align-items-center gap-3">
-                <img
-                  src="https://t4.ftcdn.net/jpg/05/62/71/77/360_F_562717748_ZAfTzKz4sLPlm9KGDIsWASVcQgh7GOta.jpg"
-                  alt="image d'un CPU"
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    objectFit: "cover",
-                  }}
-                />
-                <div>
-                  <small className="text-body-secondary">Memoire</small>
-                  <br />
-                  Capacite de RAM et modele
-                </div>
-              </li>
-              {/* Affichage de la capacite de stockage */}
-              <li className="list-group-item d-flex align-items-center gap-3">
-                <img
-                  src="https://static.vecteezy.com/system/resources/previews/006/793/680/non_2x/storage-ssd-icon-hardware-line-style-free-free-vector.jpg"
-                  alt="image d'un CPU"
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    objectFit: "cover",
-                  }}
-                />
-                <div>
-                  <small className="text-body-secondary">Stockage</small>
-                  <br />
-                  Capacite de stockage et type
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          {/* Affichage de la livraison gratuite */}
-          <div className="card my-5">
-            <ul className="list-group list-group-flush">
-              <li className="list-group-item d-flex align-items-center gap-3">
-                <img
-                  src="https://static.vecteezy.com/system/resources/thumbnails/002/206/240/small_2x/fast-delivery-icon-free-vector.jpg"
-                  alt="image d'un camion de livraison"
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    objectFit: "cover",
-                  }}
-                />
-                <div className="fw-bold">Livraison Gratuite</div>
-              </li>
-            </ul>
-          </div>
         <div className="row">
           {/* Affichage de l'image du laptop */}
           <div className="col">
@@ -250,92 +158,93 @@ export default function ProduitDetails() {
           />
           <h5>Autres produits</h5>
 
-        <div className="row row-cols-1 row-cols-md-4 g-3 mb-5">
-          {/* Card 1 */}
-          <div className="col">
-            <div className="card h-100">
-              <Link to="PageProduit">
-                <img
-                  src="https://multimedia.bbycastatic.ca/multimedia/products/1500x1500/152/15268/15268122.jpeg"
-                  alt="Image demo produit 1"
-                  style={{
-                    width: "100%",
-                    height: "125px",
-                    objectFit: "cover",
-                  }}
-                />
-              </Link>
-              <div className="card-body">
-                <h6 className="card-title">Demo produit 1</h6>
-                <small className="text-body-secondary">
-                  Prix du produit $$$
-                </small>
+          <div className="row row-cols-1 row-cols-md-4 g-3 mb-5">
+            {/* Card 1 */}
+            <div className="col">
+              <div className="card h-100">
+                <Link to="PageProduit">
+                  <img
+                    src="https://multimedia.bbycastatic.ca/multimedia/products/1500x1500/152/15268/15268122.jpeg"
+                    alt="Image demo produit 1"
+                    style={{
+                      width: "100%",
+                      height: "125px",
+                      objectFit: "cover",
+                    }}
+                  />
+                </Link>
+                <div className="card-body">
+                  <h6 className="card-title">Demo produit 1</h6>
+                  <small className="text-body-secondary">
+                    Prix du produit $$$
+                  </small>
+                </div>
               </div>
             </div>
-          </div>
-          {/* Card 2 */}
-          <div className="col">
-            <div className="card h-100">
-              <Link to="PageProduit">
-                <img
-                  src="https://news.lenovo.com/wp-content/uploads/2025/01/09_Yoga_Slim_9i_14_10_Tidal_Teal_CameraOn_Right_Side_Open-e1736186936951-1024x862.png"
-                  alt="Image demo produit 2"
-                  style={{
-                    width: "100%",
-                    height: "125px",
-                    objectFit: "cover",
-                  }}
-                />
-              </Link>
-              <div className="card-body">
-                <h6 className="card-title">Demo produit 2</h6>
-                <small className="text-body-secondary">
-                  Prix du produit $$$
-                </small>
+            {/* Card 2 */}
+            <div className="col">
+              <div className="card h-100">
+                <Link to="PageProduit">
+                  <img
+                    src="https://news.lenovo.com/wp-content/uploads/2025/01/09_Yoga_Slim_9i_14_10_Tidal_Teal_CameraOn_Right_Side_Open-e1736186936951-1024x862.png"
+                    alt="Image demo produit 2"
+                    style={{
+                      width: "100%",
+                      height: "125px",
+                      objectFit: "cover",
+                    }}
+                  />
+                </Link>
+                <div className="card-body">
+                  <h6 className="card-title">Demo produit 2</h6>
+                  <small className="text-body-secondary">
+                    Prix du produit $$$
+                  </small>
+                </div>
               </div>
             </div>
-          </div>
-          {/* Card 3 */}
-          <div className="col">
-            <div className="card h-100">
-              <Link to="PageProduit">
-                <img
-                  src="https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/xps-notebooks/xps-13-9350/media-gallery/graphite/notebook-xps-13-9350-t-oled-gy-gallery-5.psd?fmt=png-alpha&pscan=auto&scl=1&hei=804&wid=1362&qlt=100,1&resMode=sharp2&size=1362,804&chrss=full"
-                  alt="Image demo produit 3"
-                  style={{
-                    width: "100%",
-                    height: "125px",
-                    objectFit: "cover",
-                  }}
-                />
-              </Link>
-              <div className="card-body">
-                <h6 className="card-title">Demo produit 3</h6>
-                <small className="text-body-secondary">
-                  Prix du produit $$$
-                </small>
+            {/* Card 3 */}
+            <div className="col">
+              <div className="card h-100">
+                <Link to="PageProduit">
+                  <img
+                    src="https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/xps-notebooks/xps-13-9350/media-gallery/graphite/notebook-xps-13-9350-t-oled-gy-gallery-5.psd?fmt=png-alpha&pscan=auto&scl=1&hei=804&wid=1362&qlt=100,1&resMode=sharp2&size=1362,804&chrss=full"
+                    alt="Image demo produit 3"
+                    style={{
+                      width: "100%",
+                      height: "125px",
+                      objectFit: "cover",
+                    }}
+                  />
+                </Link>
+                <div className="card-body">
+                  <h6 className="card-title">Demo produit 3</h6>
+                  <small className="text-body-secondary">
+                    Prix du produit $$$
+                  </small>
+                </div>
               </div>
             </div>
-          </div>
-          {/* Card 4 */}
-          <div className="col">
-            <div className="card h-100">
-              <Link to="PageProduit">
-                <img
-                  src="https://www.lg.com/content/dam/channel/wcms/ca_en/images/laptops/gram/17z90sp-g-aa75a9/DZ-02.jpg/jcr:content/renditions/thum-1600x1062.jpeg"
-                  alt="Image demo produit 4"
-                  style={{
-                    width: "100%",
-                    height: "125px",
-                    objectFit: "cover",
-                  }}
-                />
-              </Link>
-              <div className="card-body">
-                <h6 className="card-title">Demo produit 4</h6>
-                <small className="text-body-secondary">
-                  Prix du produit $$$
-                </small>
+            {/* Card 4 */}
+            <div className="col">
+              <div className="card h-100">
+                <Link to="PageProduit">
+                  <img
+                    src="https://www.lg.com/content/dam/channel/wcms/ca_en/images/laptops/gram/17z90sp-g-aa75a9/DZ-02.jpg/jcr:content/renditions/thum-1600x1062.jpeg"
+                    alt="Image demo produit 4"
+                    style={{
+                      width: "100%",
+                      height: "125px",
+                      objectFit: "cover",
+                    }}
+                  />
+                </Link>
+                <div className="card-body">
+                  <h6 className="card-title">Demo produit 4</h6>
+                  <small className="text-body-secondary">
+                    Prix du produit $$$
+                  </small>
+                </div>
               </div>
             </div>
           </div>
