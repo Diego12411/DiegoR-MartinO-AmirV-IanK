@@ -15,6 +15,9 @@ import ProduitDetails from "./Produit.tsx";
 import CreerCompte from "./CreerCompte.tsx";
 import Compte from "./Compte.tsx";
 import PageAdmin from "./PageAdmin.tsx";
+import SeConnecter from "./SeConnecter";
+import MotPasseOublie from "./MotPasseOublie";
+import AdminPage from "./AdminPage";
 
 // Routage des pages
 const router = createBrowserRouter([
@@ -26,6 +29,9 @@ const router = createBrowserRouter([
   { path: "/creerCompte", element: <CreerCompte /> },
   { path: "/compte", element: <Compte /> },
   { path: "/PageAdmin", element: <PageAdmin /> },
+  { path: "/seConnecter", element: <SeConnecter /> },
+  { path: "/motPasseOublie", element: <MotPasseOublie /> },
+  { path: "/adminPage", element: <AdminPage /> },
 ]);
 
 createRoot(document.getElementById("root")!).render(
@@ -34,6 +40,7 @@ createRoot(document.getElementById("root")!).render(
   </StrictMode>,
 );
 
+// Fonction qui permet le import du header dans les autres pages
 export const HeaderComponent = () => {
   return (
     <header className="container-fluid text-center px-0">
@@ -80,6 +87,8 @@ export const HeaderComponent = () => {
     </header>
   );
 };
+
+// Fonction qui permet le import du footer dans les autres pages
 export const FooterComponent = () => {
   return (
     <div className="row">
