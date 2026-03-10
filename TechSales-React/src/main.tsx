@@ -14,6 +14,7 @@ import AffichagePrincipalProduit from "./AffichagePrincipalProduit";
 import ProduitDetails from "./Produit.tsx";
 import CreerCompte from "./CreerCompte.tsx";
 import Compte from "./Compte.tsx";
+import PageAdmin from "./PageAdmin.tsx";
 import SeConnecter from "./SeConnecter";
 import MotPasseOublie from "./MotPasseOublie";
 import AdminPage from "./AdminPage";
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
   },
   { path: "/creerCompte", element: <CreerCompte /> },
   { path: "/compte", element: <Compte /> },
+  { path: "/PageAdmin", element: <PageAdmin /> },
   { path: "/seConnecter", element: <SeConnecter /> },
   { path: "/motPasseOublie", element: <MotPasseOublie /> },
   { path: "/adminPage", element: <AdminPage /> },

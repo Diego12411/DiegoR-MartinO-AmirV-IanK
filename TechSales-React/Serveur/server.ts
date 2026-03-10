@@ -1,5 +1,7 @@
 import express from "express";
 import cors from "cors";
+import mysql from "mysql2/promise";
+
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { pool } from "./db.js";
@@ -12,6 +14,14 @@ const PORT = Number(process.env.PORT) || 4000;
 
 app.use(cors());
 app.use(express.json());
+
+// Create connection pool
+const pool = mysql.createPool({
+    host: "localhost",
+    user: "scott",
+    password: "oracle",
+    database: "scott",
+});
 
 /**
  * ===================================================
@@ -171,6 +181,46 @@ app.put("/utilisateur/:id", async (req, res) => {
     return res.status(200).json({
       message: "Utilisateur mis à jour avec succès",
     });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Database error" });
+  }
+});
+
+/**
+* GET sur table utilisateur -> retourne toutes les informations des utilisateurs
+* @author Diego
+*/
+app.get("/utilisateur", async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      "SELECT * FROM utilisateur"
+    );
+
+    res.status(200).json(rows);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Database error" });
+  }
+});
+
+/**
+* Faire get et afficher dans compte
+* POST sur la table utilisateur -> create nouveau data pour un nouvel utilisateur
+* @author Diego
+*/
+app.post("/utilisateur", async (req, res) => {
+  try {
+    const { nom, prenom, mot_de_passe, courriel } = req.body;
+
+    const [result] = await pool.query(
+      `INSERT INTO utilisateur (nom, prenom, mot_de_passe, courriel, role)
+       VALUES (?, ?, ?, ?, "client")`,
+      [nom, prenom, mot_de_passe, courriel],
+    );
+
+    res.status(201).json({ message: "Utilisateur créé"});
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Database error" });
@@ -357,5 +407,5 @@ app.delete("/categorie/:id/effacer", async (req, res) => {
 // Méthode de listening place à la fin du fichier pour s'assurer que toutes les routes sont définies avant de démarrer le serveur
 // validates the server is up and running
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
