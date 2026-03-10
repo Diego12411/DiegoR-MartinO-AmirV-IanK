@@ -3,7 +3,7 @@ import cors from "cors";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { pool } from "./db.js";
-import mysql from "mysql2/promise";
+// import mysql from "mysql2/promise";
 
 dotenv.config();
 
@@ -12,11 +12,6 @@ const PORT = Number(process.env.PORT) || 4000;
 
 app.use(cors());
 app.use(express.json());
-
-// validates the server is up and running
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
 
 /**
  * ===================================================
@@ -194,7 +189,6 @@ const pool = mysql.createPool({
   database: "TechSales",
 });
 
-
 /**
  * =====================================
  * API pour table categorie
@@ -361,4 +355,10 @@ app.delete("/categorie/:id/effacer", async (req, res) => {
     );
     res.status(500).json({ message: "Database error" });
   }
+});
+
+// Méthode de listening place à la fin du fichier pour s'assurer que toutes les routes sont définies avant de démarrer le serveur
+// validates the server is up and running
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
