@@ -200,9 +200,7 @@ app.put("/utilisateur/:id", async (req, res) => {
 // GET toutes les categories de la table categorie
 app.get("/categories", async (req, res) => {
   try {
-    const [allCategories] = await pool.query(
-      "SELECT * FROM TechSales.categorie",
-    );
+    const [allCategories] = await pool.query("SELECT * FROM categorie");
     res.status(200).json(allCategories);
   } catch (error) {
     console.error(
