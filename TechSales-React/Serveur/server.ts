@@ -24,9 +24,12 @@ app.use(express.json());
  * - POST /login : Permet aux utilisateurs de se connecter en fournissant leur courriel et mot de passe.
  * - GET /dbtest : Permet de tester la connexion à la base de données en récupérant tous les utilisateurs.
  * - GET / : Permet de vérifier que l'API fonctionne en retournant un message de confirmation.
+ * - PUT /utilisateur/:id : Permet de mettre à jour les informations d'un utilisateur en fournissant son ID dans l'URL.
+ * - Middleware verifierToken : Permet de vérifier la validité du token JWT dans les requêtes protégées.
  * ====================================================
  */
 
+// Type personnalisé pour les données d'un utilisateur extraites de la base de données
 type Utilisateur = {
   id_utilisateur: number;
   courriel: string;
@@ -34,11 +37,52 @@ type Utilisateur = {
   role: string;
 };
 
+// Type personnalisé pour les données extraites du token JWT
 type JwtPayload = {
   id_utilisateur: number;
   courriel: string;
   role: string;
 };
+
+// Type personnalisé pour les requêtes authentifiées, incluant les données du token JWT
+type AuthRequest = Request & {
+  user?: JwtPayload;
+};
+
+/*
+ * Route middleware pour vérifier le token JWT dans les requêtes protégées
+ * Action : Cette fonction middleware vérifie que le token JWT est présent dans les en-têtes de la
+ * requête, qu'il est valide et non expiré. Si le token est valide, les données extraites du token sont
+ * ajoutées à l'objet de requête pour une utilisation ultérieure dans les routes protégées. Si le
+ * token est manquant ou invalide, une réponse d'erreur 401 Unauthorized est retournée.
+ * Méthode : Middleware (utilisé dans les routes protégées)
+ * URL : N/A (utilisé dans les routes nécessitant une authentification)
+ */
+function verifierToken(req: AuthRequest, res: Response, next: NextFunction) {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    return res.status(401).json({ message: "Token manquant." });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "Token invalide." });
+  }
+
+  try {
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string,
+    ) as JwtPayload;
+
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: "Token invalide ou expiré." });
+  }
+}
 
 /*
  * Route de test pour vérifier que le serveur fonctionne
