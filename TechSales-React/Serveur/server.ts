@@ -92,6 +92,9 @@ app.put("/utilisateur", async (req, res) => {
       [nom, prenom, mot_de_passe, courriel, role, id_utilisateur]
     );
 
+if ((result as any).affectedRows === 0)
+      return res.status(404).json({ message: "Utilisateur introuvable" });
+
     res.status(200).json({ message: "Utilisateur changé" });
   } catch (error) {
     console.error(error);
