@@ -50,7 +50,7 @@ type AuthRequest = Request & {
 };
 
 /*
- * Route middleware pour vérifier le token JWT dans les requêtes protégées
+ * La fonction middleware pour vérifier le token JWT dans les requêtes protégées
  * Action : Cette fonction middleware vérifie que le token JWT est présent dans les en-têtes de la
  * requête, qu'il est valide et non expiré. Si le token est valide, les données extraites du token sont
  * ajoutées à l'objet de requête pour une utilisation ultérieure dans les routes protégées. Si le
@@ -220,6 +220,43 @@ app.put("/utilisateur/:id", async (req, res) => {
     res.status(500).json({ message: "Database error" });
   }
 });
+
+/*
+ * Route protégée pour récupérer les informations du profil de l'utilisateur connecté
+ * Action : Permet de récupérer les informations du profil de l'utilisateur connecté en utilisant le
+ * token JWT pour identifier l'utilisateur. La route utilise le middleware "verifierToken" pour s'assurer
+ * que la requête est authentifiée. Si le token est valide, une requête SQL est exécutée pour récupérer
+ * les informations de l'utilisateur à partir de la base de données, et les données sont retournées au
+ * format JSON. Si le token est manquant ou invalide, une réponse d'erreur 401 Unauthorized est retournée.
+ * Méthode : GET
+ * URL : http://localhost:4000/profil
+ */
+app.get("/profil", verifierToken, async (req: AuthRequest, res: Response) => {
+  try {
+    const id_utilisateur = req.user?.id_utilisateur;
+
+    const [rows] = await pool.query(
+      `SELECT id_utilisateur, nom, prenom, courriel, adresse, role
+       FROM utilisateur
+       WHERE id_utilisateur = ?`,
+      [id_utilisateur],
+    );
+
+    const utilisateurs = rows as any[];
+
+    if (utilisateurs.length === 0) {
+      return res.status(404).json({ message: "Utilisateur non trouvé." });
+    }
+
+    return res.status(200).json(utilisateurs[0]);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Database error" });
+  }
+});
+// =====================================================================================================
+// Fin de l'API pour la gestion des utilisateurs de TechSales écrite par Amir //////////////////////////
+// =====================================================================================================
 
 /**
  * =====================================
