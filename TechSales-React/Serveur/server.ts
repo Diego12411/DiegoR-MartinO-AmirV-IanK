@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 /**
- * ===================================================
+ * =====================================================================================================
  * API pour la gestion des utilisateurs de TechSales
  * @author Amir
  *
@@ -26,7 +26,7 @@ app.use(express.json());
  * - GET / : Permet de vérifier que l'API fonctionne en retournant un message de confirmation.
  * - PUT /utilisateur/:id : Permet de mettre à jour les informations d'un utilisateur en fournissant son ID dans l'URL.
  * - Middleware verifierToken : Permet de vérifier la validité du token JWT dans les requêtes protégées.
- * ====================================================
+ * ======================================================================================================
  */
 
 // Type personnalisé pour les données d'un utilisateur extraites de la base de données
