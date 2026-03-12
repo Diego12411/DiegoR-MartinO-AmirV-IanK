@@ -1,0 +1,142 @@
+import logo from "./assets/logo.png";
+import "./SeConnecter.css";
+import { Link, useNavigate } from "react-router";
+import { useState } from "react";
+// FooterComponent et HeaderComponent sont les codes écrits par mes coéquipiers.
+// Je les ai importés pour les utiliser dans cette page de connexion, afin de garder une cohérence dans le design et la navigation du site.
+import { FooterComponent, HeaderComponent } from "./main";
+
+export default function SeConnecter() {
+  const [email, setEmail] = useState("");
+  const [motDePasse, setMotDePasse] = useState("");
+  const [messageErreur, setMessageErreur] = useState("");
+
+  const navigate = useNavigate();
+
+  function handleConnexion() {
+    if (!email || !motDePasse) {
+      setMessageErreur("Veuillez remplir tous les champs.");
+      return;
+    }
+
+    setMessageErreur("");
+
+    fetch("http://localhost:4000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        courriel: email,
+        mot_de_passe: motDePasse,
+      }),
+    })
+      .then((res) => {
+        return res.json().then((data) => {
+          // pour debugger et voir ce que le backend nous retourne (il faut l'enlever après)
+          console.log("Status :", res.status);
+          console.log("Data backend :", data);
+
+          if (!res.ok) {
+            throw new Error(data.message || "Erreur de connexion.");
+          }
+          return data;
+        });
+      })
+      .then((data) => {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("utilisateur", JSON.stringify(data.utilisateur));
+
+        if (data.utilisateur.role === "admin") {
+          navigate("/adminPage");
+        } else {
+          navigate("/compte");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setMessageErreur(err.message || "Impossible de joindre le serveur.");
+      });
+  }
+
+  return (
+    <div className="rectangle" style={{ backgroundColor: "#40365a" }}>
+      <main className="container-fluid text-center">
+        <HeaderComponent />
+        <div className="d-flex justify-content-center align-items-center vh-100">
+          <div className="row">
+            <div className="col-12 my-3 p-5">
+              {/* carte de connexion */}
+              <div
+                className="card shadow-lg p-3 pb-5"
+                style={{ backgroundColor: "#f3efef" }}
+              >
+                {/* logo et le titre de la page */}
+                <div className="text-start">
+                  <img src={logo} alt="logo" width={200} height={35} />
+                  <h2
+                    style={{
+                      marginTop: "20px",
+                      marginLeft: "10px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Se Connecter
+                  </h2>
+                </div>
+                <br />
+                {/* champs de saisie pour l'email et le mot de passe */}
+                <div className="d-flex flex-column align-items-center gap-4">
+                  <input
+                    type="email"
+                    className="seconnecter-input"
+                    placeholder="Entrez votre Email"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setMessageErreur("");
+                    }}
+                  />
+                  <input
+                    type="password"
+                    className="seconnecter-input"
+                    placeholder="Entrez votre mot de passe"
+                    value={motDePasse}
+                    onChange={(e) => {
+                      setMotDePasse(e.target.value);
+                      setMessageErreur("");
+                    }}
+                  />
+                </div>
+                {/* bouton de connexion et affichage des messages d'erreur */}
+                <button
+                  type="button"
+                  className="seconnecter-btn mt-4"
+                  onClick={handleConnexion}
+                >
+                  Se connecter
+                </button>
+                {messageErreur ? (
+                  <p className="text-danger mt-2 text-start">{messageErreur}</p>
+                ) : null}
+                {/* liens pour la création de compte et la récupération du mot de passe */}
+                <div className="mt-3 text-start seconnecter-links">
+                  <p className="mb-1 " style={{ fontSize: "12px" }}>
+                    Pas de compte ?{" "}
+                    <Link to="/creerCompte" className="seconnecter-link">
+                      Créer un compte
+                    </Link>
+                  </p>
+                  <Link to="/motPasseOublie" className="seconnecter-link">
+                    Mot de passe oublié ?
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <FooterComponent />
+      </main>
+    </div>
+  );
+}

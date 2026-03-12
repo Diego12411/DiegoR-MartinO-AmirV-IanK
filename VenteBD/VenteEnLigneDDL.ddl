@@ -5,40 +5,57 @@
 
 
 
+
+
+
 -- predefined type, no DDL - MDSYS.SDO_GEOMETRY
+
 
 -- predefined type, no DDL - XMLTYPE
 
+
 CREATE TABLE categorie (
-    id_categorie INTEGER NOT NULL,
-    nom_categorie VARCHAR(50) NOT NULL
+    id_categorie INTEGER NOT NULL AUTO_INCREMENT,
+    nom_categorie VARCHAR(50) NOT NULL,
+    PRIMARY KEY (id_categorie)
 );
 
-ALTER TABLE categorie ADD CONSTRAINT categorie_pk PRIMARY KEY (id_categorie);
+
+-- ALTER TABLE categorie ADD CONSTRAINT categorie_pk PRIMARY KEY (id_categorie);
+
 
 CREATE TABLE commande (
-    id_commande INTEGER NOT NULL,
+    id_commande INTEGER NOT NULL AUTO_INCREMENT,
     date_commande DATE NOT NULL,
     statut VARCHAR(50) NOT NULL,
     panier_id_panier INTEGER NOT NULL,
     quantite INTEGER NOT NULL,
-    prix DECIMAL(10, 2) NOT NULL
+    prix DECIMAL(10, 2) NOT NULL,
+    PRIMARY KEY (id_commande)
+
 );
+
 
 CREATE UNIQUE INDEX commande__idx ON
     commande (
         panier_id_panier
     ASC );
 
-ALTER TABLE commande ADD CONSTRAINT commande_pk PRIMARY KEY (id_commande);
+
+-- ALTER TABLE commande ADD CONSTRAINT commande_pk PRIMARY KEY (id_commande);
+
 
 CREATE TABLE panier (
-    id_panier INTEGER NOT NULL,
+    id_panier INTEGER NOT NULL AUTO_INCREMENT,
     utilisateur_id_utilisateur INTEGER NOT NULL,
-    date_creation DATE NOT NULL
+    date_creation DATE NOT NULL,
+    PRIMARY KEY (id_panier)
+
 );
 
-ALTER TABLE panier ADD CONSTRAINT panier_pk PRIMARY KEY (id_panier);
+
+-- ALTER TABLE panier ADD CONSTRAINT panier_pk PRIMARY KEY (id_panier);
+
 
 CREATE TABLE Panier_Produit (
     panier_id_panier INTEGER NOT NULL,
@@ -46,10 +63,12 @@ CREATE TABLE Panier_Produit (
     quantite INTEGER
 );
 
+
 ALTER TABLE Panier_Produit ADD CONSTRAINT Panier_Produit_PK PRIMARY KEY (panier_id_panier, produit_id_produit);
 
+
 CREATE TABLE produit (
-    id_produit INTEGER NOT NULL,
+    id_produit INTEGER NOT NULL AUTO_INCREMENT,
     specs_id_specs INTEGER NOT NULL,
     nom VARCHAR(50) NOT NULL,
     description VARCHAR(1000),
@@ -58,21 +77,26 @@ CREATE TABLE produit (
     image_url VARCHAR(1000)
 );
 
+
 CREATE UNIQUE INDEX produit__idx ON
     produit (specs_id_specs ASC
 );
 
-ALTER TABLE produit ADD CONSTRAINT produit_pk PRIMARY KEY (id_produit);
+
+-- ALTER TABLE produit ADD CONSTRAINT produit_pk PRIMARY KEY (id_produit);
+
 
 CREATE TABLE Produit_Categorie (
     produit_id_produit INTEGER NOT NULL,
     categorie_id_categorie INTEGER NOT NULL
 );
 
+
 ALTER TABLE Produit_Categorie ADD CONSTRAINT Produit_Categorie_PK PRIMARY KEY (produit_id_produit, categorie_id_categorie);
 
+
 CREATE TABLE specs (
-    id_specs INTEGER NOT NULL,
+    id_specs INTEGER NOT NULL AUTO_INCREMENT,
     type_produit VARCHAR(20) NOT NULL,
     processeur VARCHAR(50),
     frequence_processeur INTEGER,
@@ -80,13 +104,17 @@ CREATE TABLE specs (
     type_ram VARCHAR(50),
     taille_stockage INTEGER,
     type_stockage VARCHAR(50),
-    carte_graphique VARCHAR(50)
+    carte_graphique VARCHAR(50),
+    PRIMARY KEY (id_specs)
+
 );
 
-ALTER TABLE specs ADD CONSTRAINT specs_pk PRIMARY KEY (id_specs);
+
+-- ALTER TABLE specs ADD CONSTRAINT specs_pk PRIMARY KEY (id_specs);
+
 
 CREATE TABLE utilisateur (
-    id_utilisateur INTEGER NOT NULL,
+    id_utilisateur INTEGER NOT NULL AUTO_INCREMENT,
     nom VARCHAR(50) NOT NULL,
     prenom VARCHAR(50) NOT NULL,
     mot_de_passe VARCHAR(100) NOT NULL,
@@ -101,29 +129,37 @@ ALTER TABLE commande
     ADD CONSTRAINT commande_panier_fk FOREIGN KEY ( panier_id_panier )
         REFERENCES panier ( id_panier );
 
+
 ALTER TABLE panier
     ADD CONSTRAINT panier_utilisateur_fk FOREIGN KEY ( utilisateur_id_utilisateur )
         REFERENCES utilisateur ( id_utilisateur );
+
 
 ALTER TABLE Panier_Produit
     ADD CONSTRAINT Panier_Produit_Panier_FK FOREIGN KEY ( panier_id_panier )
         REFERENCES panier ( id_panier );
 
+
 ALTER TABLE Panier_Produit
     ADD CONSTRAINT Panier_Produit_Produit_FK FOREIGN KEY ( produit_id_produit )
         REFERENCES produit ( id_produit );
+
 
 ALTER TABLE produit
     ADD CONSTRAINT produit_specs_fk FOREIGN KEY ( specs_id_specs )
         REFERENCES specs ( id_specs );
 
+
 ALTER TABLE Produit_Categorie
     ADD CONSTRAINT Produit_Categorie_Categorie_FK FOREIGN KEY ( categorie_id_categorie )
         REFERENCES categorie ( id_categorie );
 
+
 ALTER TABLE Produit_Categorie
     ADD CONSTRAINT Produit_Categorie_Produit_FK FOREIGN KEY ( produit_id_produit )
         REFERENCES produit ( id_produit );
+
+
 
 
 -- Oracle SQL Developer Data Modeler Summary Report: 
