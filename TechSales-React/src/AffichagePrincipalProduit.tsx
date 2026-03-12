@@ -1,20 +1,31 @@
-import { FooterComponent } from "./main.tsx";
+import { HeaderComponent, FooterComponent } from "./main.tsx";
+import { useEffect, useState } from "react";
 
-function BoutonProduit() {
+type Produit = {
+  id_produit: number;
+  specs_id_specs: number;
+  nom: string;
+  description: string;
+  prix: number;
+  stock: number;
+  image_url: string;
+};
+
+function BoutonProduit({ produit }: { produit: Produit }) {
   return (
     <div className="col mb-4">
       <div className="card shadow border-dark bg-light col p-0">
         <div className="card-body text-dark">
           <img
             className="card-img-top"
-            src="../Images/ProduitSansImage.png"
-            alt="Image"
-          ></img>
+            src={produit.image_url || "../Images/ProduitSansImage.png"}
+            alt={produit.nom}
+          />
           <a href="#" className="btn btn-transparent p-0 fw-bold text-primary">
-            Nom de produit
+            {produit.nom}
           </a>
           <div className="me-2">
-            <p className="text-dark card-text">999.99$</p>
+            <p className="text-dark card-text">{produit.prix}$</p>
           </div>
         </div>
       </div>
@@ -23,16 +34,19 @@ function BoutonProduit() {
 }
 
 export default function AffichagePrincipalProduit() {
+  const [produits, setProduits] = useState<Produit[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:4000/produits")
+      .then((res) => res.json())
+      .then((data) => setProduits(data))
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
-    <>
-      <div className="container-fluid">
-        <div className="row">
-          <nav className="navbar bg-primary ps-2 pe-2" data-bs-theme="dark">
-            <a href="#" className="navbar-brand">
-              TECHSALES
-            </a>
-          </nav>
-        </div>
+    <main className="container-fluid">
+      <HeaderComponent />
+      <div>
         <div className="m-5 bg-transparent">
           <div className="row">
             <div className="card shadow-lg bg-dark bg-gradient col p-0">
@@ -74,11 +88,13 @@ export default function AffichagePrincipalProduit() {
             <h3>Explorez nos produits</h3>
           </div>
           <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-2">
-            <BoutonProduit />
+            {produits.map((produit) => (
+              <BoutonProduit key={produit.id_produit} produit={produit} />
+            ))}
           </div>
         </div>
-        <FooterComponent />
       </div>
-    </>
+      <FooterComponent />
+    </main>
   );
 }

@@ -10,11 +10,11 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./index.css";
 
 // Importation des pages
-import AffichagePrincipalProduit from "./AffichagePrincipalProduit";
+import AffichagePrincipalProduit from "./AffichagePrincipalProduit.tsx";
 import ProduitDetails from "./Produit.tsx";
 import CreerCompte from "./CreerCompte.tsx";
 import Compte from "./Compte.tsx";
-import PageAdmin from "./AdminPage.tsx";
+import PageAdmin from "./PageAdminProduits.tsx";
 import SeConnecter from "./SeConnecter";
 import MotPasseOublie from "./MotPasseOublie";
 import AdminPage from "./AdminPage";
@@ -37,7 +37,7 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>,
+  </StrictMode>
 );
 
 // Fonction qui permet le import du header dans les autres pages

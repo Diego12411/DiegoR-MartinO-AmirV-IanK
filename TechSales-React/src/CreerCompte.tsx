@@ -1,4 +1,4 @@
-import { HeaderComponent } from "./main";
+import { HeaderComponent, FooterComponent } from "./main";
 import logo from "./assets/logo.png";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -134,6 +134,7 @@ export default function AfficherCreerCompte() {
             </div>
           </div>
         </div>
+        <FooterComponent />
       </main>
     </div>
   );

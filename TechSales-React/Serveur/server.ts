@@ -5,7 +5,6 @@ import mysql from "mysql2/promise";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { pool } from "./db.js";
-// import mysql from "mysql2/promise";
 
 dotenv.config();
 
@@ -14,14 +13,6 @@ const PORT = Number(process.env.PORT) || 4000;
 
 app.use(cors());
 app.use(express.json());
-
-// Create connection pool
-const pool = mysql.createPool({
-    host: "localhost",
-    user: "scott",
-    password: "oracle",
-    database: "scott",
-});
 
 /**
  * =====================================================================================================
@@ -333,16 +324,6 @@ if ((result as any).affectedRows === 0)
     res.status(500).json({ message: "Database error" });
   }
 });
- //Fin Diego
-
-
-
-
-
-
-
-
-
 
 /**
 * GET sur table utilisateur -> retourne toutes les informations des utilisateurs
@@ -383,16 +364,19 @@ app.post("/utilisateur", async (req, res) => {
     res.status(500).json({ message: "Database error" });
   }
 });
+// =====================================================================================================
+// Fin de l'API pour la gestion des utilisateurs de TechSales écrite par Diego //////////////////////////
+// =====================================================================================================
 
 /**
- * =====================================
+ * =========================================================================
  * API pour table categorie
  * @author Martin
  *
  * Commande pour la creation de la DB dans docker
  * docker run -d --name TechSales-server -p 3306:3306 -e MYSQL_ROOT_PASSWORD=oracle -e MYSQL_DATABASE=TechSales -e MYSQL_USER=martin -e MYSQL_PASSWORD=oracle mysql/mysql-server:latest
  * command to start server : npx tsx server.ts
- * ======================================
+ * ========================================================================
  */
 
 // // Create connection pool
@@ -558,9 +542,119 @@ app.delete("/categorie/:id/effacer", async (req, res) => {
     res.status(500).json({ message: "Database error" });
   }
 });
+// =====================================================================================================
+// Fin de l'API pour la gestion des categories de TechSales écrite par Martin //////////////////////////
+// =====================================================================================================
 
-// Méthode de listening place à la fin du fichier pour s'assurer que toutes les routes sont définies avant de démarrer le serveur
-// validates the server is up and running
+/**
+ * ==================================================================
+ * API pour la table produit
+ * @author Ian
+ * ==================================================================
+ */
+
+//GET dans la table produit
+app.get("/produits", async (req, res) => {
+  try {
+
+    const [rows] = await pool.query(
+      "SELECT * FROM produit"
+    );
+
+    res.json(rows);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
+app.get("/produits/:id", async (req, res) => {
+
+  const id = req.params.id;
+
+  const [rows] = await pool.query(
+    "SELECT * FROM produit WHERE id_produit = ?",
+    [id]
+  );
+
+  res.json(rows);
+
+});
+
+//CREATE dans la table produit
+app.post("/produits", async (req, res) => {
+
+  const {
+    specs_id_specs,
+    nom,
+    description,
+    prix,
+    stock,
+    image_url
+  } = req.body;
+
+  try {
+
+    const [result] = await pool.query(
+      `INSERT INTO produit
+      (specs_id_specs, nom, description, prix, stock, image_url)
+      VALUES (?, ?, ?, ?, ?, ?)`,
+      [specs_id_specs, nom, description, prix, stock, image_url]
+    );
+
+    res.json(result);
+
+  } catch (err) {
+    res.status(500).json(err);
+  }
+
+});
+
+//MODIFIER dans la table produit
+app.put("/produits/:id", async (req, res) => {
+
+  const id = req.params.id;
+  const { nom, prix, stock } = req.body;
+
+  try {
+
+    const [result] = await pool.query(
+      "UPDATE produit SET nom = ?, prix = ?, stock = ? WHERE id_produit = ?",
+      [nom, prix, stock, id]
+    );
+
+    res.json(result);
+
+  } catch (err) {
+    res.status(500).json(err);
+  }
+
+});
+
+//SUPPRIMER dans la table produit
+app.delete("/produits/:id", async (req, res) => {
+
+  const id = req.params.id;
+
+  try {
+
+    const [result] = await pool.query(
+      "DELETE FROM produit WHERE id_produit = ?",
+      [id]
+    );
+
+    res.json(result);
+
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+// =====================================================================================================
+// Fin de l'API pour la gestion des produits de TechSales écrite par Ian //////////////////////////
+// =====================================================================================================
+
+// Verification du roulement du serveur pour la base de donnees
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

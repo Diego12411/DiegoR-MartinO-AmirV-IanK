@@ -1,7 +1,6 @@
 import { Link } from "react-router";
+import { HeaderComponent, FooterComponent } from "./main.tsx";
 import { useState } from "react";
-import { HeaderComponent } from "./main.tsx";
-import { FooterComponent } from "./main.tsx";
 
 export default function ProduitDetails() {
   // state qui contient la quantite de produit a acheter
@@ -250,7 +249,6 @@ export default function ProduitDetails() {
           </div>
         </div>
       </main>
-
       {/* Footer developpe dans le main */}
       <FooterComponent />
     </>
