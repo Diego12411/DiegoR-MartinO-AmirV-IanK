@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import mysql from "mysql2/promise";
 
@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 /**
- * ===================================================
+ * =====================================================================================================
  * API pour la gestion des utilisateurs de TechSales
  * @author Amir
  *
@@ -25,9 +25,12 @@ app.use(express.json());
  * - POST /login : Permet aux utilisateurs de se connecter en fournissant leur courriel et mot de passe.
  * - GET /dbtest : Permet de tester la connexion à la base de données en récupérant tous les utilisateurs.
  * - GET / : Permet de vérifier que l'API fonctionne en retournant un message de confirmation.
- * ====================================================
+ * - PUT /utilisateur/:id : Permet de mettre à jour les informations d'un utilisateur en fournissant son ID dans l'URL.
+ * - Middleware verifierToken : Permet de vérifier la validité du token JWT dans les requêtes protégées.
+ * ======================================================================================================
  */
 
+// Type personnalisé pour les données d'un utilisateur extraites de la base de données
 type Utilisateur = {
   id_utilisateur: number;
   courriel: string;
@@ -35,11 +38,52 @@ type Utilisateur = {
   role: string;
 };
 
+// Type personnalisé pour les données extraites du token JWT
 type JwtPayload = {
   id_utilisateur: number;
   courriel: string;
   role: string;
 };
+
+// Type personnalisé pour les requêtes authentifiées, incluant les données du token JWT
+type AuthRequest = Request & {
+  user?: JwtPayload;
+};
+
+/*
+ * La fonction middleware pour vérifier le token JWT dans les requêtes protégées
+ * Action : Cette fonction middleware vérifie que le token JWT est présent dans les en-têtes de la
+ * requête, qu'il est valide et non expiré. Si le token est valide, les données extraites du token sont
+ * ajoutées à l'objet de requête pour une utilisation ultérieure dans les routes protégées. Si le
+ * token est manquant ou invalide, une réponse d'erreur 401 Unauthorized est retournée.
+ * Méthode : Middleware (utilisé dans les routes protégées)
+ * URL : N/A (utilisé dans les routes nécessitant une authentification)
+ */
+function verifierToken(req: AuthRequest, res: Response, next: NextFunction) {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    return res.status(401).json({ message: "Token manquant." });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "Token invalide." });
+  }
+
+  try {
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string,
+    ) as JwtPayload;
+
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: "Token invalide ou expiré." });
+  }
+}
 
 /*
  * Route de test pour vérifier que le serveur fonctionne
@@ -118,7 +162,7 @@ app.post("/login", async (req, res) => {
         role: user.role,
       },
       process.env.JWT_SECRET as string,
-      { expiresIn: "2h" },
+      { expiresIn: "1m" },
     );
 
     return res.status(200).json({
@@ -178,6 +222,109 @@ app.put("/utilisateur/:id", async (req, res) => {
   }
 });
 
+/*
+ * Route protégée pour récupérer les informations du profil de l'utilisateur connecté
+ * Action : Permet de récupérer les informations du profil de l'utilisateur connecté en utilisant le
+ * token JWT pour identifier l'utilisateur. La route utilise le middleware "verifierToken" pour s'assurer
+ * que la requête est authentifiée. Si le token est valide, une requête SQL est exécutée pour récupérer
+ * les informations de l'utilisateur à partir de la base de données, et les données sont retournées au
+ * format JSON. Si le token est manquant ou invalide, une réponse d'erreur 401 Unauthorized est retournée.
+ * Méthode : GET
+ * URL : http://localhost:4000/profil
+ */
+app.get("/profil", verifierToken, async (req: AuthRequest, res: Response) => {
+  try {
+    const id_utilisateur = req.user?.id_utilisateur;
+
+    const [rows] = await pool.query(
+      `SELECT id_utilisateur, nom, prenom, courriel, adresse, role
+       FROM utilisateur
+       WHERE id_utilisateur = ?`,
+      [id_utilisateur],
+    );
+
+    const utilisateurs = rows as any[];
+
+    if (utilisateurs.length === 0) {
+      return res.status(404).json({ message: "Utilisateur non trouvé." });
+    }
+
+    return res.status(200).json(utilisateurs[0]);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Database error" });
+  }
+});
+// =====================================================================================================
+// Fin de l'API pour la gestion des utilisateurs de TechSales écrite par Amir //////////////////////////
+// =====================================================================================================
+
+
+//Diego
+app.post("/utilisateur", async (req, res) => {
+  try {
+    const { nom, prenom, mot_de_passe, courriel } = req.body;
+
+    const [result] = await pool.query(
+      `INSERT INTO utilisateur (nom, prenom, mot_de_passe, courriel, role)
+       VALUES (?, ?, ?, ?, "client")`,
+      [nom, prenom, mot_de_passe, courriel],
+    );
+
+    res.status(201).json({ message: "Utilisateur créé"});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Database error" });
+  }
+});
+
+//Faire delete
+app.delete("/utilisateur", async (req, res) => {
+  try {
+    const { id } = req.body;
+    if (!id) return res.status(400).json({ message: "ID manquant" });
+
+    const [result] = await pool.query(
+      "DELETE FROM utilisateur WHERE id_utilisateur = ?",
+      [id]
+    );
+
+    if ((result as any).affectedRows === 0)
+      return res.status(404).json({ message: "Utilisateur introuvable" });
+
+    res.json({ message: "Utilisateur supprimé" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Database error" });
+  }
+});
+
+//Update
+app.put("/utilisateur", async (req, res) => {
+  try {
+    const { id_utilisateur, nom, prenom, mot_de_passe, courriel, role } = req.body;
+
+    const [result] = await pool.query(
+      `UPDATE utilisateur
+       SET nom = ?,
+           prenom = ?,
+           mot_de_passe = ?,
+           courriel = ?,
+           role = ?
+       WHERE id_utilisateur = ?;`,
+      [nom, prenom, mot_de_passe, courriel, role, id_utilisateur]
+    );
+
+if ((result as any).affectedRows === 0)
+      return res.status(404).json({ message: "Utilisateur introuvable" });
+
+    res.status(200).json({ message: "Utilisateur changé" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Database error" });
+  }
+});
+
 /**
 * GET sur table utilisateur -> retourne toutes les informations des utilisateurs
 * @author Diego
@@ -217,16 +364,19 @@ app.post("/utilisateur", async (req, res) => {
     res.status(500).json({ message: "Database error" });
   }
 });
+// =====================================================================================================
+// Fin de l'API pour la gestion des utilisateurs de TechSales écrite par Diego //////////////////////////
+// =====================================================================================================
 
 /**
- * =====================================
+ * =========================================================================
  * API pour table categorie
  * @author Martin
  *
  * Commande pour la creation de la DB dans docker
  * docker run -d --name TechSales-server -p 3306:3306 -e MYSQL_ROOT_PASSWORD=oracle -e MYSQL_DATABASE=TechSales -e MYSQL_USER=martin -e MYSQL_PASSWORD=oracle mysql/mysql-server:latest
  * command to start server : npx tsx server.ts
- * ======================================
+ * ========================================================================
  */
 
 // // Create connection pool
@@ -241,9 +391,7 @@ app.post("/utilisateur", async (req, res) => {
 // GET toutes les categories de la table categorie
 app.get("/categories", async (req, res) => {
   try {
-    const [allCategories] = await pool.query(
-      "SELECT * FROM TechSales.categorie",
-    );
+    const [allCategories] = await pool.query("SELECT * FROM categorie");
     res.status(200).json(allCategories);
   } catch (error) {
     console.error(
@@ -394,15 +542,16 @@ app.delete("/categorie/:id/effacer", async (req, res) => {
     res.status(500).json({ message: "Database error" });
   }
 });
+// =====================================================================================================
+// Fin de l'API pour la gestion des categories de TechSales écrite par Martin //////////////////////////
+// =====================================================================================================
 
 /**
+ * ==================================================================
  * API pour la table produit
  * @author Ian
+ * ==================================================================
  */
-
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
 
 //GET dans la table produit
 app.get("/produits", async (req, res) => {
@@ -500,5 +649,12 @@ app.delete("/produits/:id", async (req, res) => {
   } catch (err) {
     res.status(500).json(err);
   }
+});
+// =====================================================================================================
+// Fin de l'API pour la gestion des produits de TechSales écrite par Ian //////////////////////////
+// =====================================================================================================
 
+// Verification du roulement du serveur pour la base de donnees
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });

@@ -1,26 +1,62 @@
 import logo from "./assets/logo.png";
 import "./SeConnecter.css";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 // FooterComponent et HeaderComponent sont les codes écrits par mes coéquipiers.
 // Je les ai importés pour les utiliser dans cette page de connexion, afin de garder une cohérence dans le design et la navigation du site.
 import { FooterComponent, HeaderComponent } from "./main";
 
 export default function SeConnecter() {
-  // états pour les champs de saisie et les messages d'erreur
   const [email, setEmail] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
   const [messageErreur, setMessageErreur] = useState("");
 
-  // fonction de validation des champs de connexion
+  const navigate = useNavigate();
+
   function handleConnexion() {
     if (!email || !motDePasse) {
       setMessageErreur("Veuillez remplir tous les champs.");
       return;
     }
+
     setMessageErreur("");
-    // ici est pour ajouter la logique de connexion
-    console.log("Connexion réussie !");
+
+    fetch("http://localhost:4000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        courriel: email,
+        mot_de_passe: motDePasse,
+      }),
+    })
+      .then((res) => {
+        return res.json().then((data) => {
+          // pour debugger et voir ce que le backend nous retourne (il faut l'enlever après)
+          console.log("Status :", res.status);
+          console.log("Data backend :", data);
+
+          if (!res.ok) {
+            throw new Error(data.message || "Erreur de connexion.");
+          }
+          return data;
+        });
+      })
+      .then((data) => {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("utilisateur", JSON.stringify(data.utilisateur));
+
+        if (data.utilisateur.role === "admin") {
+          navigate("/adminPage");
+        } else {
+          navigate("/compte");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setMessageErreur(err.message || "Impossible de joindre le serveur.");
+      });
   }
 
   return (
