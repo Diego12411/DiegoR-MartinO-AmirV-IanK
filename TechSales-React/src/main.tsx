@@ -13,11 +13,15 @@ import "./index.css";
 import AffichagePrincipalProduit from "./AffichagePrincipalProduit";
 import ProduitDetails from "./Produit.tsx";
 import CreerCompte from "./CreerCompte.tsx";
+<<<<<<< Updated upstream
 import Compte from "./Compte.tsx";
 import PageAdmin from "./AdminPage.tsx";
 import SeConnecter from "./SeConnecter";
 import MotPasseOublie from "./MotPasseOublie";
 import AdminPage from "./AdminPage";
+=======
+import PageAdminProduit from "./PageAdminProduits.tsx";
+>>>>>>> Stashed changes
 
 // Routage des pages
 const router = createBrowserRouter([
@@ -27,17 +31,21 @@ const router = createBrowserRouter([
     element: <AffichagePrincipalProduit />,
   },
   { path: "/creerCompte", element: <CreerCompte /> },
+<<<<<<< Updated upstream
   { path: "/compte", element: <Compte /> },
   { path: "/PageAdmin", element: <PageAdmin /> },
   { path: "/seConnecter", element: <SeConnecter /> },
   { path: "/motPasseOublie", element: <MotPasseOublie /> },
   { path: "/adminPage", element: <AdminPage /> },
+=======
+  { path: "/pageadmin", element: <PageAdminProduit /> },
+>>>>>>> Stashed changes
 ]);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>,
+  </StrictMode>
 );
 
 // Fonction qui permet le import du header dans les autres pages

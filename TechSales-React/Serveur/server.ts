@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import mysql from "mysql2/promise";
+<<<<<<< Updated upstream
 
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -11,7 +12,19 @@ dotenv.config();
 
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
+=======
 
+const app = express();
+const PORT = 5000;
+>>>>>>> Stashed changes
+
+// Create connection pool
+const pool = mysql.createPool({
+    host: "localhost",
+    user: "scott",
+    password: "oracle",
+    database: "scott",
+})
 app.use(cors());
 app.use(express.json());
 
@@ -408,4 +421,99 @@ app.delete("/categorie/:id/effacer", async (req, res) => {
 // validates the server is up and running
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+});
+
+app.get("/produits", async (req, res) => {
+  try {
+
+    const [rows] = await pool.query(
+      "SELECT * FROM produit"
+    );
+
+    res.json(rows);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
+app.get("/produits/:id", async (req, res) => {
+
+  const id = req.params.id;
+
+  const [rows] = await pool.query(
+    "SELECT * FROM produit WHERE id_produit = ?",
+    [id]
+  );
+
+  res.json(rows);
+
+});
+
+app.post("/produits", async (req, res) => {
+
+  const {
+    specs_id_specs,
+    nom,
+    description,
+    prix,
+    stock,
+    image_url
+  } = req.body;
+
+  try {
+
+    const [result] = await pool.query(
+      `INSERT INTO produit
+      (specs_id_specs, nom, description, prix, stock, image_url)
+      VALUES (?, ?, ?, ?, ?, ?)`,
+      [specs_id_specs, nom, description, prix, stock, image_url]
+    );
+
+    res.json(result);
+
+  } catch (err) {
+    res.status(500).json(err);
+  }
+
+});
+
+app.put("/produits/:id", async (req, res) => {
+
+  const id = req.params.id;
+  const { nom, prix, stock } = req.body;
+
+  try {
+
+    const [result] = await pool.query(
+      "UPDATE produit SET nom = ?, prix = ?, stock = ? WHERE id_produit = ?",
+      [nom, prix, stock, id]
+    );
+
+    res.json(result);
+
+  } catch (err) {
+    res.status(500).json(err);
+  }
+
+});
+
+app.delete("/produits/:id", async (req, res) => {
+
+  const id = req.params.id;
+
+  try {
+
+    const [result] = await pool.query(
+      "DELETE FROM produit WHERE id_produit = ?",
+      [id]
+    );
+
+    res.json(result);
+
+  } catch (err) {
+    res.status(500).json(err);
+  }
+
 });
