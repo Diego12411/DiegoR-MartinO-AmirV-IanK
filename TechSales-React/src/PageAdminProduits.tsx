@@ -36,7 +36,7 @@ export default function PageAdminProduit() {
   const [BouttonDisabled, setBouttonDisabled] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:5000/produits")
+    fetch("http://localhost:4000/produits")
       .then((res) => res.json())
       .then((data) => setProduits(data))
       .catch((err) => console.error(err));
@@ -49,7 +49,7 @@ export default function PageAdminProduit() {
       return;
     }
 
-    fetch("http://localhost:5000/produits/" + id, {
+    fetch("http://localhost:4000/produits/" + id, {
       method: "DELETE",
     })
       .then((res) => res.json())
@@ -67,7 +67,7 @@ export default function PageAdminProduit() {
       return;
     }
 
-    fetch("http://localhost:5000/produits/" + id, {
+    fetch("http://localhost:4000/produits/" + id, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

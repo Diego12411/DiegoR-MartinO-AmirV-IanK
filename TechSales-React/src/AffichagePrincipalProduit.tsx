@@ -37,7 +37,7 @@ export default function AffichagePrincipalProduit() {
   const [produits, setProduits] = useState<Produit[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/produits")
+    fetch("http://localhost:4000/produits")
       .then((res) => res.json())
       .then((data) => setProduits(data))
       .catch((err) => console.error(err));

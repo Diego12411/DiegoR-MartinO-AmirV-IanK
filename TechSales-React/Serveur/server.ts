@@ -1,40 +1,18 @@
 import express from "express";
 import cors from "cors";
 import mysql from "mysql2/promise";
-<<<<<<< Updated upstream
 
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { pool } from "./db.js";
-import mysql from "mysql2/promise";
 
 dotenv.config();
 
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
-=======
 
-const app = express();
-const PORT = 5000;
->>>>>>> Stashed changes
-
-// Create connection pool
-const pool = mysql.createPool({
-    host: "localhost",
-    user: "scott",
-    password: "oracle",
-    database: "scott",
-})
 app.use(cors());
 app.use(express.json());
-
-// Create connection pool
-const pool = mysql.createPool({
-    host: "localhost",
-    user: "scott",
-    password: "oracle",
-    database: "scott",
-});
 
 /**
  * ===================================================
@@ -251,15 +229,6 @@ app.post("/utilisateur", async (req, res) => {
  * ======================================
  */
 
-// Create connection pool
-const pool = mysql.createPool({
-  host: "localhost",
-  user: "martin",
-  password: "oracle",
-  database: "TechSales",
-  port: 3306,
-});
-
 // GET toutes les categories de la table categorie
 app.get("/categories", async (req, res) => {
   try {
@@ -417,12 +386,16 @@ app.delete("/categorie/:id/effacer", async (req, res) => {
   }
 });
 
-// Méthode de listening place à la fin du fichier pour s'assurer que toutes les routes sont définies avant de démarrer le serveur
-// validates the server is up and running
+/**
+ * API pour la table produit
+ * @author Ian
+ */
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
+//GET dans la table produit
 app.get("/produits", async (req, res) => {
   try {
 
@@ -451,6 +424,7 @@ app.get("/produits/:id", async (req, res) => {
 
 });
 
+//CREATE dans la table produit
 app.post("/produits", async (req, res) => {
 
   const {
@@ -479,6 +453,7 @@ app.post("/produits", async (req, res) => {
 
 });
 
+//MODIFIER dans la table produit
 app.put("/produits/:id", async (req, res) => {
 
   const id = req.params.id;
@@ -499,6 +474,7 @@ app.put("/produits/:id", async (req, res) => {
 
 });
 
+//SUPPRIMER dans la table produit
 app.delete("/produits/:id", async (req, res) => {
 
   const id = req.params.id;
