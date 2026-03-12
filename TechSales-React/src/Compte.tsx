@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { HeaderComponent } from "./main";
+import { FooterComponent } from "./main";
 
 type Profil = {
   id_utilisateur: number;
@@ -47,7 +49,8 @@ export default function Compte() {
   }, []);
 
   return (
-    <div className="container mt-5">
+    <div className="container-fluid text-center">
+      <HeaderComponent />
       <h2>Mon compte</h2>
 
       {messageErreur ? <p className="text-danger">{messageErreur}</p> : null}
@@ -74,6 +77,7 @@ export default function Compte() {
           </p>
         </div>
       ) : null}
+      <FooterComponent />
     </div>
   );
 }

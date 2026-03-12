@@ -10,14 +10,12 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./index.css";
 
 // Importation des pages
-import AffichagePrincipalProduit from "./AffichagePrincipalProduit.tsx";
+import AffichagePrincipalProduit from "./AffichagePrincipalProduit";
 import ProduitDetails from "./Produit.tsx";
+import PageAdmin from "./PageAdmin.tsx";
 import CreerCompte from "./CreerCompte.tsx";
 import Compte from "./Compte.tsx";
-import PageAdmin from "./PageAdminProduits.tsx";
-import SeConnecter from "./SeConnecter";
-import MotPasseOublie from "./MotPasseOublie";
-import AdminPage from "./AdminPage";
+import SeConnecter from "./SeConnecter.tsx";
 
 // Routage des pages
 const router = createBrowserRouter([
@@ -27,20 +25,17 @@ const router = createBrowserRouter([
     element: <AffichagePrincipalProduit />,
   },
   { path: "/creerCompte", element: <CreerCompte /> },
-  { path: "/compte", element: <Compte /> },
-  { path: "/PageAdmin", element: <PageAdmin /> },
   { path: "/seConnecter", element: <SeConnecter /> },
-  { path: "/motPasseOublie", element: <MotPasseOublie /> },
-  { path: "/adminPage", element: <AdminPage /> },
+  { path: "/PageAdmin", element: <PageAdmin /> },
+  { path: "/compte", element: <Compte /> },
 ]);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>
+  </StrictMode>,
 );
 
-// Fonction qui permet le import du header dans les autres pages
 export const HeaderComponent = () => {
   return (
     <header className="container-fluid text-center px-0">
@@ -57,7 +52,7 @@ export const HeaderComponent = () => {
           {/* Partie gauche */}
           <div className="d-flex align-items-center gap-3">
             <img src={logo} alt="logo" width={150} height={25} />
-            <Link to="/">
+            <Link to="/affichageprincipalproduit">
               <button
                 type="button"
                 className="text-dark fw-bold btn btn-link ms-2"
@@ -87,96 +82,101 @@ export const HeaderComponent = () => {
     </header>
   );
 };
-
-// Fonction qui permet le import du footer dans les autres pages
 export const FooterComponent = () => {
   return (
     <div className="row">
-      <footer className="bg-primary bg-gradient border border-dark mt-5 p-5">
-        <div className="container">
-          <h3 className="text-left text-decoration-underline text-white">
-            T E C H S A L E S
-          </h3>
-          <div className="d-flex justify-content-center row row-cols-4 row-cols-sm-4 row-cols-md-4 row-cols-lg-5 g-4 mt-2">
-            <div className="col">
-              <ul className="list-unstyled">
-                <li className="list-group-item fw-bold bg-transparent text-white mb-2">
-                  Nos produits
-                </li>
-                <a
-                  href="#"
-                  className="list-group-item bg-transparent text-white mb-2"
-                >
-                  Laptop
-                </a>
-              </ul>
-            </div>
-            <div className="col">
-              <ul className="list-unstyled">
-                <li className="list-group-item fw-bold bg-transparent text-white mb-2">
-                  Compte
-                </li>
-                <a
-                  href="SeConnecter"
-                  className="list-group-item bg-transparent text-white mb-2"
-                >
-                  Se connecter
-                </a>
-                <a
-                  href="CreerCompte"
-                  className="list-group-item bg-transparent text-white mb-2"
-                >
-                  Créer une compter
-                </a>
-                <a
-                  href="#"
-                  className="list-group-item bg-transparent text-white mb-2"
-                >
-                  Panier
-                </a>
-              </ul>
-            </div>
-            <div className="col">
-              <ul className="list-unstyled">
-                <li className="list-group-item fw-bold bg-transparent text-white mb-2">
-                  À propos de nous
-                </li>
-                <a
-                  href="#"
-                  className="list-group-item bg-transparent text-white mb-2"
-                >
-                  Localisation
-                </a>
-                <a
-                  href="#"
-                  className="list-group-item bg-transparent text-white mb-2"
-                >
-                  Notre mission
-                </a>
-              </ul>
-            </div>
-            <div className="col">
-              <ul className="list-unstyled">
-                <li className="list-group-item fw-bold bg-transparent text-white mb-2">
-                  Support
-                </li>
-                <a
-                  href="#"
-                  className="list-group-item bg-transparent text-white mb-2"
-                >
-                  Q&A
-                </a>
-                <a
-                  href="#"
-                  className="list-group-item bg-transparent text-white mb-2"
-                >
-                  Nous contacter
-                </a>
-              </ul>
+      <div
+        className="col p-3"
+        style={{
+          backgroundColor: "#40365a",
+        }}
+      >
+        <footer className="border border-dark mt-5 p-5">
+          <div className="container">
+            <h3 className="text-left text-decoration-underline text-white">
+              T E C H S A L E S
+            </h3>
+            <div className="d-flex justify-content-center row row-cols-4 row-cols-sm-4 row-cols-md-4 row-cols-lg-5 g-4 mt-2">
+              <div className="col">
+                <ul className="list-unstyled">
+                  <li className="list-group-item fw-bold bg-transparent text-white mb-2">
+                    Nos produits
+                  </li>
+                  <a
+                    href="#"
+                    className="list-group-item bg-transparent text-white mb-2"
+                  >
+                    Laptop
+                  </a>
+                </ul>
+              </div>
+              <div className="col">
+                <ul className="list-unstyled">
+                  <li className="list-group-item fw-bold bg-transparent text-white mb-2">
+                    Compte
+                  </li>
+                  <a
+                    href="SeConnecter"
+                    className="list-group-item bg-transparent text-white mb-2"
+                  >
+                    Se connecter
+                  </a>
+                  <a
+                    href="CreerCompte"
+                    className="list-group-item bg-transparent text-white mb-2"
+                  >
+                    Créer une compte
+                  </a>
+                  <a
+                    href="#"
+                    className="list-group-item bg-transparent text-white mb-2"
+                  >
+                    Panier
+                  </a>
+                </ul>
+              </div>
+              <div className="col">
+                <ul className="list-unstyled">
+                  <li className="list-group-item fw-bold bg-transparent text-white mb-2">
+                    À propos de nous
+                  </li>
+                  <a
+                    href="#"
+                    className="list-group-item bg-transparent text-white mb-2"
+                  >
+                    Localisation
+                  </a>
+                  <a
+                    href="#"
+                    className="list-group-item bg-transparent text-white mb-2"
+                  >
+                    Notre mission
+                  </a>
+                </ul>
+              </div>
+              <div className="col">
+                <ul className="list-unstyled">
+                  <li className="list-group-item fw-bold bg-transparent text-white mb-2">
+                    Support
+                  </li>
+                  <a
+                    href="#"
+                    className="list-group-item bg-transparent text-white mb-2"
+                  >
+                    Q&A
+                  </a>
+                  <a
+                    href="#"
+                    className="list-group-item bg-transparent text-white mb-2"
+                  >
+                    Nous contacter
+                  </a>
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
   );
 };
