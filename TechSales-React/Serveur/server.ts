@@ -268,6 +268,82 @@ app.get("/profil", verifierToken, async (req: AuthRequest, res: Response) => {
 // Fin de l'API pour la gestion des utilisateurs de TechSales écrite par Amir //////////////////////////
 // =====================================================================================================
 
+
+//Diego
+app.post("/utilisateur", async (req, res) => {
+  try {
+    const { nom, prenom, mot_de_passe, courriel } = req.body;
+
+    const [result] = await pool.query(
+      `INSERT INTO utilisateur (nom, prenom, mot_de_passe, courriel, role)
+       VALUES (?, ?, ?, ?, "client")`,
+      [nom, prenom, mot_de_passe, courriel],
+    );
+
+    res.status(201).json({ message: "Utilisateur créé"});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Database error" });
+  }
+});
+
+//Faire delete
+app.delete("/utilisateur", async (req, res) => {
+  try {
+    const { id } = req.body;
+    if (!id) return res.status(400).json({ message: "ID manquant" });
+
+    const [result] = await pool.query(
+      "DELETE FROM utilisateur WHERE id_utilisateur = ?",
+      [id]
+    );
+
+    if ((result as any).affectedRows === 0)
+      return res.status(404).json({ message: "Utilisateur introuvable" });
+
+    res.json({ message: "Utilisateur supprimé" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Database error" });
+  }
+});
+
+//Update
+app.put("/utilisateur", async (req, res) => {
+  try {
+    const { id_utilisateur, nom, prenom, mot_de_passe, courriel, role } = req.body;
+
+    const [result] = await pool.query(
+      `UPDATE utilisateur
+       SET nom = ?,
+           prenom = ?,
+           mot_de_passe = ?,
+           courriel = ?,
+           role = ?
+       WHERE id_utilisateur = ?;`,
+      [nom, prenom, mot_de_passe, courriel, role, id_utilisateur]
+    );
+
+if ((result as any).affectedRows === 0)
+      return res.status(404).json({ message: "Utilisateur introuvable" });
+
+    res.status(200).json({ message: "Utilisateur changé" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Database error" });
+  }
+});
+ //Fin Diego
+
+
+
+
+
+
+
+
+
+
 /**
 * GET sur table utilisateur -> retourne toutes les informations des utilisateurs
 * @author Diego
