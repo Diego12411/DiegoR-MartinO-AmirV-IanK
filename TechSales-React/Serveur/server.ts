@@ -229,6 +229,15 @@ app.post("/utilisateur", async (req, res) => {
  * ======================================
  */
 
+// // Create connection pool
+// const pool = mysql.createPool({
+//   host: "localhost",
+//   user: "martin",
+//   password: "oracle",
+//   database: "TechSales",
+//   port: 3306,
+// });
+
 // GET toutes les categories de la table categorie
 app.get("/categories", async (req, res) => {
   try {

@@ -1,23 +1,15 @@
 import { Link } from "react-router";
 import { HeaderComponent, FooterComponent } from "./main.tsx";
 import { useState } from "react";
-import { HeaderComponent } from "./main.tsx";
-import { FooterComponent } from "./main.tsx";
 
 export default function ProduitDetails() {
   // state qui contient la quantite de produit a acheter
   const [quantiteAcheter, setQuantiteAcheter] = useState(1);
 
   return (
-<<<<<<< Updated upstream
     <>
       {/* Header developpe dans le main */}
       <HeaderComponent />
-=======
-    <main className="container-fluid vw-100 px-5">
-      <HeaderComponent />
-      <h5>Produit</h5>
->>>>>>> Stashed changes
 
       {/* Element semantique qui contient l'information principale de la page */}
       <main className="container-fluid vw-100 px-5">
@@ -256,16 +248,9 @@ export default function ProduitDetails() {
             </div>
           </div>
         </div>
-<<<<<<< Updated upstream
       </main>
-
       {/* Footer developpe dans le main */}
       <FooterComponent />
     </>
-=======
-      </div>
-      <FooterComponent />
-    </main>
->>>>>>> Stashed changes
   );
 }

@@ -10,18 +10,14 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./index.css";
 
 // Importation des pages
-import AffichagePrincipalProduit from "./AffichagePrincipalProduit";
+import AffichagePrincipalProduit from "./AffichagePrincipalProduit.tsx";
 import ProduitDetails from "./Produit.tsx";
 import CreerCompte from "./CreerCompte.tsx";
-<<<<<<< Updated upstream
 import Compte from "./Compte.tsx";
-import PageAdmin from "./AdminPage.tsx";
+import PageAdmin from "./PageAdminProduits.tsx";
 import SeConnecter from "./SeConnecter";
 import MotPasseOublie from "./MotPasseOublie";
 import AdminPage from "./AdminPage";
-=======
-import PageAdminProduit from "./PageAdminProduits.tsx";
->>>>>>> Stashed changes
 
 // Routage des pages
 const router = createBrowserRouter([
@@ -31,15 +27,11 @@ const router = createBrowserRouter([
     element: <AffichagePrincipalProduit />,
   },
   { path: "/creerCompte", element: <CreerCompte /> },
-<<<<<<< Updated upstream
   { path: "/compte", element: <Compte /> },
   { path: "/PageAdmin", element: <PageAdmin /> },
   { path: "/seConnecter", element: <SeConnecter /> },
   { path: "/motPasseOublie", element: <MotPasseOublie /> },
   { path: "/adminPage", element: <AdminPage /> },
-=======
-  { path: "/pageadmin", element: <PageAdminProduit /> },
->>>>>>> Stashed changes
 ]);
 
 createRoot(document.getElementById("root")!).render(

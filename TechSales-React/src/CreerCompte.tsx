@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
-import { HeaderComponent } from "./main";
-=======
 import { HeaderComponent, FooterComponent } from "./main";
->>>>>>> Stashed changes
 import logo from "./assets/logo.png";
 import { useState } from "react";
 import { useNavigate } from "react-router";
