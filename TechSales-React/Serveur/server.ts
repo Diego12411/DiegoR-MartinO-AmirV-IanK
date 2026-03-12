@@ -1,11 +1,11 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import mysql from "mysql2/promise";
 
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { pool } from "./db.js";
-import mysql from "mysql2/promise";
+// import mysql from "mysql2/promise";
 
 dotenv.config();
 
@@ -24,7 +24,7 @@ const pool = mysql.createPool({
 });
 
 /**
- * ===================================================
+ * =====================================================================================================
  * API pour la gestion des utilisateurs de TechSales
  * @author Amir
  *
@@ -34,9 +34,12 @@ const pool = mysql.createPool({
  * - POST /login : Permet aux utilisateurs de se connecter en fournissant leur courriel et mot de passe.
  * - GET /dbtest : Permet de tester la connexion à la base de données en récupérant tous les utilisateurs.
  * - GET / : Permet de vérifier que l'API fonctionne en retournant un message de confirmation.
- * ====================================================
+ * - PUT /utilisateur/:id : Permet de mettre à jour les informations d'un utilisateur en fournissant son ID dans l'URL.
+ * - Middleware verifierToken : Permet de vérifier la validité du token JWT dans les requêtes protégées.
+ * ======================================================================================================
  */
 
+// Type personnalisé pour les données d'un utilisateur extraites de la base de données
 type Utilisateur = {
   id_utilisateur: number;
   courriel: string;
@@ -44,11 +47,52 @@ type Utilisateur = {
   role: string;
 };
 
+// Type personnalisé pour les données extraites du token JWT
 type JwtPayload = {
   id_utilisateur: number;
   courriel: string;
   role: string;
 };
+
+// Type personnalisé pour les requêtes authentifiées, incluant les données du token JWT
+type AuthRequest = Request & {
+  user?: JwtPayload;
+};
+
+/*
+ * La fonction middleware pour vérifier le token JWT dans les requêtes protégées
+ * Action : Cette fonction middleware vérifie que le token JWT est présent dans les en-têtes de la
+ * requête, qu'il est valide et non expiré. Si le token est valide, les données extraites du token sont
+ * ajoutées à l'objet de requête pour une utilisation ultérieure dans les routes protégées. Si le
+ * token est manquant ou invalide, une réponse d'erreur 401 Unauthorized est retournée.
+ * Méthode : Middleware (utilisé dans les routes protégées)
+ * URL : N/A (utilisé dans les routes nécessitant une authentification)
+ */
+function verifierToken(req: AuthRequest, res: Response, next: NextFunction) {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    return res.status(401).json({ message: "Token manquant." });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "Token invalide." });
+  }
+
+  try {
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string,
+    ) as JwtPayload;
+
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: "Token invalide ou expiré." });
+  }
+}
 
 /*
  * Route de test pour vérifier que le serveur fonctionne
@@ -127,7 +171,7 @@ app.post("/login", async (req, res) => {
         role: user.role,
       },
       process.env.JWT_SECRET as string,
-      { expiresIn: "2h" },
+      { expiresIn: "1m" },
     );
 
     return res.status(200).json({
@@ -187,6 +231,43 @@ app.put("/utilisateur/:id", async (req, res) => {
   }
 });
 
+/*
+ * Route protégée pour récupérer les informations du profil de l'utilisateur connecté
+ * Action : Permet de récupérer les informations du profil de l'utilisateur connecté en utilisant le
+ * token JWT pour identifier l'utilisateur. La route utilise le middleware "verifierToken" pour s'assurer
+ * que la requête est authentifiée. Si le token est valide, une requête SQL est exécutée pour récupérer
+ * les informations de l'utilisateur à partir de la base de données, et les données sont retournées au
+ * format JSON. Si le token est manquant ou invalide, une réponse d'erreur 401 Unauthorized est retournée.
+ * Méthode : GET
+ * URL : http://localhost:4000/profil
+ */
+app.get("/profil", verifierToken, async (req: AuthRequest, res: Response) => {
+  try {
+    const id_utilisateur = req.user?.id_utilisateur;
+
+    const [rows] = await pool.query(
+      `SELECT id_utilisateur, nom, prenom, courriel, adresse, role
+       FROM utilisateur
+       WHERE id_utilisateur = ?`,
+      [id_utilisateur],
+    );
+
+    const utilisateurs = rows as any[];
+
+    if (utilisateurs.length === 0) {
+      return res.status(404).json({ message: "Utilisateur non trouvé." });
+    }
+
+    return res.status(200).json(utilisateurs[0]);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Database error" });
+  }
+});
+// =====================================================================================================
+// Fin de l'API pour la gestion des utilisateurs de TechSales écrite par Amir //////////////////////////
+// =====================================================================================================
+
 /**
 * GET sur table utilisateur -> retourne toutes les informations des utilisateurs
 * @author Diego
@@ -238,21 +319,19 @@ app.post("/utilisateur", async (req, res) => {
  * ======================================
  */
 
-// Create connection pool
-const pool = mysql.createPool({
-  host: "localhost",
-  user: "martin",
-  password: "oracle",
-  database: "TechSales",
-  port: 3306,
-});
+// // Create connection pool
+// const pool = mysql.createPool({
+//   host: "localhost",
+//   user: "martin",
+//   password: "oracle",
+//   database: "TechSales",
+//   port: 3306,
+// });
 
 // GET toutes les categories de la table categorie
 app.get("/categories", async (req, res) => {
   try {
-    const [allCategories] = await pool.query(
-      "SELECT * FROM TechSales.categorie",
-    );
+    const [allCategories] = await pool.query("SELECT * FROM categorie");
     res.status(200).json(allCategories);
   } catch (error) {
     console.error(
