@@ -11,11 +11,12 @@ import "./index.css";
 
 // Importation des pages
 import AffichagePrincipalProduit from "./AffichagePrincipalProduit";
-import ProduitDetails from "./Produit.tsx";
-import PageAdmin from "./PageAdmin.tsx";
-import CreerCompte from "./CreerCompte.tsx";
-import Compte from "./Compte.tsx";
-import SeConnecter from "./SeConnecter.tsx";
+import ProduitDetails from "./Produit";
+import PageAdmin from "./PageAdmin";
+import CreerCompte from "./CreerCompte";
+import Compte from "./Compte";
+import SeConnecter from "./SeConnecter";
+import MotPasseOublie from "./MotPasseOublie";
 
 // Routage des pages
 const router = createBrowserRouter([
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
     path: "/affichageprincipalproduit",
     element: <AffichagePrincipalProduit />,
   },
+  { path: "/motPasseOublie", element: <MotPasseOublie /> },
   { path: "/creerCompte", element: <CreerCompte /> },
   { path: "/seConnecter", element: <SeConnecter /> },
   { path: "/PageAdmin", element: <PageAdmin /> },
