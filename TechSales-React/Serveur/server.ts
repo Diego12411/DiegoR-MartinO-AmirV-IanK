@@ -651,7 +651,12 @@ app.delete("/produits/:id", async (req, res) => {
   }
 });
 // =====================================================================================================
-// Fin de l'API pour la gestion des produits de TechSales écrite par Ian //////////////////////////
+// Fin de l'API pour la g
+// 
+
+
+
+//estion des produits de TechSales écrite par Ian //////////////////////////
 // =====================================================================================================
 
 // Verification du roulement du serveur pour la base de donnees
