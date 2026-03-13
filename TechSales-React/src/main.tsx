@@ -21,7 +21,7 @@ import AdminPage from "./AdminPage";
 
 // Routage des pages
 const router = createBrowserRouter([
-  { path: "/detailsProduit", element: <ProduitDetails /> },
+  { path: "/detailsProduit/:id", element: <ProduitDetails /> },
   {
     path: "/affichageprincipalproduit",
     element: <AffichagePrincipalProduit />,
@@ -37,7 +37,7 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>
+  </StrictMode>,
 );
 
 // Fonction qui permet le import du header dans les autres pages

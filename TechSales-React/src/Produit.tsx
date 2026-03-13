@@ -1,10 +1,59 @@
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
 import { HeaderComponent, FooterComponent } from "./main.tsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+type Produit = {
+  id_produit: number;
+  specs_id_specs: number;
+  nom: string;
+  description: string;
+  prix: number;
+  stock: number;
+  image_url: string;
+};
+
+type Spec = {
+  idSpec: number;
+  typeProduit: string;
+  processeur: string;
+  frequenceProcesseur: number;
+  tailleRAM: number;
+  typeRAM: string;
+  tailleStockage: number;
+  typeStockage: string;
+  carteGraphique: string;
+};
 
 export default function ProduitDetails() {
+  // on recupere le parametre de l'id du produit recu par le lien
+  const { id } = useParams();
+
+  // on recupere les donnes a partir de l'API GET /produits/${id}
+  const [produitFetched, setProduitFetched] = useState<Produit | null>(null);
+  useEffect(() => {
+    fetch(`http://localhost:4000/produits/${id}`)
+      .then((response) => response.json()) // parse JSON data
+      .then((data) => setProduitFetched(data[0]));
+  }, [id]);
+
+  // on recupere les informations du specs a partir des informations fetch pour le produit ci-haut
+  const [specsFetched, setSpecsFetched] = useState<Spec | null>(null);
+  useEffect(() => {
+    fetch(`http://localhost:4000/specs/${produitFetched?.specs_id_specs}`)
+      .then((response) => response.json())
+      .then((data) => setSpecsFetched(data));
+  }, []);
+
   // state qui contient la quantite de produit a acheter
   const [quantiteAcheter, setQuantiteAcheter] = useState(1);
+
+  const HandleAffichageStock = () => {
+    if (Number(produitFetched?.prix) > 0) {
+      return <h5 className="text-success">En stock</h5>;
+    } else {
+      return <h5 className="text-danger">Rupture de stock</h5>;
+    }
+  };
 
   return (
     <>
@@ -20,7 +69,7 @@ export default function ProduitDetails() {
           {/* Affichage de l'image du laptop */}
           <div className="col">
             <img
-              src="https://dlcdnwebimgs.asus.com/gain/838fbdac-6d10-4190-8e52-d4b9463f5d23/"
+              src={produitFetched?.image_url}
               alt="Image d'un laptop :')"
               style={{ width: "100%", height: "auto", objectFit: "cover" }}
             />
@@ -28,10 +77,10 @@ export default function ProduitDetails() {
 
           {/* Affichage des informations generales de l'ordinateur */}
           <div className="col">
-            <h4 className="fw-bold">Nom de l'ordinateur portable</h4>
-            <h5 className="text-success">En stock</h5>
-            <h5>Prix du laptop $$$</h5>
-            <p className="fs-6">Description du laptop</p>
+            <h4 className="fw-bold">{produitFetched?.nom}</h4>
+            {HandleAffichageStock()}
+            <h5>${produitFetched?.prix}</h5>
+            <p className="fs-6">{produitFetched?.description}</p>
             <hr className="w-75" style={{ border: "1px solid", opacity: 1 }} />
 
             {/* Affichage des caracteristiques du laptop */}
