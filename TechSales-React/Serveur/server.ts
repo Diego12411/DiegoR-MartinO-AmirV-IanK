@@ -1,10 +1,10 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
-import mysql from "mysql2/promise";
+//import mysql from "mysql2/promise";
 
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-// import mysql from "mysql2/promise";
+import { pool } from "./db.js"
 
 dotenv.config();
 
@@ -14,6 +14,7 @@ const PORT = Number(process.env.PORT) || 4000;
 app.use(cors());
 app.use(express.json());
 
+/*
 // Create connection pool
 const pool = mysql.createPool({
     host: "localhost",
@@ -21,6 +22,7 @@ const pool = mysql.createPool({
     password: "oracle",
     database: "scott",
 });
+*/
 
 /**
  * =====================================================================================================

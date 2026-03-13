@@ -63,7 +63,7 @@ export default function AfficherPageAdmin() {
   const [BouttonDisabled, setBouttonDisabled] = useState(false);
 
   // ----------------------------------------------------------
-  // CHARGEMENT - Produits au montage (de PageAdminProduit)
+  // CHARGEMENT - Produits (de PageAdminProduit)
   // ----------------------------------------------------------
   useEffect(() => {
     fetch("http://localhost:4000/produits")
@@ -162,7 +162,7 @@ export default function AfficherPageAdmin() {
   }
 
   // ----------------------------------------------------------
-  // RENDU
+  // RETURN
   // ----------------------------------------------------------
   return (
     <main className="container-fluid text-center">
