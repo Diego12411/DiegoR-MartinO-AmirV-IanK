@@ -44,7 +44,7 @@ export default function AffichagePrincipalProduit() {
   }, []);
 
   return (
-    <main className="container-fluid">
+    <main className="container-fluid p-0">
       <HeaderComponent />
       <div>
         <div className="m-5 bg-transparent">

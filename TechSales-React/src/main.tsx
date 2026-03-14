@@ -40,17 +40,20 @@ createRoot(document.getElementById("root")!).render(
 
 export const HeaderComponent = () => {
   return (
-    <header className="container-fluid text-center px-0">
+    <header className="container-fluid text-center px-0 border border-black">
       <div className="row">
         <div
           className="col p-3"
           style={{
             backgroundColor: "#40365a",
           }}
-        ></div>
+        >
+          {" "}
+          <p className="text-white mb-0">Livraison Gratuite avec TechSales !</p>
+        </div>
       </div>
       <div className="row">
-        <div className="col bg-white p-4 d-flex justify-content-between align-items-center">
+        <div className="px-3 col bg-white p-3 d-flex justify-content-between align-items-center">
           {/* Partie gauche */}
           <div className="d-flex align-items-center gap-3">
             <img src={logo} alt="logo" width={150} height={25} />

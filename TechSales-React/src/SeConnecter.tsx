@@ -47,8 +47,8 @@ export default function SeConnecter() {
         localStorage.setItem("token", data.token);
         localStorage.setItem("utilisateur", JSON.stringify(data.utilisateur));
 
-        if (data.utilisateur.role === "admin") {
-          navigate("/adminPage");
+        if (data.utilisateur.role === "Admin") {
+          navigate("/PageAdmin");
         } else {
           navigate("/compte");
         }
