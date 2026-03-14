@@ -1,0 +1,23 @@
+-- Insert specs first (because produit depends on specs via foreign key)
+INSERT INTO TechSales.specs (type_produit, processeur, frequence_processeur, taille_ram, type_ram, taille_stockage, type_stockage, carte_graphique)
+VALUES
+  ("Laptop", "Intel Core i7-13700H", 5, 16, "DDR5", 512, "SSD", "NVIDIA RTX 4060"),
+  ("Laptop", "AMD Ryzen 9 7945HX", 5, 32, "DDR5", 1000, "SSD", "AMD Radeon RX 7600M"),
+  ("Laptop", "Apple M3 Pro", 4, 18, "LPDDR5", 512, "SSD", "GPU intégré"),
+  ("Laptop", "Intel Core i5-1335U", 5, 8, "DDR4", 256, "SSD", "Intel Iris Xe"),
+  ("Laptop", "AMD Ryzen 7 7730U", 5, 16, "DDR4", 512, "SSD", "AMD Radeon 610M"),
+  ("Laptop", "Intel Core i9-13900H", 5, 32, "DDR5", 1000, "SSD", "NVIDIA RTX 4070"),
+  ("Laptop", "Apple M2", 4, 8, "LPDDR5", 256, "SSD", "GPU intégré"),
+  ("Laptop", "Qualcomm Snapdragon X Elite", 4, 16, "LPDDR5", 512, "SSD", "Adreno X1");
+
+-- Insert produits
+INSERT INTO TechSales.produit (specs_id_specs, nom, description, prix, stock, image_url)
+VALUES
+  (1, "ASUS ROG Strix G16", "Laptop gaming haute performance avec RTX 4060", 1499.99, 10, "https://dlcdnwebimgs.asus.com/gain/3C38EBCB-420C-438B-B02F-072F4A9E47DB"),
+  (2, "Lenovo Legion Pro 7", "Laptop gaming AMD avec écran 240Hz", 1899.99, 7, "https://news.lenovo.com/wp-content/uploads/2025/01/09_Yoga_Slim_9i_14_10_Tidal_Teal_CameraOn_Right_Side_Open-e1736186936951-1024x862.png"),
+  (3, "MacBook Pro 14\"", "Laptop Apple avec puce M3 Pro", 2199.99, 5, "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mbp14-spacegray-select-202310"),
+  (4, "Dell XPS 13", "Laptop ultraportable élégant pour usage quotidien", 999.99, 15, "https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/xps-notebooks/xps-13-9350/media-gallery/graphite/notebook-xps-13-9350-t-oled-gy-gallery-5.psd"),
+  (5, "LG Gram 17", "Laptop léger avec grande autonomie de batterie", 1299.99, 8, "https://www.lg.com/content/dam/channel/wcms/ca_en/images/laptops/gram/17z90sp-g-aa75a9/DZ-02.jpg"),
+  (6, "ASUS ProArt Studiobook 16", "Laptop créatif haute performance avec RTX 4070", 2499.99, 4, "https://dlcdnwebimgs.asus.com/gain/838fbdac-6d10-4190-8e52-d4b9463f5d23/"),
+  (7, "MacBook Air 13\"", "Laptop Apple léger et silencieux avec puce M2", 1299.99, 12, "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-midnight-select-202402"),
+  (8, "Microsoft Surface Pro 11", "Laptop 2-en-1 avec processeur Snapdragon X Elite", 1599.99, 6, "https://www.pc-canada.com/dd2/img/item/A-1500x1500/8747297.jpg");
