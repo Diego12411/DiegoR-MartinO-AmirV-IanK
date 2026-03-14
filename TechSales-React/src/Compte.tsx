@@ -49,7 +49,7 @@ export default function Compte() {
   }, []);
 
   return (
-    <div className="container-fluid text-center">
+    <div className="container-fluid text-center p-0">
       <HeaderComponent />
       <h2>Mon compte</h2>
 

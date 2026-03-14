@@ -260,7 +260,26 @@ app.get("/profil", verifierToken, async (req: AuthRequest, res: Response) => {
 // =====================================================================================================
 
 
-//Diego
+// =====================================================================================================
+// API pour la gestion des utilisateurs de TechSales
+// @author Diego
+//
+// Cette API fournit des endpoints pour la création, modification et suppression des utilisateurs.
+// Elle utilise Express pour le serveur web et MySQL pour la base de données.
+// Endpoints disponibles :
+// - POST /utilisateur : Permet de créer un nouvel utilisateur avec le rôle "client".
+// - DELETE /utilisateur : Permet de supprimer un utilisateur en fournissant son ID dans le body.
+// - PUT /utilisateur : Permet de modifier les informations d'un utilisateur en fournissant son ID dans le body.
+// - GET /utilisateur : Permet de récupérer tous les utilisateurs de la base de données.
+// =====================================================================================================
+
+/*
+ * Route pour la création d'un nouvel utilisateur
+ * Action : Permet de créer un nouvel utilisateur en fournissant son nom, prénom, mot de passe et courriel.
+ * Le rôle est automatiquement défini à "client" lors de la création.
+ * Méthode : POST
+ * URL : http://localhost:4000/utilisateur
+ */
 app.post("/utilisateur", async (req, res) => {
   try {
     const { nom, prenom, mot_de_passe, courriel } = req.body;
@@ -278,7 +297,14 @@ app.post("/utilisateur", async (req, res) => {
   }
 });
 
-//Faire delete
+/*
+ * Route pour la suppression d'un utilisateur
+ * Action : Permet de supprimer un utilisateur en fournissant son ID dans le body de la requête.
+ * Si l'ID est manquant, une erreur 400 est retournée. Si l'utilisateur n'existe pas, une erreur
+ * 404 est retournée. Sinon, l'utilisateur est supprimé et un message de succès est retourné.
+ * Méthode : DELETE
+ * URL : http://localhost:4000/utilisateur
+ */
 app.delete("/utilisateur", async (req, res) => {
   try {
     const { id } = req.body;
@@ -299,7 +325,14 @@ app.delete("/utilisateur", async (req, res) => {
   }
 });
 
-//Update
+/*
+ * Route pour la modification des informations d'un utilisateur
+ * Action : Permet de modifier les informations d'un utilisateur en fournissant son ID dans le body.
+ * La route met à jour le nom, prénom, mot de passe, courriel et rôle de l'utilisateur. Si
+ * l'utilisateur n'existe pas, une réponse d'erreur 404 est retournée.
+ * Méthode : PUT
+ * URL : http://localhost:4000/utilisateur
+ */
 app.put("/utilisateur", async (req, res) => {
   try {
     const { id_utilisateur, nom, prenom, mot_de_passe, courriel, role } = req.body;
@@ -315,7 +348,7 @@ app.put("/utilisateur", async (req, res) => {
       [nom, prenom, mot_de_passe, courriel, role, id_utilisateur]
     );
 
-if ((result as any).affectedRows === 0)
+    if ((result as any).affectedRows === 0)
       return res.status(404).json({ message: "Utilisateur introuvable" });
 
     res.status(200).json({ message: "Utilisateur changé" });
@@ -325,10 +358,13 @@ if ((result as any).affectedRows === 0)
   }
 });
 
-/**
-* GET sur table utilisateur -> retourne toutes les informations des utilisateurs
-* @author Diego
-*/
+/*
+ * Route pour récupérer tous les utilisateurs
+ * Action : Exécute une requête SQL pour sélectionner tous les utilisateurs de la table "utilisateur"
+ * et retourne les résultats au format JSON.
+ * Méthode : GET
+ * URL : http://localhost:4000/utilisateur
+ */
 app.get("/utilisateur", async (req, res) => {
   try {
     const [rows] = await pool.query(
@@ -337,28 +373,6 @@ app.get("/utilisateur", async (req, res) => {
 
     res.status(200).json(rows);
 
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Database error" });
-  }
-});
-
-/**
-* Faire get et afficher dans compte
-* POST sur la table utilisateur -> create nouveau data pour un nouvel utilisateur
-* @author Diego
-*/
-app.post("/utilisateur", async (req, res) => {
-  try {
-    const { nom, prenom, mot_de_passe, courriel } = req.body;
-
-    const [result] = await pool.query(
-      `INSERT INTO utilisateur (nom, prenom, mot_de_passe, courriel, role)
-       VALUES (?, ?, ?, ?, "client")`,
-      [nom, prenom, mot_de_passe, courriel],
-    );
-
-    res.status(201).json({ message: "Utilisateur créé"});
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Database error" });
@@ -656,7 +670,7 @@ app.delete("/produits/:id", async (req, res) => {
 
 
 
-//estion des produits de TechSales écrite par Ian //////////////////////////
+//gestion des produits de TechSales écrite par Ian //////////////////////////
 // =====================================================================================================
 
 // Verification du roulement du serveur pour la base de donnees
