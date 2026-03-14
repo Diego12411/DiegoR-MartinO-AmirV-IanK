@@ -553,7 +553,6 @@ app.get("/produits", async (req, res) => {
 });
 
 // GET 4 produits random de la table produit
-// ne verifie pas si c'est le meme produit
 app.get("/produits/random", async (requestAnimationFrame, res) => {
   try {
     const [rows] = await pool.query(

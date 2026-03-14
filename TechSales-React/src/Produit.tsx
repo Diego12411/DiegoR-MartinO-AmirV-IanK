@@ -2,6 +2,12 @@ import { Link, useParams } from "react-router";
 import { HeaderComponent, FooterComponent } from "./main.tsx";
 import { useEffect, useState } from "react";
 
+/**
+ * Page qui affiche les informations detaillees d'un produit specifique
+ * Au bas de la page, on retrouve d'autres produits disponibles sur notre site.
+ * Lorsque l'image est clicke, ca nous redirige vers une nouvelle page avec les informations detaillees du prochain produit.
+ */
+
 type Produit = {
   id_produit: number;
   specs_id_specs: number;
