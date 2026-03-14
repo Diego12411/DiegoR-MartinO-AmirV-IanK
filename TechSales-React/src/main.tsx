@@ -47,7 +47,10 @@ export const HeaderComponent = () => {
           style={{
             backgroundColor: "#40365a",
           }}
-        ></div>
+        >
+          {" "}
+          <p className="text-white mb-0">a</p>
+        </div>
       </div>
       <div className="row">
         <div className="col bg-white p-4 d-flex justify-content-between align-items-center">
