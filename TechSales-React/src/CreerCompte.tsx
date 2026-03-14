@@ -43,7 +43,9 @@ export default function AfficherCreerCompte() {
         if (data.message === "Un Compte est déja associé à ce courriel") {
           setMessageCreationCompte(data.message);
         } else if (data.message === "Utilisateur créé") {
-          navigate("/Compte");
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("utilisateur", JSON.stringify(data.utilisateur));
+          navigate("/compte");
         }
       })
       .catch((err) => console.error(err));
