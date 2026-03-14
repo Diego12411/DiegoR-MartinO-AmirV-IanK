@@ -1,6 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
-import mysql from "mysql2/promise";
 
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -338,7 +337,7 @@ app.delete("/utilisateur", async (req, res) => {
 
     const [result] = await pool.query(
       "DELETE FROM utilisateur WHERE id_utilisateur = ?",
-      [id]
+      [id],
     );
 
     if ((result as any).affectedRows === 0)
@@ -370,7 +369,7 @@ app.put("/utilisateur", async (req, res) => {
            courriel = ?,
            role = ?
        WHERE id_utilisateur = ?;`,
-      [nom, prenom, mot_de_passe, courriel, role, id_utilisateur]
+      [nom, prenom, mot_de_passe, courriel, role, id_utilisateur],
     );
 
     if ((result as any).affectedRows === 0)
@@ -392,12 +391,9 @@ app.put("/utilisateur", async (req, res) => {
  */
 app.get("/utilisateur", async (req, res) => {
   try {
-    const [rows] = await pool.query(
-      "SELECT * FROM utilisateur"
-    );
+    const [rows] = await pool.query("SELECT * FROM utilisateur");
 
     res.status(200).json(rows);
-
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Database error" });
@@ -417,15 +413,6 @@ app.get("/utilisateur", async (req, res) => {
  * command to start server : npx tsx server.ts
  * ========================================================================
  */
-
-// // Create connection pool
-// const pool = mysql.createPool({
-//   host: "localhost",
-//   user: "martin",
-//   password: "oracle",
-//   database: "TechSales",
-//   port: 3306,
-// });
 
 // GET toutes les categories de la table categorie
 app.get("/categories", async (req, res) => {
@@ -582,7 +569,7 @@ app.delete("/categorie/:id/effacer", async (req, res) => {
   }
 });
 // =====================================================================================================
-// Fin de l'API pour la gestion des categories de TechSales écrite par Martin //////////////////////////
+// Fin de l'API pour la gestion des categories de TechSales écrit par Martin //////////////////////////
 // =====================================================================================================
 
 /**
@@ -595,96 +582,88 @@ app.delete("/categorie/:id/effacer", async (req, res) => {
 //GET dans la table produit
 app.get("/produits", async (req, res) => {
   try {
-
-    const [rows] = await pool.query(
-      "SELECT * FROM produit"
-    );
+    const [rows] = await pool.query("SELECT * FROM produit");
 
     res.json(rows);
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Erreur serveur" });
   }
 });
 
-app.get("/produits/:id", async (req, res) => {
+// GET 4 produits random de la table produit
+app.get("/produits/random", async (requestAnimationFrame, res) => {
+  try {
+    const [rows] = await pool.query(
+      "SELECT * FROM produit ORDER BY RAND() LIMIT 4",
+    );
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error(
+      `[${new Date().toISOString()}] DELETE /categorie/:id/effacer ->`,
+      (error as Error).message,
+    );
+    res.status(500).json({ message: "Database error" });
+  }
+});
 
+app.get("/produits/:id", async (req, res) => {
   const id = req.params.id;
 
   const [rows] = await pool.query(
     "SELECT * FROM produit WHERE id_produit = ?",
-    [id]
+    [id],
   );
 
   res.json(rows);
-
 });
 
 //CREATE dans la table produit
 app.post("/produits", async (req, res) => {
-
-  const {
-    specs_id_specs,
-    nom,
-    description,
-    prix,
-    stock,
-    image_url
-  } = req.body;
+  const { specs_id_specs, nom, description, prix, stock, image_url } = req.body;
 
   try {
-
     const [result] = await pool.query(
       `INSERT INTO produit
       (specs_id_specs, nom, description, prix, stock, image_url)
       VALUES (?, ?, ?, ?, ?, ?)`,
-      [specs_id_specs, nom, description, prix, stock, image_url]
+      [specs_id_specs, nom, description, prix, stock, image_url],
     );
 
     res.json(result);
-
   } catch (err) {
     res.status(500).json(err);
   }
-
 });
 
 //MODIFIER dans la table produit
 app.put("/produits/:id", async (req, res) => {
-
   const id = req.params.id;
   const { nom, prix, stock } = req.body;
 
   try {
-
     const [result] = await pool.query(
       "UPDATE produit SET nom = ?, prix = ?, stock = ? WHERE id_produit = ?",
-      [nom, prix, stock, id]
+      [nom, prix, stock, id],
     );
 
     res.json(result);
-
   } catch (err) {
     res.status(500).json(err);
   }
-
 });
 
 //SUPPRIMER dans la table produit
 app.delete("/produits/:id", async (req, res) => {
-
   const id = req.params.id;
 
   try {
-
     const [result] = await pool.query(
       "DELETE FROM produit WHERE id_produit = ?",
-      [id]
+      [id],
     );
 
     res.json(result);
-
   } catch (err) {
     res.status(500).json(err);
   }
@@ -698,7 +677,52 @@ app.delete("/produits/:id", async (req, res) => {
 //gestion des produits de TechSales écrite par Ian //////////////////////////
 // =====================================================================================================
 
+/**
+ * =========================================================================
+ * API pour table categorie
+ * @author Martin
+ * ========================================================================
+ */
+
+/**
+ * GET un spec specifique a partir de son id_specs
+ * return un seul element specs
+ */
+app.get("/specs/:id", async (req, res) => {
+  try {
+    const idSpec = Number(req.params.id);
+    if (isNaN(idSpec)) {
+      return res.status(400).json({ message: "Invalid id" });
+    }
+
+    // query must have the exact field name to work
+    const [exactCategory] = await pool.query(
+      "SELECT * FROM specs WHERE id_specs = ?",
+      [idSpec],
+    );
+
+    const specs = (exactCategory as any[])[0];
+    if (!specs) {
+      return res
+        .status(404)
+        .json({ message: `Categorie not found for id : ${idSpec}` });
+    }
+
+    res.status(200).json(specs);
+  } catch (error) {
+    console.error(
+      `[${new Date().toISOString()}] GET /categorie/:id ->`,
+      (error as Error).message,
+    );
+    res.status(500).json({ message: "Database error" });
+  }
+});
+
+// =====================================================================================================
+// Fin de l'API pour la gestion des specs de TechSales écrit par Martin //////////////////////////
+// =====================================================================================================
+
 // Verification du roulement du serveur pour la base de donnees
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

@@ -20,7 +20,7 @@ import MotPasseOublie from "./MotPasseOublie";
 
 // Routage des pages
 const router = createBrowserRouter([
-  { path: "/detailsProduit", element: <ProduitDetails /> },
+  { path: "/detailsProduit/:id", element: <ProduitDetails /> },
   {
     path: "/affichageprincipalproduit",
     element: <AffichagePrincipalProduit />,
