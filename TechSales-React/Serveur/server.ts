@@ -552,6 +552,23 @@ app.get("/produits", async (req, res) => {
   }
 });
 
+// GET 4 produits random de la table produit
+// ne verifie pas si c'est le meme produit
+app.get("/produits/random", async (requestAnimationFrame, res) => {
+  try {
+    const [rows] = await pool.query(
+      "SELECT * FROM produit ORDER BY RAND() LIMIT 4",
+    );
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error(
+      `[${new Date().toISOString()}] DELETE /categorie/:id/effacer ->`,
+      (error as Error).message,
+    );
+    res.status(500).json({ message: "Database error" });
+  }
+});
+
 app.get("/produits/:id", async (req, res) => {
   const id = req.params.id;
 
