@@ -18,12 +18,12 @@ export default function AfficherCreerCompte() {
   const [prenom, setPrenom] = useState("");
   const [email, setEmail] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
-  const [messageInscriptionMauvaise, setMessageInscriptionMauvaise] =
-    useState(false);
+  const [messageCreationCompte, setMessageCreationCompte] =
+    useState("");
 
   function CreationCompteBouttonClicked() {
     if (!nom || !prenom || !email || !motDePasse) {
-      setMessageInscriptionMauvaise(true);
+      setMessageCreationCompte("*Il manque des champs obligatoire");
       return;
     }
     fetch("http://localhost:4000/utilisateur", {
@@ -40,8 +40,11 @@ export default function AfficherCreerCompte() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        navigate("/Compte");
+        if (data.message === "Un Compte est déja associé à ce courriel") {
+          setMessageCreationCompte(data.message);
+        } else if (data.message === "Utilisateur créé") {
+          navigate("/Compte");
+        }
       })
       .catch((err) => console.error(err));
   }
@@ -52,7 +55,7 @@ export default function AfficherCreerCompte() {
         backgroundColor: "#40365a",
       }}
     >
-      <main className="container-fluid text-center">
+      <main className="container-fluid text-center p-0">
         <HeaderComponent />
         <div className="d-flex justify-content-center align-items-center vh-100">
           <div className="row">
@@ -80,7 +83,7 @@ export default function AfficherCreerCompte() {
                       className="form-control"
                       value={nom}
                       placeholder="Nom"
-                      onChange={(e) => setNom(e.target.value)}
+                      onChange={(e) => {setNom(e.target.value); setMessageCreationCompte("")}}
                     ></input>
                     <br />
                   </div>
@@ -90,7 +93,7 @@ export default function AfficherCreerCompte() {
                       className="form-control"
                       value={prenom}
                       placeholder="Prénom"
-                      onChange={(e) => setPrenom(e.target.value)}
+                      onChange={(e) => {setPrenom(e.target.value); setMessageCreationCompte("")}}
                     ></input>
                     <br />
                   </div>
@@ -100,7 +103,7 @@ export default function AfficherCreerCompte() {
                       className="form-control"
                       value={email}
                       placeholder="Email"
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => {setEmail(e.target.value); setMessageCreationCompte("")}}
                     ></input>
                     <br />
                   </div>
@@ -110,7 +113,7 @@ export default function AfficherCreerCompte() {
                       className="form-control"
                       value={motDePasse}
                       placeholder="Mot de passe"
-                      onChange={(e) => setMotDePasse(e.target.value)}
+                      onChange={(e) =>{ setMotDePasse(e.target.value); setMessageCreationCompte("")}}
                     ></input>
                     <br />
                   </div>
@@ -124,9 +127,9 @@ export default function AfficherCreerCompte() {
                   >
                     Créer Mon Compte
                   </button>
-                  {messageInscriptionMauvaise && (
+                  {messageCreationCompte && (
                     <p className="text-danger">
-                      *Il manque des champs obligatoires*
+                      {messageCreationCompte}
                     </p>
                   )}
                 </div>

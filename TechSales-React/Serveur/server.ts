@@ -284,6 +284,12 @@ app.post("/utilisateur", async (req, res) => {
   try {
     const { nom, prenom, mot_de_passe, courriel } = req.body;
 
+    const [rows] = await pool.query( //SELECT pour voir si un courriel pareil est deja utilisé, si oui, le compte de peux pas être crée
+      "SELECT * FROM utilisateur WHERE courriel = ?", [courriel]
+    );
+        if ((rows as any[]).length > 0)
+      return res.status(404).json({ message: "Un Compte est déja associé à ce courriel" });
+
     const [result] = await pool.query(
       `INSERT INTO utilisateur (nom, prenom, mot_de_passe, courriel, role)
        VALUES (?, ?, ?, ?, "client")`,
