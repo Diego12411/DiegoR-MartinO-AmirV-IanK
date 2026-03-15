@@ -14,6 +14,8 @@ type Produit = {
 };
 
 function BoutonProduit({ produit }: { produit: Produit }) {
+  const urlDetails = `detailsProduit/:${produit.id_produit}`;
+
   return (
     <div className="col mb-4">
       <div className="card shadow border-dark bg-light col p-0">
@@ -23,7 +25,10 @@ function BoutonProduit({ produit }: { produit: Produit }) {
             src={produit.image_url || sansImage}
             alt={produit.nom}
           />
-          <a href="#" className="btn btn-transparent p-0 fw-bold text-primary">
+          <a
+            href={urlDetails}
+            className="btn btn-transparent p-0 fw-bold text-primary"
+          >
             {produit.nom}
           </a>
           <div className="me-2">
