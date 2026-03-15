@@ -165,7 +165,7 @@ export default function AfficherPageAdmin() {
   // RETURN
   // ----------------------------------------------------------
   return (
-    <main className="container-fluid text-center">
+    <main className="container-fluid text-center p-0">
       <HeaderComponent />
 
       {/* ==========================================================

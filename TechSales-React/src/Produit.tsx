@@ -1,10 +1,77 @@
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
 import { HeaderComponent, FooterComponent } from "./main.tsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+/**
+ * Page qui affiche les informations detaillees d'un produit specifique
+ * Au bas de la page, on retrouve d'autres produits disponibles sur notre site.
+ * Lorsque l'image est clicke, ca nous redirige vers une nouvelle page avec les informations detaillees du prochain produit.
+ */
+
+type Produit = {
+  id_produit: number;
+  specs_id_specs: number;
+  nom: string;
+  description: string;
+  prix: number;
+  stock: number;
+  image_url: string;
+};
+
+type Spec = {
+  idSpec: number;
+  type_produit: string;
+  processeur: string;
+  frequence_processeur: number;
+  taille_ram: number;
+  type_ram: string;
+  taille_stockage: number;
+  type_stockage: string;
+  carte_graphique: string;
+};
 
 export default function ProduitDetails() {
+  // on recupere le parametre de l'id du produit recu par le lien
+  const { id } = useParams();
+
+  // on recupere les donnes a partir de l'API GET /produits/${id}
+  const [produitFetched, setProduitFetched] = useState<Produit | null>(null);
+  useEffect(() => {
+    fetch(`http://localhost:4000/produits/${id}`)
+      .then((response) => response.json()) // parse JSON data
+      .then((data) => setProduitFetched(data[0]));
+  }, [id]);
+
+  // on recupere les informations du specs a partir des informations fetch pour le produit ci-haut
+  const [specsFetched, setSpecsFetched] = useState<Spec | null>(null);
+  useEffect(() => {
+    fetch(`http://localhost:4000/specs/${produitFetched?.specs_id_specs}`)
+      .then((response) => response.json())
+      .then((data) => setSpecsFetched(data));
+  }, [produitFetched]);
+
+  const [randomProduits, setRandomProduits] = useState<Produit[]>([]);
+  useEffect(() => {
+    fetch("http://localhost:4000/produits/random")
+      .then((response) => response.json())
+      .then((data) => setRandomProduits(data));
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
   // state qui contient la quantite de produit a acheter
   const [quantiteAcheter, setQuantiteAcheter] = useState(1);
+
+  // s'occupe de la couleur de l'affichage du stock
+  const HandleAffichageStock = () => {
+    if (Number(produitFetched?.prix) > 0) {
+      return <h5 className="text-success">En stock</h5>;
+    } else {
+      return <h5 className="text-danger">Rupture de stock</h5>;
+    }
+  };
 
   return (
     <>
@@ -20,7 +87,7 @@ export default function ProduitDetails() {
           {/* Affichage de l'image du laptop */}
           <div className="col">
             <img
-              src="https://dlcdnwebimgs.asus.com/gain/838fbdac-6d10-4190-8e52-d4b9463f5d23/"
+              src={produitFetched?.image_url}
               alt="Image d'un laptop :')"
               style={{ width: "100%", height: "auto", objectFit: "cover" }}
             />
@@ -28,10 +95,10 @@ export default function ProduitDetails() {
 
           {/* Affichage des informations generales de l'ordinateur */}
           <div className="col">
-            <h4 className="fw-bold">Nom de l'ordinateur portable</h4>
-            <h5 className="text-success">En stock</h5>
-            <h5>Prix du laptop $$$</h5>
-            <p className="fs-6">Description du laptop</p>
+            <h4 className="fw-bold">{produitFetched?.nom}</h4>
+            {HandleAffichageStock()}
+            <h5>${produitFetched?.prix}</h5>
+            <p className="fs-6">{produitFetched?.description}</p>
             <hr className="w-75" style={{ border: "1px solid", opacity: 1 }} />
 
             {/* Affichage des caracteristiques du laptop */}
@@ -51,7 +118,8 @@ export default function ProduitDetails() {
                   <div>
                     <small className="text-body-secondary">Processeur</small>
                     <br />
-                    Nom du processeur + frequence
+                    {specsFetched?.processeur}{" "}
+                    {specsFetched?.frequence_processeur} GHz
                   </div>
                 </li>
                 {/* Affichage de la carte graphique */}
@@ -70,7 +138,7 @@ export default function ProduitDetails() {
                       Carte Graphique
                     </small>
                     <br />
-                    Modele de la carte graphique
+                    {specsFetched?.carte_graphique}
                   </div>
                 </li>
                 {/* Affichage de la memoire */}
@@ -87,7 +155,7 @@ export default function ProduitDetails() {
                   <div>
                     <small className="text-body-secondary">Memoire</small>
                     <br />
-                    Capacite de RAM et modele
+                    {specsFetched?.taille_ram} Go
                   </div>
                 </li>
                 {/* Affichage de la capacite de stockage */}
@@ -104,7 +172,8 @@ export default function ProduitDetails() {
                   <div>
                     <small className="text-body-secondary">Stockage</small>
                     <br />
-                    Capacite de stockage et type
+                    {specsFetched?.taille_stockage} Go{" "}
+                    {specsFetched?.type_stockage}
                   </div>
                 </li>
               </ul>
@@ -146,7 +215,7 @@ export default function ProduitDetails() {
           </div>
         </div>
 
-        {/* Affichage des autres produits au bas de la page (!= footer) */}
+        {/* Affichage des autres produits suggeres au bas de la page (!= footer) */}
         <div className="row px-5 mx-5">
           <hr
             className="mt-5 w-25 rounded-5"
@@ -156,96 +225,30 @@ export default function ProduitDetails() {
             }}
           />
           <h5>Autres produits</h5>
-
           <div className="row row-cols-1 row-cols-md-4 g-3 mb-5">
-            {/* Card 1 */}
-            <div className="col">
-              <div className="card h-100">
-                <Link to="PageProduit">
-                  <img
-                    src="https://multimedia.bbycastatic.ca/multimedia/products/1500x1500/152/15268/15268122.jpeg"
-                    alt="Image demo produit 1"
-                    style={{
-                      width: "100%",
-                      height: "125px",
-                      objectFit: "cover",
-                    }}
-                  />
-                </Link>
-                <div className="card-body">
-                  <h6 className="card-title">Demo produit 1</h6>
-                  <small className="text-body-secondary">
-                    Prix du produit $$$
-                  </small>
+            {randomProduits.map((produit) => (
+              <div className="col" key={produit.id_produit}>
+                <div className="card h-100">
+                  <Link to={`/detailsProduit/${produit.id_produit}`}>
+                    <img
+                      src={produit.image_url}
+                      alt={produit.nom}
+                      style={{
+                        width: "100%",
+                        height: "125px",
+                        objectFit: "cover",
+                      }}
+                    />
+                  </Link>
+                  <div className="card-body">
+                    <h6 className="card-title">{produit.nom}</h6>
+                    <small className="text-body-secondary">
+                      ${produit.prix}
+                    </small>
+                  </div>
                 </div>
               </div>
-            </div>
-            {/* Card 2 */}
-            <div className="col">
-              <div className="card h-100">
-                <Link to="PageProduit">
-                  <img
-                    src="https://news.lenovo.com/wp-content/uploads/2025/01/09_Yoga_Slim_9i_14_10_Tidal_Teal_CameraOn_Right_Side_Open-e1736186936951-1024x862.png"
-                    alt="Image demo produit 2"
-                    style={{
-                      width: "100%",
-                      height: "125px",
-                      objectFit: "cover",
-                    }}
-                  />
-                </Link>
-                <div className="card-body">
-                  <h6 className="card-title">Demo produit 2</h6>
-                  <small className="text-body-secondary">
-                    Prix du produit $$$
-                  </small>
-                </div>
-              </div>
-            </div>
-            {/* Card 3 */}
-            <div className="col">
-              <div className="card h-100">
-                <Link to="PageProduit">
-                  <img
-                    src="https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/xps-notebooks/xps-13-9350/media-gallery/graphite/notebook-xps-13-9350-t-oled-gy-gallery-5.psd?fmt=png-alpha&pscan=auto&scl=1&hei=804&wid=1362&qlt=100,1&resMode=sharp2&size=1362,804&chrss=full"
-                    alt="Image demo produit 3"
-                    style={{
-                      width: "100%",
-                      height: "125px",
-                      objectFit: "cover",
-                    }}
-                  />
-                </Link>
-                <div className="card-body">
-                  <h6 className="card-title">Demo produit 3</h6>
-                  <small className="text-body-secondary">
-                    Prix du produit $$$
-                  </small>
-                </div>
-              </div>
-            </div>
-            {/* Card 4 */}
-            <div className="col">
-              <div className="card h-100">
-                <Link to="PageProduit">
-                  <img
-                    src="https://www.lg.com/content/dam/channel/wcms/ca_en/images/laptops/gram/17z90sp-g-aa75a9/DZ-02.jpg/jcr:content/renditions/thum-1600x1062.jpeg"
-                    alt="Image demo produit 4"
-                    style={{
-                      width: "100%",
-                      height: "125px",
-                      objectFit: "cover",
-                    }}
-                  />
-                </Link>
-                <div className="card-body">
-                  <h6 className="card-title">Demo produit 4</h6>
-                  <small className="text-body-secondary">
-                    Prix du produit $$$
-                  </small>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </main>
