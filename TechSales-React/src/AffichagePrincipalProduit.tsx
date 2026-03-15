@@ -1,5 +1,7 @@
 import { HeaderComponent, FooterComponent } from "./main.tsx";
 import { useEffect, useState } from "react";
+import logo from "./assets/logo.png";
+import sansImage from "./assets/ProduitSansImage.png";
 
 type Produit = {
   id_produit: number;
@@ -18,7 +20,7 @@ function BoutonProduit({ produit }: { produit: Produit }) {
         <div className="card-body text-dark">
           <img
             className="card-img-top"
-            src={produit.image_url || "../Images/ProduitSansImage.png"}
+            src={produit.image_url || sansImage}
             alt={produit.nom}
           />
           <a href="#" className="btn btn-transparent p-0 fw-bold text-primary">
@@ -49,27 +51,11 @@ export default function AffichagePrincipalProduit() {
       <div>
         <div className="m-5 bg-transparent">
           <div className="row">
-            <div className="card shadow-lg bg-dark bg-gradient col p-0">
+            <div className="card shadow-lg bg-transparent col p-0">
               <div className="row card-body text-dark">
-                <div className="col-9">
-                  <img
-                    className="col-3 img-fluid mt-5"
-                    src="../Images/AsusLogo.png"
-                    alt="Image"
-                  ></img>
-                  <h5 className="text-light">Ordinateur portable de jeu</h5>
-                  <h1 className="text-light">9999.99$</h1>
+                <div className="d-flex align-items-center ">
+                  <img className="img-fluid" src={logo} alt="Image"></img>
                 </div>
-                <div className="col">
-                  <img
-                    className="img-fluid"
-                    src="../Images/ProduitSansImage.png"
-                    alt="Image"
-                  ></img>
-                </div>
-                <a href="#" className="text-light">
-                  Magasinez maintenant →
-                </a>
               </div>
             </div>
           </div>
