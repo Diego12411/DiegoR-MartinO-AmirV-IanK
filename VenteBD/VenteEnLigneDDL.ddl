@@ -2,15 +2,7 @@
 --   at:        2026-02-12 14:40:15 EST
 --   site:      Oracle Database 11g
 --   type:      Oracle Database 11g
-
-
-
-
-
-
 -- predefined type, no DDL - MDSYS.SDO_GEOMETRY
-
-
 -- predefined type, no DDL - XMLTYPE
 
 
@@ -19,9 +11,6 @@ CREATE TABLE categorie (
     nom_categorie VARCHAR(50) NOT NULL,
     PRIMARY KEY (id_categorie)
 );
-
-
--- ALTER TABLE categorie ADD CONSTRAINT categorie_pk PRIMARY KEY (id_categorie);
 
 
 CREATE TABLE commande (
@@ -42,9 +31,6 @@ CREATE UNIQUE INDEX commande__idx ON
     ASC );
 
 
--- ALTER TABLE commande ADD CONSTRAINT commande_pk PRIMARY KEY (id_commande);
-
-
 CREATE TABLE panier (
     id_panier INTEGER NOT NULL AUTO_INCREMENT,
     utilisateur_id_utilisateur INTEGER NOT NULL,
@@ -52,9 +38,6 @@ CREATE TABLE panier (
     PRIMARY KEY (id_panier)
 
 );
-
-
--- ALTER TABLE panier ADD CONSTRAINT panier_pk PRIMARY KEY (id_panier);
 
 
 CREATE TABLE Panier_Produit (
@@ -75,15 +58,13 @@ CREATE TABLE produit (
     prix DECIMAL(10, 2) NOT NULL,
     stock INTEGER NOT NULL,
     image_url VARCHAR(1000)
+    PRIMARY KEY (id_produit)
 );
 
 
 CREATE UNIQUE INDEX produit__idx ON
     produit (specs_id_specs ASC
 );
-
-
--- ALTER TABLE produit ADD CONSTRAINT produit_pk PRIMARY KEY (id_produit);
 
 
 CREATE TABLE Produit_Categorie (
@@ -110,9 +91,6 @@ CREATE TABLE specs (
 );
 
 
--- ALTER TABLE specs ADD CONSTRAINT specs_pk PRIMARY KEY (id_specs);
-
-
 CREATE TABLE utilisateur (
     id_utilisateur INTEGER NOT NULL AUTO_INCREMENT,
     nom VARCHAR(50) NOT NULL,
@@ -121,9 +99,9 @@ CREATE TABLE utilisateur (
     courriel VARCHAR(50) NOT NULL,
     adresse VARCHAR(50),
     role VARCHAR(50) NOT NULL
+    PRIMARY KEY (id_utilisateur)
 );
 
-ALTER TABLE utilisateur ADD CONSTRAINT utilisateur_pk PRIMARY KEY ( id_utilisateur );
 
 ALTER TABLE commande
     ADD CONSTRAINT commande_panier_fk FOREIGN KEY ( panier_id_panier )
@@ -158,8 +136,6 @@ ALTER TABLE Produit_Categorie
 ALTER TABLE Produit_Categorie
     ADD CONSTRAINT Produit_Categorie_Produit_FK FOREIGN KEY ( produit_id_produit )
         REFERENCES produit ( id_produit );
-
-
 
 
 -- Oracle SQL Developer Data Modeler Summary Report: 
