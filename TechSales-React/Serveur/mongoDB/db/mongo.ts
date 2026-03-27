@@ -16,3 +16,11 @@ export async function connectToMongo(uri: string) {
     throw Error("Connection to MongoDB failed, error: " + error);
   }
 }
+
+export function getTechSalesDb(): Db {
+  return mongoClient.db("techsales");
+}
+
+export function getProduits(): Collection<Produit> {
+  return getTechSalesDb().collection("produits");
+}
