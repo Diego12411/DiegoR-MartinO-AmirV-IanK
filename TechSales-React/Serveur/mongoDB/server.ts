@@ -1,4 +1,4 @@
 import { config } from "dotenv";
 
 config();
-console.log("Connexion a MongoDB reussi!! :)");
+console.log(process.env.MONGODB_URI ? "Successful" : "Failed");
