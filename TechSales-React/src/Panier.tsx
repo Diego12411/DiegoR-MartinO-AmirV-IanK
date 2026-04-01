@@ -50,13 +50,9 @@ export default function afficherPanier() {
       {panier.map((produit) => (
         <AfficherProduit key={produit._id} produit={produit} />
       ))}
-      <div className="row px-5 my-2">
-        {" "}
-        <div className="col-lg">
-          <button className="mx-auto d-block ">
-            aaaaaaaaaaaaaaaaaaaaaaaaaaaa
-          </button>
-        </div>
+      <div className="row">
+        <div className="col-2 p-2 d-flex justify-content-start"> <button className="p-3 w-100">Retourner sur le Magasin</button></div>
+        <div className="col-2 p-2 d-flex justify-content-end"> <button className="p-3 w-100">Passer la commande</button></div>
       </div>
       <FooterComponent />
     </main>
