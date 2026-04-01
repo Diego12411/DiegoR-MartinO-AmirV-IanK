@@ -3,6 +3,7 @@ import { Panier } from "../models/panier.js";
 
 let mongoClient: MongoClient;
 
+// Etablie la connection avec la base de donnees MongoDB
 export async function connectToMongo(uri: string) {
   mongoClient = new MongoClient(uri);
 
@@ -15,7 +16,7 @@ export async function connectToMongo(uri: string) {
   }
 }
 
-// Pointe la base de donnees "TechSales"
+// Pointe vers la base de donnees "TechSales"
 export function getTechSalesDB(): Db {
   return mongoClient.db("TechSales");
 }
