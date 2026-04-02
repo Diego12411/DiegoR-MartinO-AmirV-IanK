@@ -80,6 +80,30 @@ export async function removeItemFromCart(
   );
 }
 
-// UPDATE -- modification de la quantite d'un item
+//
+/**
+ * UPDATE -- modification de la quantite d'un item
+ * @param collection "TechSales.panier"
+ * @param userId id de l'utilisateur
+ * @param productId id du produit vise
+ * @param newQuantity nouvelle quantite
+ * @returns update de la quantite dans le panier d'un utilisateur
+ */
+export async function updateItemQuantity(
+  collection: Collection<Panier>,
+  userId: ObjectId,
+  productId: ObjectId,
+  newQuantity: number,
+) {
+  return await collection.updateOne(
+    { userId: userId, "items.productId": productId },
+    {
+      $set: {
+        "items.$.productId": newQuantity,
+        modifiedTime: new Date(),
+      },
+    },
+  );
+}
 
-// DELETE -- aka on vide le panier lorsque la commande est passee
+// DELETE -- on vide le panier lorsque la commande est passee
