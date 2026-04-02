@@ -2,7 +2,7 @@ import { HeaderComponent } from "./main";
 import { FooterComponent } from "./main";
 import logo from "./assets/logo.png";
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 {
   /*source Card : https://getbootstrap.com/docs/4.0/components/card/
@@ -18,8 +18,7 @@ export default function AfficherCreerCompte() {
   const [prenom, setPrenom] = useState("");
   const [email, setEmail] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
-  const [messageCreationCompte, setMessageCreationCompte] =
-    useState("");
+  const [messageCreationCompte, setMessageCreationCompte] = useState("");
 
   function CreationCompteBouttonClicked() {
     if (!nom || !prenom || !email || !motDePasse) {
@@ -43,8 +42,8 @@ export default function AfficherCreerCompte() {
         if (data.message === "Un Compte est déja associé à ce courriel") {
           setMessageCreationCompte(data.message);
         } else if (data.message === "Utilisateur créé") {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("utilisateur", JSON.stringify(data.utilisateur));
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("utilisateur", JSON.stringify(data.utilisateur));
           navigate("/compte");
         }
       })
@@ -85,7 +84,10 @@ export default function AfficherCreerCompte() {
                       className="form-control"
                       value={nom}
                       placeholder="Nom"
-                      onChange={(e) => {setNom(e.target.value); setMessageCreationCompte("")}}
+                      onChange={(e) => {
+                        setNom(e.target.value);
+                        setMessageCreationCompte("");
+                      }}
                     ></input>
                     <br />
                   </div>
@@ -95,7 +97,10 @@ export default function AfficherCreerCompte() {
                       className="form-control"
                       value={prenom}
                       placeholder="Prénom"
-                      onChange={(e) => {setPrenom(e.target.value); setMessageCreationCompte("")}}
+                      onChange={(e) => {
+                        setPrenom(e.target.value);
+                        setMessageCreationCompte("");
+                      }}
                     ></input>
                     <br />
                   </div>
@@ -105,7 +110,10 @@ export default function AfficherCreerCompte() {
                       className="form-control"
                       value={email}
                       placeholder="Email"
-                      onChange={(e) => {setEmail(e.target.value); setMessageCreationCompte("")}}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        setMessageCreationCompte("");
+                      }}
                     ></input>
                     <br />
                   </div>
@@ -115,7 +123,10 @@ export default function AfficherCreerCompte() {
                       className="form-control"
                       value={motDePasse}
                       placeholder="Mot de passe"
-                      onChange={(e) =>{ setMotDePasse(e.target.value); setMessageCreationCompte("")}}
+                      onChange={(e) => {
+                        setMotDePasse(e.target.value);
+                        setMessageCreationCompte("");
+                      }}
                     ></input>
                     <br />
                   </div>
@@ -130,9 +141,7 @@ export default function AfficherCreerCompte() {
                     Créer Mon Compte
                   </button>
                   {messageCreationCompte && (
-                    <p className="text-danger">
-                      {messageCreationCompte}
-                    </p>
+                    <p className="text-danger">{messageCreationCompte}</p>
                   )}
                 </div>
               </div>
