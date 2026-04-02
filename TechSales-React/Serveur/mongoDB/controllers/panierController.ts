@@ -38,10 +38,23 @@ export async function getCartFromUser(
   return await collection.findOne({ userId: userId });
 }
 
-// UPDATE
-export async function updateCartFromUser(
+// UPDATE -- ajout d'un item dans le panier
+export async function addNewItemToCart(
   collection: Collection<Panier>,
   userId: ObjectId,
-) {}
+  item: ItemPanier,
+) {
+  return collection.updateOne(
+    { userId: userId },
+    {
+      $push: { items: item },
+      $set: { modifiedTime: new Date() },
+    },
+  );
+}
 
-// DELETE
+// UPDATE -- retrait d'un element dans le panier
+
+// UPDATE -- modification de la quantite d'un item
+
+// DELETE -- aka on vide le panier lorsque la commande est passee
