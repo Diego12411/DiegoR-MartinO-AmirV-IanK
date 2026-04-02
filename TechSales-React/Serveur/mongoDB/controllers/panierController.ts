@@ -38,13 +38,19 @@ export async function getCartFromUser(
   return await collection.findOne({ userId: userId });
 }
 
-// UPDATE -- ajout d'un item dans le panier
+/**
+ * UPDATE -- ajout d'un item dans le panier
+ * @param collection "TechSales.panier"
+ * @param userId id de l'utilisateur
+ * @param item nouvel item a rajouter au panier
+ * @returns l'ajout d'un nouvel item dans le array "items" du panier de l'utilisateur
+ */
 export async function addNewItemToCart(
   collection: Collection<Panier>,
   userId: ObjectId,
   item: ItemPanier,
 ) {
-  return collection.updateOne(
+  return await collection.updateOne(
     { userId: userId },
     {
       $push: { items: item },
@@ -53,7 +59,26 @@ export async function addNewItemToCart(
   );
 }
 
-// UPDATE -- retrait d'un element dans le panier
+/**
+ * UPDATE -- retrait d'un element du panier
+ * @param collection "TechSales.panier"
+ * @param userId id de l'utilisateur
+ * @param productId id du produit a retirer
+ * @returns retrait de l'"item" du panier de l'utilisateur
+ */
+export async function removeItemFromCart(
+  collection: Collection<Panier>,
+  userId: ObjectId,
+  productId: ObjectId,
+) {
+  return await collection.updateOne(
+    { userId: userId },
+    {
+      $pull: { items: { productId: productId } },
+      $set: { modifiedTime: new Date() },
+    },
+  );
+}
 
 // UPDATE -- modification de la quantite d'un item
 
