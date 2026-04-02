@@ -12,11 +12,10 @@ interface Produit {
   image: string;
   _id: string;
 }
-
 export function AfficherProduit({ produit }: { produit: Produit }) {
   return (
     <div className="row px-5 my-3">
-      <div className="card shadow-lg me-5 p-3">
+      <div className="card shadow-lg me-5 p-3 py-4">
         <div className="px-3 col-12 bg-white p-1 d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-start col-4">{produit.nom}</div>
           <div className="d-flex align-items-center col-3">
@@ -33,10 +32,12 @@ export function AfficherProduit({ produit }: { produit: Produit }) {
 }
 
 export default function afficherPanier() {
-  //const [panier, setPanier] = useState<Produit[]>([]);
+  const navigate = useNavigate();
   const [panier, setPanier] = useState<Produit[]>([
     { _id: "1", nom: "Produit Test", prix: 99.99, quantite: 2, image: "" },
+    { _id: "2", nom: "Deuxième Produit", prix: 49.99, quantite: 1, image: "" },
   ]);
+  const [messageBouttonAcheter, setMessageBouttonAcheter] = useState("");
   const livraison = 0;
   const sousTotal = panier.reduce(
     (total, produit) => total + produit.prix * produit.quantite,
@@ -47,6 +48,12 @@ export default function afficherPanier() {
   useEffect(() => {
     // fetch ici
   }, []);
+
+  function verificationAchat() {
+    if (panier.length === 0) {
+      setMessageBouttonAcheter("Aucun produit dans le Panier");
+    } else navigate("/Commande");
+  }
   return (
     <main className="container-fluid p-0">
       <HeaderComponent />
@@ -54,7 +61,7 @@ export default function afficherPanier() {
         <strong>Panier</strong>
       </div>
       <div className="row px-5">
-        <div className="card shadow-lg me-5 p-3">
+        <div className="card shadow-lg me-5 px-3 py-2">
           <div className="px-3 col-12 bg-white p-1 d-flex justify-content-between align-items-center">
             <div className="d-flex align-items-start col-4">Produits</div>
             <div className="d-flex align-items-center col-3">Prix</div>
@@ -76,7 +83,7 @@ export default function afficherPanier() {
         <div className="col-6 p-2 d-flex justify-content-end">
           {" "}
           <button className="p-3 mx-5 w-50 btn btn-outline-dark btn-panier">
-            Supprimer le Panier
+            Vider le Panier
           </button>
         </div>
       </div>
@@ -138,11 +145,28 @@ export default function afficherPanier() {
               <div className="d-flex align-items-end">{total.toFixed(2)} $</div>
             </div>
             <div className="bg-white d-flex justify-content-center">
-              <button className="p-3 m-2 btn btn-outline-dark w-100">
+              <button
+                className="p-3 m-2 btn btn-outline-dark w-100"
+                onClick={() => {
+                  verificationAchat();
+                }}
+              >
                 Procéder au Paiement
               </button>
             </div>
+            {messageBouttonAcheter && (
+              <p className="text-danger text-center">{messageBouttonAcheter}</p>
+            )}
           </div>
+        </div>
+        <div className="col-6 my-5">
+          <img
+            src={logo}
+            alt="user"
+            width={650}
+            height={110}
+            className="my-5"
+          ></img>
         </div>
       </div>
       <FooterComponent />
