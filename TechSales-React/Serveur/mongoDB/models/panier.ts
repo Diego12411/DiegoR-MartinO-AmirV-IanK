@@ -5,5 +5,5 @@ export interface Panier {
   _id?: ObjectId;
   userId: ObjectId;
   items: ItemPanier[];
-  creationTime: Date;
+  modifiedTime: Date;
 }
