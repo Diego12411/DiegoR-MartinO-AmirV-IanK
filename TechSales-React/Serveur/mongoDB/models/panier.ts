@@ -4,5 +4,6 @@ import { ItemPanier } from "../models/itemPanier.js";
 export interface Panier {
   _id?: ObjectId;
   userId: ObjectId;
-  items: {}[];
+  items: ItemPanier[];
+  creationTime: Date;
 }
