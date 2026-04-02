@@ -1,0 +1,11 @@
+.btn-panier {
+  transition: background-color 0.5s ease;
+}
+
+.btn-panier:hover {
+  background-color: red !important;
+}
+
+.btn-panier:active {
+  background-color: red !important;
+}
