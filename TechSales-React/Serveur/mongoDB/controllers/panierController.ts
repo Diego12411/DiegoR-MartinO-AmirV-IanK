@@ -106,4 +106,24 @@ export async function updateItemQuantity(
   );
 }
 
-// DELETE -- on vide le panier lorsque la commande est passee
+//
+/**
+ * DELETE -- on vide le panier lorsque la commande est passee
+ * @param collection "TechSales.panier"
+ * @param userId id de l'utilisateur
+ * @returns vide le array "items" contenant les items selectionne par l'utilisateur
+ */
+export async function clearCart(
+  collection: Collection<Panier>,
+  userId: ObjectId,
+) {
+  return await collection.updateOne(
+    { userid: userId },
+    {
+      $set: {
+        items: [],
+        modifiedTime: new Date(),
+      },
+    },
+  );
+}
