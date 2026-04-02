@@ -9,5 +9,5 @@ export interface Specification {
   taille_ram: number;
   type_stockage: string;
   taille_stockage: number;
-  carte_graphqiue: string;
+  carte_graphique: string;
 }
