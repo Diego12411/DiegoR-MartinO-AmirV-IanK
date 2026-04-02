@@ -1,10 +1,9 @@
 import { Collection, Db, MongoClient } from "mongodb";
-// exemple de import pour tous les models
-//import { Student } from "../models/produit.ts";
-import { Produit } from "../models/produit.js";
+import { Panier } from "../models/panier.js";
 
 let mongoClient: MongoClient;
 
+// Etablie la connection avec la base de donnees MongoDB
 export async function connectToMongo(uri: string) {
   mongoClient = new MongoClient(uri);
 
@@ -15,4 +14,14 @@ export async function connectToMongo(uri: string) {
     console.error("Connection to MongoDB failed!", error);
     throw Error("Connection to MongoDB failed, error: " + error);
   }
+}
+
+// Pointe vers la base de donnees "TechSales"
+export function getTechSalesDB(): Db {
+  return mongoClient.db("TechSales");
+}
+
+// Reference la collection "panier"
+export function getPaniers(): Collection<Panier> {
+  return getTechSalesDB().collection("panier");
 }
