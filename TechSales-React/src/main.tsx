@@ -18,6 +18,7 @@ import Compte from "./Compte";
 import SeConnecter from "./SeConnecter";
 import MotPasseOublie from "./MotPasseOublie";
 import Panier from "./Panier";
+import Commande from "./Commande";
 
 // Routage des pages
 const router = createBrowserRouter([
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
   { path: "/seConnecter", element: <SeConnecter /> },
   { path: "/PageAdmin", element: <PageAdmin /> },
   { path: "/compte", element: <Compte /> },
+  { path: "/commande", element: <Commande /> },
 ]);
 
 createRoot(document.getElementById("root")!).render(

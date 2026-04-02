@@ -1,6 +1,7 @@
 import { HeaderComponent } from "./main";
 import { FooterComponent } from "./main";
 import logo from "./assets/logo.png";
+import "./Panier.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -14,20 +15,35 @@ interface Produit {
 
 export function AfficherProduit({ produit }: { produit: Produit }) {
   return (
-    <div className="card shadow-lg m-3 mx-5 p-3">
-      <div className="px-3 col bg-white p-1 d-flex justify-content-between align-items-center">
-        <div className="d-flex align-items-start gap-3">
-          img src={produit.image} {produit.nom}
+    <div className="row px-5 my-3">
+      <div className="card shadow-lg me-5 p-3">
+        <div className="px-3 col-12 bg-white p-1 d-flex justify-content-between align-items-center">
+          <div className="d-flex align-items-start col-4">{produit.nom}</div>
+          <div className="d-flex align-items-center col-3">
+            {produit.prix} $
+          </div>
+          <div className="d-flex align-items-end col-4">{produit.quantite}</div>
+          <div className="d-flex align-items-end col-1">
+            {produit.prix * produit.quantite} $
+          </div>
         </div>
-        <div className="d-flex align-items-center gap-3">{produit.prix}</div>
-        <div className="d-flex align-items-end gap-3">{produit.quantite}</div>
       </div>
     </div>
   );
 }
 
 export default function afficherPanier() {
-  const [panier, setPanier] = useState<Produit[]>([]);
+  //const [panier, setPanier] = useState<Produit[]>([]);
+  const [panier, setPanier] = useState<Produit[]>([
+    { _id: "1", nom: "Produit Test", prix: 99.99, quantite: 2, image: "" },
+  ]);
+  const livraison = 0;
+  const sousTotal = panier.reduce(
+    (total, produit) => total + produit.prix * produit.quantite,
+    0,
+  );
+  const taxes = sousTotal * 0.15;
+  const total = taxes + sousTotal + livraison;
   useEffect(() => {
     // fetch ici
   }, []);
@@ -39,11 +55,11 @@ export default function afficherPanier() {
       </div>
       <div className="row px-5">
         <div className="card shadow-lg me-5 p-3">
-          <div className="px-3 col bg-white p-1 d-flex justify-content-between align-items-center">
-            <div className="d-flex align-items-start gap-3">Produits</div>
-            <div className="d-flex align-items-center gap-3">Prix</div>
-            <div className="d-flex align-items-end gap-3">Quantité</div>
-            <div className="d-flex align-items-end gap-3">Sous-Total</div>
+          <div className="px-3 col-12 bg-white p-1 d-flex justify-content-between align-items-center">
+            <div className="d-flex align-items-start col-4">Produits</div>
+            <div className="d-flex align-items-center col-3">Prix</div>
+            <div className="d-flex align-items-end col-4">Quantité</div>
+            <div className="d-flex align-items-end col-1">Sous-Total</div>
           </div>
         </div>
       </div>
@@ -54,13 +70,13 @@ export default function afficherPanier() {
         <div className="col-6 p-2 d-flex justify-content-start">
           {" "}
           <button className="p-3 mx-5 w-50 btn btn-outline-dark">
-            Retourner sur le Magasin
+            Ajouter d'autres produits au panier
           </button>
         </div>
         <div className="col-6 p-2 d-flex justify-content-end">
           {" "}
-          <button className="p-3 mx-5 w-50 btn btn-outline-dark">
-            Passer la commande
+          <button className="p-3 mx-5 w-50 btn btn-outline-dark btn-panier">
+            Supprimer le Panier
           </button>
         </div>
       </div>
@@ -78,6 +94,9 @@ export default function afficherPanier() {
             </p>
             <div className="px-3 col bg-white d-flex justify-content-between align-items-center">
               <div className="d-flex align-items-start gap-3">Sous-Total</div>
+              <div className="d-flex align-items-end">
+                {sousTotal.toFixed(2)} $
+              </div>
             </div>
             <div
               style={{
@@ -90,7 +109,7 @@ export default function afficherPanier() {
             ></div>
             <div className="px-3 col bg-white p-2 d-flex justify-content-between align-items-center">
               <div className="d-flex align-items-start gap-3">Livraison</div>
-              <div className="d-flex align-items-end">Gratuit</div>
+              <div className="d-flex align-items-end text-success">Gratuit</div>
             </div>
             <div
               style={{
@@ -103,7 +122,7 @@ export default function afficherPanier() {
             ></div>
             <div className="px-3 col bg-white p-2 d-flex justify-content-between align-items-center">
               <div className="d-flex align-items-start gap-3">Taxes</div>
-              <div className="d-flex align-items-end">sous-total*taxes</div>
+              <div className="d-flex align-items-end">{taxes.toFixed(2)} $</div>
             </div>
             <div
               style={{
@@ -116,12 +135,10 @@ export default function afficherPanier() {
             ></div>
             <div className="px-3 col bg-white p-2 d-flex justify-content-between align-items-center">
               <div className="d-flex align-items-start gap-3">Total</div>
-              <div className="d-flex align-items-end">
-                sous-total + taxes + livraison
-              </div>
+              <div className="d-flex align-items-end">{total.toFixed(2)} $</div>
             </div>
-            <div className="col bg-white d-flex justify-content-center">
-              <button className="p-3 my-5 btn btn-outline-dark">
+            <div className="bg-white d-flex justify-content-center">
+              <button className="p-3 m-2 btn btn-outline-dark w-100">
                 Procéder au Paiement
               </button>
             </div>
