@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import {
   creationNouveauPanier,
-  getCartFromUser,
+  demandePanierUtilisateur,
   ajoutItemPanier,
   retraitItemPanier,
   miseAJourQuantiteItem,
@@ -18,13 +18,40 @@ router.get("/testTest", async (req: Request, res: Response) => {
   res.send("Endpoint test reussi!!");
 });
 
+// POST -- creation d'un nouveau panier pour un nouvel utilisateur
+router.post(
+  "/creerPanier/:utilisateurId",
+  async (req: Request, res: Response) => {
+    try {
+      const collection = getPaniers();
+      const utilisateur = new ObjectId(req.params.utilisateurId as string);
+
+      const resultat = await creationNouveauPanier(collection, utilisateur);
+
+      res.status(201).json(resultat);
+    } catch (error) {
+      console.error(
+        `[${new Date().toISOString()}] POST /creerPanier/:utilisateurId ->`,
+        (error as Error).message,
+      );
+    }
+  },
+);
+
+// GET -- retourne le panier d'un utilisateur specifique
 router.get(
   "/panierUtilisateur/:userId",
   async (req: Request, res: Response) => {
     try {
-      const collection = getPaniers()
-      const user = new ObjectId(req.params.userId as string)
-      const panier = 
+      const collection = getPaniers(); // permet "TechSales.panier"
+      const utilisateur = new ObjectId(req.params.userId as string);
+      const panier = await demandePanierUtilisateur(collection, utilisateur);
+
+      if (!panier) {
+        res.status(404).json({ message: "Panier introuvable" });
+        return;
+      }
+      res.status(200).json(panier);
     } catch (error) {
       console.error(
         `[${new Date().toISOString()}] GET /panierUtilisateur/:userId ->`,

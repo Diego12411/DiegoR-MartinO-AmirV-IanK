@@ -31,7 +31,7 @@ export async function creationNouveauPanier(
  * @param utilisateurId Id de l'utilisateur associe au panier
  * @returns le panier au complet d'un utilisateur
  */
-export async function getCartFromUser(
+export async function demandePanierUtilisateur(
   collection: Collection<Panier>,
   utilisateurId: ObjectId,
 ): Promise<Panier | null> {
@@ -54,7 +54,7 @@ export async function ajoutItemPanier(
     { utilisateurId: utilisateurId },
     {
       $push: { items: item },
-      $set: { modifiedTime: new Date() },
+      $set: { modificationTemps: new Date() },
     },
   );
 }
@@ -72,7 +72,7 @@ export async function retraitItemPanier(
   produitId: ObjectId,
 ) {
   return await collection.updateOne(
-    { userId: utilisateurId },
+    { utilisateurId: utilisateurId },
     {
       $pull: { items: { produitId: produitId } },
       $set: { modificationTemps: new Date() },
@@ -96,7 +96,7 @@ export async function miseAJourQuantiteItem(
   nouvelleQuantite: number,
 ) {
   return await collection.updateOne(
-    { userId: utilisateurId, "items.produitId": produitId },
+    { utilisateurId: utilisateurId, "items.produitId": produitId },
     {
       $set: {
         "items.$.quantite": nouvelleQuantite,
