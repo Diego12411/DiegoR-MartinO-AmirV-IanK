@@ -99,7 +99,7 @@ export async function updateItemQuantity(
     { userId: userId, "items.productId": productId },
     {
       $set: {
-        "items.$.productId": newQuantity,
+        "items.$.quantity": newQuantity,
         modifiedTime: new Date(),
       },
     },
@@ -118,7 +118,7 @@ export async function clearCart(
   userId: ObjectId,
 ) {
   return await collection.updateOne(
-    { userid: userId },
+    { userId: userId },
     {
       $set: {
         items: [],
