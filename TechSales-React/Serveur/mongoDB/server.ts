@@ -1,6 +1,13 @@
+import express from "express";
+import panierRouter from "./routes/panierRouter.js";
 import { config } from "dotenv";
 import { connectToMongo, getProduits } from "./db/mongo.js";
-import { createProduit, getProduitById, updateProduit, deleteProduitById } from "./controllers/produitController.js";
+import {
+  createProduit,
+  getProduitById,
+  updateProduit,
+  deleteProduitById,
+} from "./controllers/produitController.js";
 
 config();
 
@@ -11,3 +18,21 @@ if (!uri) {
 console.log("Connexion a MongoDB reussi!! :)");
 
 await connectToMongo(uri);
+
+const app = express();
+app.use(express.json());
+
+// Ajouter les routes dans cette section ci-dessous
+app.use("/paniers", panierRouter);
+
+app.listen(process.env.PORT);
+
+/**
+ * Pour tester vos endpoints :
+ * -> Ajoutez vos routes comme a la ligne #26
+ * -> Demarrez le serveur avec commande : npm run dev
+ * -> Pour acceder a vos endpoints (voici un exemple avec la collection panier) : http://localhost:4000/paniers/testTest
+ *  -> le port c'est 4000, definie dans vos fichier .env
+ *  -> chemin "/paniers" est defini dans server.ts a la ligne #26
+ *  -> endpoint "/testTest" est definie dans le fichier routes/panierRouter.ts
+ */

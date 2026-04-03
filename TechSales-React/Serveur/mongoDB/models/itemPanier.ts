@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 
 export interface ItemPanier {
   _id?: ObjectId;
-  productId: ObjectId;
-  quantity: number;
-  price: number;
+  produitId: ObjectId;
+  quantite: number;
+  prix: number;
 }

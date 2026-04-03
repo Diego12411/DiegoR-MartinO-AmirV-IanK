@@ -12,49 +12,49 @@ import { ItemPanier } from "../models/itemPanier.js";
  * @param userId identification d'un usager specifique
  * @returns la creation d'un nouveau document "panier"
  */
-export async function createCart(
+export async function creationNouveauPanier(
   collection: Collection<Panier>,
   userId: ObjectId,
 ) {
-  const newCartForNewUser: Panier = {
-    userId: userId,
+  const nouveauPanier: Panier = {
+    utilisateurId: userId,
     items: [],
-    modifiedTime: new Date(),
+    modificationTemps: new Date(),
   };
 
-  return await collection.insertOne(newCartForNewUser);
+  return await collection.insertOne(nouveauPanier);
 }
 
 /**
  * READ -- get le panier d'un utilisateur specifique
  * @param collection "TechSales.panier"
- * @param userId Id de l'utilisateur associe au panier
+ * @param utilisateurId Id de l'utilisateur associe au panier
  * @returns le panier au complet d'un utilisateur
  */
-export async function getCartFromUser(
+export async function demandePanierUtilisateur(
   collection: Collection<Panier>,
-  userId: ObjectId,
+  utilisateurId: ObjectId,
 ): Promise<Panier | null> {
-  return await collection.findOne({ userId: userId });
+  return await collection.findOne({ utilisateurId: utilisateurId });
 }
 
 /**
  * UPDATE -- ajout d'un item dans le panier
  * @param collection "TechSales.panier"
- * @param userId id de l'utilisateur
+ * @param utilisateurId id de l'utilisateur
  * @param item nouvel item a rajouter au panier
  * @returns l'ajout d'un nouvel item dans le array "items" du panier de l'utilisateur
  */
-export async function addNewItemToCart(
+export async function ajoutItemPanier(
   collection: Collection<Panier>,
-  userId: ObjectId,
+  utilisateurId: ObjectId,
   item: ItemPanier,
 ) {
   return await collection.updateOne(
-    { userId: userId },
+    { utilisateurId: utilisateurId },
     {
       $push: { items: item },
-      $set: { modifiedTime: new Date() },
+      $set: { modificationTemps: new Date() },
     },
   );
 }
@@ -62,20 +62,20 @@ export async function addNewItemToCart(
 /**
  * UPDATE -- retrait d'un element du panier
  * @param collection "TechSales.panier"
- * @param userId id de l'utilisateur
- * @param productId id du produit a retirer
+ * @param utilisateurId id de l'utilisateur
+ * @param produitId id du produit a retirer
  * @returns retrait de l'"item" du panier de l'utilisateur
  */
-export async function removeItemFromCart(
+export async function retraitItemPanier(
   collection: Collection<Panier>,
-  userId: ObjectId,
-  productId: ObjectId,
+  utilisateurId: ObjectId,
+  produitId: ObjectId,
 ) {
   return await collection.updateOne(
-    { userId: userId },
+    { utilisateurId: utilisateurId },
     {
-      $pull: { items: { productId: productId } },
-      $set: { modifiedTime: new Date() },
+      $pull: { items: { produitId: produitId } },
+      $set: { modificationTemps: new Date() },
     },
   );
 }
@@ -84,23 +84,23 @@ export async function removeItemFromCart(
 /**
  * UPDATE -- modification de la quantite d'un item
  * @param collection "TechSales.panier"
- * @param userId id de l'utilisateur
- * @param productId id du produit vise
- * @param newQuantity nouvelle quantite
+ * @param utilisateurId id de l'utilisateur
+ * @param produitId id du produit vise
+ * @param nouvelleQuantite nouvelle quantite
  * @returns update de la quantite dans le panier d'un utilisateur
  */
-export async function updateItemQuantity(
+export async function miseAJourQuantiteItem(
   collection: Collection<Panier>,
-  userId: ObjectId,
-  productId: ObjectId,
-  newQuantity: number,
+  utilisateurId: ObjectId,
+  produitId: ObjectId,
+  nouvelleQuantite: number,
 ) {
   return await collection.updateOne(
-    { userId: userId, "items.productId": productId },
+    { utilisateurId: utilisateurId, "items.produitId": produitId },
     {
       $set: {
-        "items.$.productId": newQuantity,
-        modifiedTime: new Date(),
+        "items.$.quantite": nouvelleQuantite,
+        modificationTemps: new Date(),
       },
     },
   );
@@ -110,19 +110,19 @@ export async function updateItemQuantity(
 /**
  * DELETE -- on vide le panier lorsque la commande est passee
  * @param collection "TechSales.panier"
- * @param userId id de l'utilisateur
+ * @param utilisateurId id de l'utilisateur
  * @returns vide le array "items" contenant les items selectionne par l'utilisateur
  */
-export async function clearCart(
+export async function viderPanier(
   collection: Collection<Panier>,
-  userId: ObjectId,
+  utilisateurId: ObjectId,
 ) {
   return await collection.updateOne(
-    { userid: userId },
+    { utilisateurId: utilisateurId },
     {
       $set: {
         items: [],
-        modifiedTime: new Date(),
+        modificationTemps: new Date(),
       },
     },
   );
