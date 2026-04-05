@@ -26,11 +26,6 @@ app.use(express.json());
 // Ajouter les routes dans cette section ci-dessous
 app.use("/paniers", panierRouter);
 
-// pour tester le serveur
-app.get("/test", (_req, res) => {
-  res.json({ message: "Serveur fonctionne !" });
-});
-
 // Je l'ai changé, car c'est risqué comme avant. Port peut etre undifined.
 // Avant : app.listen(process.env.PORT);
 // Listen sur le port défini dans le fichier .env ou 4000 par défaut, et affiche un message de confirmation dans la console une fois que le serveur est démarré.
