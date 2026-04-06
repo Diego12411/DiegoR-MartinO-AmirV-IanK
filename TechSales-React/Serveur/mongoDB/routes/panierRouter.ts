@@ -8,7 +8,6 @@ import {
   viderPanier,
 } from "../controllers/panierController.js";
 import { getPaniers } from "../db/mongo.js";
-import { Panier } from "../models/panier.js";
 import { ObjectId } from "mongodb";
 
 const router = Router();
@@ -34,6 +33,7 @@ router.post(
         `[${new Date().toISOString()}] POST /creerPanier/:utilisateurId ->`,
         (error as Error).message,
       );
+      res.status(500).json({ message: "Database error" });
     }
   },
 );
@@ -55,6 +55,103 @@ router.get(
     } catch (error) {
       console.error(
         `[${new Date().toISOString()}] GET /panierUtilisateur/:userId ->`,
+        (error as Error).message,
+      );
+      res.status(500).json({ message: "Database error" });
+    }
+  },
+);
+
+// PATCH -- ajout d'un item dans le panier d'un utilisateur
+router.patch(
+  "/ajoutItem/:utilisateurId",
+  async (req: Request, res: Response) => {
+    try {
+      const collection = getPaniers();
+      const utilisateur = new ObjectId(req.params.utilisateurId as string);
+      const item = req.body;
+
+      if (!item) {
+        res.status(400).json({ mesage: "Item non valide" });
+        return;
+      }
+
+      const result = await ajoutItemPanier(collection, utilisateur, item);
+      res.status(200).json(result);
+    } catch (error) {
+      console.error(
+        `[${new Date().toISOString()}] PUT /ajoutItem/:utilisateurId/:item ->`,
+        (error as Error).message,
+      );
+      res.status(500).json({ message: "Database error" });
+    }
+  },
+);
+
+// DELETE -- retirer un element du array item d'un panier d'un utilisateur
+router.delete(
+  "/retirerItem/:utilisateurId/:itemId",
+  async (req: Request, res: Response) => {
+    try {
+      const collection = getPaniers();
+      const utilisateur = new ObjectId(req.params.utilisateurId as string);
+      const item = new ObjectId(req.params.itemId as string);
+
+      const result = await retraitItemPanier(collection, utilisateur, item);
+
+      res.status(200).json(result);
+    } catch (error) {
+      console.error(
+        `[${new Date().toISOString()}] DELETE /retirerItem/:utilisateurId/:itemId ->`,
+        (error as Error).message,
+      );
+      res.status(500).json({ message: "Database error" });
+    }
+  },
+);
+
+// PATCH -- modifier la quantite d'un item du panier de l'utilisateur
+router.patch(
+  "/modifierQuantite/:utilisateurId/:itemId/:nouvelleQuantite",
+  async (req: Request, res: Response) => {
+    try {
+      const collection = getPaniers();
+      const utilisateur = new ObjectId(req.params.utilisateurId as string);
+      const item = new ObjectId(req.params.itemId as string);
+      const quantite = Number(req.params.nouvelleQuantite);
+
+      const result = await miseAJourQuantiteItem(
+        collection,
+        utilisateur,
+        item,
+        quantite,
+      );
+
+      res.status(200).json(result);
+    } catch (error) {
+      console.error(
+        `[${new Date().toISOString()}] PATCH /modifierQuantite/:utilisateurId/:itemId ->`,
+        (error as Error).message,
+      );
+      res.status(500).json({ message: "Database error" });
+    }
+  },
+);
+
+// PUT -- vider le panier d'un utilisateur
+router.put(
+  "/viderPanier/:utilisateurId",
+  async (req: Request, res: Response) => {
+    try {
+      const collection = getPaniers();
+      const utilisateur = new ObjectId(req.params.utilisateurId as string);
+
+      const result = await viderPanier(collection, utilisateur);
+
+      res.status(200).json(result);
+    } catch (error) {
+      console.error(
+        `[${new Date().toISOString()}] DELETE /viderPanier/:utilisateurId ->`,
         (error as Error).message,
       );
       res.status(500).json({ message: "Database error" });
