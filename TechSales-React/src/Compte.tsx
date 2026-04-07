@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { HeaderComponent } from "./main";
-import { FooterComponent } from "./main";
+import { useNavigate } from "react-router";
+import { HeaderComponent, FooterComponent } from "./main";
 
 type Profil = {
   id_utilisateur: number;
@@ -14,6 +14,13 @@ type Profil = {
 export default function Compte() {
   const [profil, setProfil] = useState<Profil | null>(null);
   const [messageErreur, setMessageErreur] = useState("");
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("utilisateur");
+    navigate("/SeConnecter");
+  }
 
   useEffect(() => {
     // Récupérer le token JWT depuis le localStorage
@@ -49,34 +56,76 @@ export default function Compte() {
   }, []);
 
   return (
-    <div className="container-fluid text-center p-0">
+    <div className="container-fluid p-0 min-vh-100 d-flex flex-column">
       <HeaderComponent />
-      <h2>Mon compte</h2>
 
-      {messageErreur ? <p className="text-danger">{messageErreur}</p> : null}
+      <main
+        className="flex-grow-1 d-flex justify-content-center align-items-center py-5"
+        style={{ backgroundColor: "#f5f3fa" }}
+      >
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-12 col-md-8 col-lg-6">
+              <div
+                className="card shadow-lg border-0"
+                style={{ borderRadius: "20px" }}
+              >
+                <div className="card-body p-4 p-md-5">
+                  <h2
+                    className="text-center mb-4"
+                    style={{ color: "#40365a", fontWeight: "bold" }}
+                  >
+                    Mon compte
+                  </h2>
 
-      {profil ? (
-        <div className="card p-4 mt-3">
-          <p>
-            <strong>ID :</strong> {profil.id_utilisateur}
-          </p>
-          <p>
-            <strong>Nom :</strong> {profil.nom}
-          </p>
-          <p>
-            <strong>Prénom :</strong> {profil.prenom}
-          </p>
-          <p>
-            <strong>Courriel :</strong> {profil.courriel}
-          </p>
-          <p>
-            <strong>Adresse :</strong> {profil.adresse}
-          </p>
-          <p>
-            <strong>Rôle :</strong> {profil.role}
-          </p>
+                  {messageErreur ? (
+                    <p className="text-danger text-center">{messageErreur}</p>
+                  ) : null}
+
+                  {!profil && !messageErreur ? (
+                    <p className="text-center">Chargement du profil...</p>
+                  ) : null}
+
+                  {profil ? (
+                    <>
+                      <div className="mb-3">
+                        <p className="mb-2">
+                          <strong>ID :</strong> {profil.id_utilisateur}
+                        </p>
+                        <p className="mb-2">
+                          <strong>Nom :</strong> {profil.nom}
+                        </p>
+                        <p className="mb-2">
+                          <strong>Prénom :</strong> {profil.prenom}
+                        </p>
+                        <p className="mb-2">
+                          <strong>Courriel :</strong> {profil.courriel}
+                        </p>
+                        <p className="mb-2">
+                          <strong>Adresse :</strong> {profil.adresse}
+                        </p>
+                        <p className="mb-0">
+                          <strong>Rôle :</strong> {profil.role}
+                        </p>
+                      </div>
+
+                      <div className="d-grid mt-4">
+                        <button
+                          className="btn btn-danger"
+                          onClick={handleLogout}
+                        >
+                          Se déconnecter
+                        </button>
+                      </div>
+                    </>
+                  ) : null}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      ) : null}
+      </main>
+
       <FooterComponent />
     </div>
   );

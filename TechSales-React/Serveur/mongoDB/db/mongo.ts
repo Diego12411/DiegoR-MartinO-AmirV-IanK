@@ -1,5 +1,6 @@
 import { Collection, Db, MongoClient } from "mongodb";
 import { Panier } from "../models/panier.js";
+import { Produit } from "../models/produit.js";
 
 let mongoClient: MongoClient;
 
@@ -24,6 +25,8 @@ export function getTechSalesDB(): Db {
 export function getPaniers(): Collection<Panier> {
   return getTechSalesDB().collection("panier");
 }
+
+// Reference la collection "produit"
 export function getProduits(): Collection<Produit> {
   return getTechSalesDB().collection("produits");
 }

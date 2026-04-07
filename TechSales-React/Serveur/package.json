@@ -7,7 +7,7 @@
   "type": "module",
   "main": "server.ts",
   "scripts": {
-    "dev": "tsx mongodb/server.ts"
+    "dev": "tsx mongoDB/server.ts"
   },
   "dependencies": {
     "@types/express": "^5.0.6",
