@@ -18,3 +18,10 @@ export async function updateUtilisateur(
         { $set: updates  }
     )
 }
+
+export async function deleteUtilisateur(
+    collection: Collection<Utilisateur>,
+    id:string,
+) {
+    await collection.deleteOne({_id: new ObjectId(id)})
+}

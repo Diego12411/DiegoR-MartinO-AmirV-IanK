@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { updateUtilisateur, createUtilisateur } from "../controllers/utilisateurController.js";
+import { updateUtilisateur, createUtilisateur, deleteUtilisateur } from "../controllers/utilisateurController.js";
 import { getUtilisateurs } from "../db/mongo.js";
 import { ObjectId } from "mongodb";
 
@@ -9,6 +9,7 @@ const router = Router();
 router.get("/test", async (req: Request, res:Response) => {
     res.send("Endpoint test reussis!");
 });
+
 
 router.post("/creerCompte", async (req: Request, res: Response) => {
     try {
@@ -51,3 +52,24 @@ router.put("/pageAdmin/:id", async (req: Request, res: Response) => {
     }
 },
 );
+
+router.delete("/pageAdmin/:id", async (req: Request, res: Response) => {
+    try{
+        const collection = getUtilisateurs();
+        const idUtilisateur = req.params.id as string;
+
+        if(!ObjectId.isValid(idUtilisateur)) {
+            return res.status(400).json({ message: "ID invalide" });
+        }
+
+        const resultat = await deleteUtilisateur(collection, idUtilisateur);
+        res.status(200).json(resultat);
+    } catch (error)
+    {
+                      console.error(
+        `[${new Date().toISOString()}] DELETE /pageAdmin ->`,
+        (error as Error).message,
+      );
+          res.status(500).json({ message: "Erreur serveur" });        
+    }
+})
