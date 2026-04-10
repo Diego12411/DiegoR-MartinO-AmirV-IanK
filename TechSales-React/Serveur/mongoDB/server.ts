@@ -2,13 +2,7 @@ import express from "express";
 import panierRouter from "./routes/panierRouter.js";
 import utilisateurRouter from "./routes/utilisateurRouter.js";
 import { config } from "dotenv";
-import { connectToMongo, getProduits } from "./db/mongo.js";
-import {
-  createProduit,
-  getProduitById,
-  updateProduit,
-  deleteProduitById,
-} from "./controllers/produitController.js";
+import { connectToMongo } from "./db/mongo.js";
 
 config();
 
@@ -35,6 +29,6 @@ app.listen(process.env.PORT);
  * -> Demarrez le serveur avec commande : npm run dev
  * -> Pour acceder a vos endpoints (voici un exemple avec la collection panier) : http://localhost:4000/paniers/testTest
  *  -> le port c'est 4000, definie dans vos fichier .env
- *  -> chemin "/paniers" est defini dans server.ts a la ligne #26
+ *  -> chemin "/paniers" est defini dans server.ts a la ligne #20
  *  -> endpoint "/testTest" est definie dans le fichier routes/panierRouter.ts
  */
