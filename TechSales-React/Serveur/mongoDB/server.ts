@@ -1,5 +1,6 @@
 import express from "express";
 import panierRouter from "./routes/panierRouter.js";
+import utilisateurRouter from "./routes/utilisateurRouter.js";
 import { config } from "dotenv";
 import { connectToMongo, getProduits } from "./db/mongo.js";
 import {
@@ -23,6 +24,7 @@ app.use(express.json());
 
 // Ajouter les routes dans cette section ci-dessous
 app.use("/paniers", panierRouter);
+app.use("/utilisateurs", utilisateurRouter);
 
 // listener
 app.listen(process.env.PORT);
