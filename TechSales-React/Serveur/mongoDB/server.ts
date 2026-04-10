@@ -1,6 +1,7 @@
 import express from "express";
 import panierRouter from "./routes/panierRouter.js";
 import utilisateurRouter from "./routes/utilisateurRouter.js";
+import cors from "cors";
 import { config } from "dotenv";
 import { connectToMongo } from "./db/mongo.js";
 
@@ -15,6 +16,11 @@ await connectToMongo(uri);
 
 const app = express();
 app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  }),
+);
 
 // Ajouter les routes dans cette section ci-dessous
 app.use("/paniers", panierRouter);
