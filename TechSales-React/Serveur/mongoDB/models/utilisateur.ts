@@ -8,5 +8,5 @@ export interface Utilisateur {
     courriel: string;
     motDePasse: string;
     role: string;
-    adresse: Adresse;
+    adresse?: Adresse;
 }
