@@ -23,6 +23,7 @@ console.log("Connexion à MongoDB réussie !! :)");
 
 const app = express();
 app.use(express.json());
+//cors
 
 // Ajouter les routes dans cette section ci-dessous
 app.use("/paniers", panierRouter);
