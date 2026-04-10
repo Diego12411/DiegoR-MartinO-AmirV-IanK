@@ -25,3 +25,9 @@ export async function deleteUtilisateur(
 ) {
     await collection.deleteOne({_id: new ObjectId(id)})
 }
+
+export async function getAllUtilisateurs(
+    collection: Collection<Utilisateur>,
+) {
+    return await collection.find({}).toArray();
+}

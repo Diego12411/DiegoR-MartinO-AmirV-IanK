@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { updateUtilisateur, createUtilisateur, deleteUtilisateur } from "../controllers/utilisateurController.js";
+import { updateUtilisateur, createUtilisateur, deleteUtilisateur, getAllUtilisateurs } from "../controllers/utilisateurController.js";
 import { getUtilisateurs } from "../db/mongo.js";
 import { ObjectId } from "mongodb";
 
@@ -11,6 +11,14 @@ router.get("/test", async (req: Request, res:Response) => {
 });
 
 
+router.get("/", async (req: Request, res: Response) => {
+    const collection = getUtilisateurs()
+
+    const resultat = await getAllUtilisateurs(collection);
+    res.status(201).json(resultat);
+}
+);
+
 router.post("/creerCompte", async (req: Request, res: Response) => {
     try {
         const collection = getUtilisateurs(); //params que le controller a besoin pour create utilisateur
@@ -18,7 +26,9 @@ router.post("/creerCompte", async (req: Request, res: Response) => {
 
         const resultat = await createUtilisateur(collection, utilisateur); //stocker le resultat de la function createUtilisateur
 
-        res.status(201).json(resultat); //creer un json qui va etre envoye en tant que res
+        res.status(201).json({
+            message: "Utilisateur créé"
+        })
     } catch (error) {
               console.error(
         `[${new Date().toISOString()}] POST /creerCompte ->`,
@@ -73,3 +83,5 @@ router.delete("/pageAdmin/:id", async (req: Request, res: Response) => {
           res.status(500).json({ message: "Erreur serveur" });        
     }
 })
+
+export default router;
