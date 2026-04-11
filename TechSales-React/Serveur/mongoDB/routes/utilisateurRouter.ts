@@ -7,6 +7,7 @@ import {
 } from "../controllers/utilisateurController.js";
 import { getUtilisateurs } from "../db/mongo.js";
 import { ObjectId } from "mongodb";
+import jwt from "jsonwebtoken";
 
 const router = Router();
 
