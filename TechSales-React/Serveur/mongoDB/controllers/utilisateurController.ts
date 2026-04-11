@@ -30,7 +30,29 @@ export async function getAllUtilisateurs(collection: Collection<Utilisateur>) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //Amir//////////////////////////////////////////////////////////////////////////////////////////////
 
-// Cherche un utilisateur par courriel dans la collection
+/**
+ * =========================================================================================
+ * RECHERCHE UTILISATEUR PAR COURRIEL
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Recherche et retourne un utilisateur dans la collection MongoDB à partir de son
+ * adresse courriel.
+ *
+ * Paramètres :
+ * - collection : Collection MongoDB contenant les utilisateurs
+ * - courriel   : Adresse courriel à rechercher
+ *
+ * Retour :
+ * - Utilisateur correspondant si trouvé
+ * - null si aucun utilisateur ne correspond au courriel fourni
+ *
+ * Remarque :
+ * Cette fonction doit être utilisée avec des données validées afin d'éviter les
+ * injections NoSQL.
+ *
+ * Auteur : Amir
+ * =========================================================================================
+ */
 export async function getUtilisateurParCourriel(
   collection: Collection<Utilisateur>,
   courriel: string,
@@ -39,12 +61,46 @@ export async function getUtilisateurParCourriel(
   return await collection.findOne({ courriel: courriel });
 }
 
-// Récupère un utilisateur par son identifiant MongoDB
+/**
+ * =========================================================================================
+ * RECHERCHER UN UTILISATEUR PAR SON IDENTIFIANT
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Recherche un utilisateur dans la collection MongoDB à partir de son identifiant.
+ *
+ * Utilisation :
+ * - Utilisé dans le middleware JWT pour retrouver l'utilisateur connecté
+ *
+ * Paramètres :
+ * - collection : collection MongoDB des utilisateurs
+ * - id : identifiant MongoDB (string)
+ *
+ * Retour :
+ * - utilisateur trouvé
+ * - null si aucun utilisateur ne correspond
+ *
+ * Auteur : Amir
+ * =========================================================================================
+ */
 export async function getUtilisateurParId(
   collection: Collection<Utilisateur>,
   id: string,
 ): Promise<Utilisateur | null> {
-  return await collection.findOne({ _id: new ObjectId(id) });
+  try {
+    // Convertir l'id string en ObjectId MongoDB
+    const objectId = new ObjectId(id);
+
+    // Rechercher l'utilisateur dans la collection
+    return await collection.findOne({ _id: objectId });
+  } catch (error) {
+    // Si l'id n'est pas valide ou erreur MongoDB
+    console.error(
+      `[${new Date().toISOString()}] getUtilisateurParId ->`,
+      (error as Error).message,
+    );
+
+    return null;
+  }
 }
 
 //Amir////////////////////////////////////////////////////////////////////////////////////////////

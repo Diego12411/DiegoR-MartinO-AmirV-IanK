@@ -25,5 +25,5 @@ declare global {
     }
   }
 }
-
+// On exporte un objet vide pour transformer ce fichier en module et éviter les conflits de types globaux
 export {};
