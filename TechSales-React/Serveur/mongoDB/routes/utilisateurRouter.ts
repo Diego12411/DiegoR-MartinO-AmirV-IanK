@@ -179,6 +179,58 @@ router.post("/login", async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * =========================================================================================
+ * PROFIL UTILISATEUR CONNECTÉ
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Retourne les informations du profil de l'utilisateur connecté à partir
+ * du token JWT envoyé dans le header Authorization.
+ *
+ * Sécurité :
+ * - Route protégée par le middleware authenticateToken
+ *
+ * Réponse :
+ * - Succès : retourne les informations de l'utilisateur sans le mot de passe
+ * - Échec : message d'erreur si le token est invalide ou absent
+ *
+ * Route :
+ * GET /utilisateurs/profil
+ *
+ * Auteur :
+ * Amir
+ * =========================================================================================
+ */
+router.get(
+  "/profil",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    try {
+      // Vérifier que l'utilisateur est présent dans la requête
+      if (!req.user) {
+        return res.status(401).json({
+          message: "Utilisateur non authentifié.",
+        });
+      }
+
+      // Retirer le mot de passe avant d'envoyer la réponse
+      const { motDePasse, ...utilisateurSansMotDePasse } = req.user;
+
+      // Retourner le profil utilisateur
+      return res.status(200).json(utilisateurSansMotDePasse);
+    } catch (error) {
+      console.error(
+        `[${new Date().toISOString()}] GET /utilisateurs/profil ->`,
+        (error as Error).message,
+      );
+
+      return res.status(500).json({
+        message: "Erreur serveur.",
+      });
+    }
+  },
+);
+
 //Amir//////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
