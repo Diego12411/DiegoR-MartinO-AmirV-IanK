@@ -14,8 +14,7 @@ import { Utilisateur } from "../models/utilisateur.js";
  * Exemple :
  * req.user
  *
- * Auteur :
- * Amir
+ * Auteur : Amir
  * =========================================================================================
  */
 declare global {

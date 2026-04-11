@@ -11,8 +11,7 @@ import { JwtPayload } from "jsonwebtoken";
  * - Permet de typer correctement les données récupérées après vérification du token
  * - Contient l'identifiant de l'utilisateur connecté
  *
- * Auteur :
- * Amir
+ * Auteur : Amir
  * =========================================================================================
  */
 export interface MyTokenPayload extends JwtPayload {
