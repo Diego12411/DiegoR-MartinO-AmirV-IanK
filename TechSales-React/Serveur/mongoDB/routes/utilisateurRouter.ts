@@ -159,10 +159,12 @@ router.post("/login", async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error(
+      // Log détaillé de l'erreur avec timestamp
       `[${new Date().toISOString()}] POST /login ->`,
       (error as Error).message,
     );
 
+    // Réponse générique en cas d'erreur serveur
     res.status(500).json({
       message: "Erreur serveur",
     });
