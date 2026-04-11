@@ -108,66 +108,72 @@ router.delete("/pageAdmin/:id", async (req: Request, res: Response) => {
  *
  * Réponse :
  * - Succès : retourne les informations de l'utilisateur (sans mot de passe)
+ *   ainsi qu'un token JWT
  * - Échec : message d'erreur approprié
  *
  * Route :
- * POST /login
+ * POST /utilisateurs/login
  *
- * Auteur :
- * Amir
+ * Auteur : Amir
  * =========================================================================================
  */
 router.post("/login", async (req: Request, res: Response) => {
   try {
-    // Récupérer la collection MongoDB
+    // Récupérer la collection "utilisateurs"
     const collection = getUtilisateurs();
 
-    // Récupérer les données envoyées par le frontend
+    // Extraire les informations envoyées par le frontend
     const { courriel, motDePasse } = req.body;
 
-    // Vérifier si les champs sont remplis
+    // Vérifier que les champs requis sont présents
     if (!courriel || !motDePasse) {
       return res.status(400).json({
         message: "Courriel et mot de passe requis.",
       });
     }
 
-    // Chercher l'utilisateur dans MongoDB
+    // Rechercher l'utilisateur par son courriel
     const utilisateur = await collection.findOne({ courriel });
 
-    // Vérifier si utilisateur existe
+    // Vérifier si l'utilisateur existe
     if (!utilisateur) {
       return res.status(401).json({
         message: "Utilisateur introuvable.",
       });
     }
 
-    // Vérifier le mot de passe (version simple sans bcrypt)
+    // Vérifier que le mot de passe correspond
+    // Version temporaire sans bcrypt
     if (utilisateur.motDePasse !== motDePasse) {
       return res.status(401).json({
         message: "Mot de passe incorrect.",
       });
     }
 
-    // Ne pas envoyer le mot de passe au frontend
+    // Générer un token JWT contenant l'identifiant de l'utilisateur
+    const token = jwt.sign(
+      { id: utilisateur._id?.toString() },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "1h" },
+    );
+
+    // Retirer le mot de passe avant d'envoyer la réponse
     const { motDePasse: _, ...utilisateurSansMotDePasse } = utilisateur;
 
-    // Réponse
-    res.status(200).json({
-      message: "Connexion réussie",
+    // Retourner la réponse de succès
+    return res.status(200).json({
+      message: "Connexion réussie.",
+      token,
       utilisateur: utilisateurSansMotDePasse,
-      token: "token-temporaire", // on remplacera plus tard par JWT
     });
   } catch (error) {
     console.error(
-      // Log détaillé de l'erreur avec timestamp
-      `[${new Date().toISOString()}] POST /login ->`,
+      `[${new Date().toISOString()}] POST /utilisateurs/login ->`,
       (error as Error).message,
     );
 
-    // Réponse générique en cas d'erreur serveur
-    res.status(500).json({
-      message: "Erreur serveur",
+    return res.status(500).json({
+      message: "Erreur serveur.",
     });
   }
 });
