@@ -155,7 +155,8 @@ router.post("/login", async (req: Request, res: Response) => {
     const token = jwt.sign(
       { id: utilisateur._id?.toString() },
       process.env.JWT_SECRET as string,
-      { expiresIn: "1h" },
+      // Token valide pendant 1 minute pour les tests, à ajuster en production pour 1h ou plus
+      { expiresIn: "1m" },
     );
 
     // Retirer le mot de passe avant d'envoyer la réponse
