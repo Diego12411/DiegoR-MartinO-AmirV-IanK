@@ -89,4 +89,63 @@ router.delete("/pageAdmin/:id", async (req: Request, res: Response) => {
   }
 });
 
+//Amir//////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+
+// =========================================================================================
+// LOGIN utilisateur (SeConnecter)
+// =========================================================================================
+router.post("/login", async (req: Request, res: Response) => {
+  try {
+    // Récupérer la collection MongoDB
+    const collection = getUtilisateurs();
+
+    // Récupérer les données envoyées par le frontend
+    const { courriel, motDePasse } = req.body;
+
+    // Vérifier si les champs sont remplis
+    if (!courriel || !motDePasse) {
+      return res.status(400).json({
+        message: "Courriel et mot de passe requis.",
+      });
+    }
+
+    // Chercher l'utilisateur dans MongoDB
+    const utilisateur = await collection.findOne({ courriel });
+
+    // Vérifier si utilisateur existe
+    if (!utilisateur) {
+      return res.status(401).json({
+        message: "Utilisateur introuvable.",
+      });
+    }
+
+    // Vérifier le mot de passe (version simple sans bcrypt)
+    if (utilisateur.motDePasse !== motDePasse) {
+      return res.status(401).json({
+        message: "Mot de passe incorrect.",
+      });
+    }
+
+    // Ne pas envoyer le mot de passe au frontend
+    const { motDePasse: _, ...utilisateurSansMotDePasse } = utilisateur;
+
+    // Réponse
+    res.status(200).json({
+      message: "Connexion réussie",
+      utilisateur: utilisateurSansMotDePasse,
+      token: "token-temporaire", // on remplacera plus tard par JWT
+    });
+  } catch (error) {
+    console.error(
+      `[${new Date().toISOString()}] POST /login ->`,
+      (error as Error).message,
+    );
+
+    res.status(500).json({
+      message: "Erreur serveur",
+    });
+  }
+});
+
 export default router;
