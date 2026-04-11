@@ -89,12 +89,33 @@ router.delete("/pageAdmin/:id", async (req: Request, res: Response) => {
   }
 });
 
-//Amir//////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
+//Amir//////////////////////////////////////////////////////////////////////////////////////
 
-// =========================================================================================
-// LOGIN utilisateur (SeConnecter)
-// =========================================================================================
+/**
+ * =========================================================================================
+ * AUTHENTIFICATION UTILISATEUR (LOGIN)
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Permet à un utilisateur de se connecter à son compte en validant son courriel
+ * et son mot de passe.
+ *
+ * Vérifications :
+ * - Champs requis (courriel, mot de passe)
+ * - Existence de l'utilisateur
+ * - Correspondance du mot de passe
+ *
+ * Réponse :
+ * - Succès : retourne les informations de l'utilisateur (sans mot de passe)
+ * - Échec : message d'erreur approprié
+ *
+ * Route :
+ * POST /login
+ *
+ * Auteur :
+ * Amir
+ * =========================================================================================
+ */
 router.post("/login", async (req: Request, res: Response) => {
   try {
     // Récupérer la collection MongoDB
