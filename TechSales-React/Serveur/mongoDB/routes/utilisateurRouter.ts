@@ -8,6 +8,7 @@ import {
 import { getUtilisateurs } from "../db/mongo.js";
 import { ObjectId } from "mongodb";
 import jwt from "jsonwebtoken";
+import { authenticateToken } from "../middleware/jwtToken.js";
 
 const router = Router();
 
