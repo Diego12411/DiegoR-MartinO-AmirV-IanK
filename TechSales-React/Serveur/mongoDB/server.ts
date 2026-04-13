@@ -3,6 +3,7 @@ import panierRouter from "./routes/panierRouter.js";
 import utilisateurRouter from "./routes/utilisateurRouter.js";
 import { config } from "dotenv";
 import { connectToMongo } from "./db/mongo.js";
+import cors from "cors";
 
 config();
 
@@ -15,6 +16,7 @@ await connectToMongo(uri);
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 //cors
 
 // Ajouter les routes dans cette section ci-dessous
