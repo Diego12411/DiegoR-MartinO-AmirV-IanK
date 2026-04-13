@@ -13,6 +13,7 @@ if (!uri) {
 
 await connectToMongo(uri);
 
+// Initialisation de l'application Express
 const app = express();
 app.use(express.json());
 
