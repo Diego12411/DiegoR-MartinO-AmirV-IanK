@@ -5,6 +5,10 @@ import { Produit } from "../models/produit.js";
 
 const router = Router();
 
+/* 
+POST - Créer un produit à l'aide d'un raw JSON 
+(voir ScriptsAjoutProduits/Script_CreerProduits_NoSql.txt)
+*/
 router.post("/create", async (req, res) => {
   try {
     const produit: Produit = req.body;
@@ -16,6 +20,9 @@ router.post("/create", async (req, res) => {
   }
 });
 
+/* 
+GET - Afficher un produit existant à l'aide de son id
+*/
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -30,6 +37,14 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+/*
+PUT - Mettre à jour un produit existant à l'aide de son id en ajoutant un raw JSON
+Exemple:
+{
+  "prix": 1699.99,
+  "stock": 10
+}
+*/
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -42,6 +57,9 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+/*
+DELETE - Supprimer un produit existant à l'aide de son id
+*/
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;

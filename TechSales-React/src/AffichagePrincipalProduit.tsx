@@ -1,11 +1,11 @@
 import { HeaderComponent, FooterComponent } from "./main.tsx";
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router";
 import logo from "./assets/logo.png";
 import sansImage from "./assets/ProduitSansImage.png";
 
 type Produit = {
-  id_produit: number;
-  specs_id_specs: number;
+  _id: string;
   nom: string;
   description: string;
   prix: number;
@@ -14,7 +14,7 @@ type Produit = {
 };
 
 function BoutonProduit({ produit }: { produit: Produit }) {
-  const urlDetails = `detailsProduit/:${produit.id_produit}`;
+  const urlDetails = `/detailsProduit/${produit._id}`;
 
   return (
     <div className="col mb-4">
@@ -41,7 +41,15 @@ function BoutonProduit({ produit }: { produit: Produit }) {
 }
 
 export default function AffichagePrincipalProduit() {
+  const navigate = useNavigate();
   const [produits, setProduits] = useState<Produit[]>([]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProduits({
+      ...produits,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   useEffect(() => {
     fetch("http://localhost:4000/produits")
@@ -80,7 +88,7 @@ export default function AffichagePrincipalProduit() {
           </div>
           <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-2">
             {produits.map((produit) => (
-              <BoutonProduit key={produit.id_produit} produit={produit} />
+              <BoutonProduit key={produit._id} produit={produit} />
             ))}
           </div>
         </div>

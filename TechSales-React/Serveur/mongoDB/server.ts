@@ -1,6 +1,8 @@
 import express from "express";
 import panierRouter from "./routes/panierRouter.js";
 import utilisateurRouter from "./routes/utilisateurRouter.js";
+import cors from 'cors';
+import produitRouter from "./routes/produitRouter.js";
 import { config } from "dotenv";
 import { connectToMongo, getProduits } from "./db/mongo.js";
 import {
@@ -23,10 +25,16 @@ console.log("Connexion à MongoDB réussie !! :)");
 
 const app = express();
 app.use(express.json());
+app.use(
+  cors({
+    origin: process.env.PORT_URI
+  })
+)
 
 // Ajouter les routes dans cette section ci-dessous
 app.use("/paniers", panierRouter);
 app.use("/utilisateurs", utilisateurRouter);
+app.use("/produits", produitRouter);
 
 // Je l'ai changé, car c'est risqué comme avant. Port peut etre undifined.
 // Avant : app.listen(process.env.PORT);
