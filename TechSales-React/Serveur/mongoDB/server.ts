@@ -21,7 +21,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.PORT_URI
+    origin: process.env.PORT_URI // À mettre, dans .env, le port 5173
   })
 )
 

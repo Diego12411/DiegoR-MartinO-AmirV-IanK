@@ -1,11 +1,12 @@
 import { HeaderComponent, FooterComponent } from "./main.tsx";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router";
+import "./AffichagePrincipalProduit.css";
 import logo from "./assets/logo.png";
 import sansImage from "./assets/ProduitSansImage.png";
 
 type Produit = {
-  _id: string;
+  _id: string; // Changé en _id (format en react)
   specs_id_specs: number;
   nom: string;
   description: string;
@@ -14,26 +15,32 @@ type Produit = {
   image_url: string;
 };
 
+// Bouton pour l'affichage des produits dans la page avec les détails (nom, prix, image)
 function BoutonProduit({ produit }: { produit: Produit }) {
   const urlDetails = `/detailsProduit/${produit._id}`;
 
   return (
     <div className="col mb-4">
-      <div className="card shadow border-dark bg-light col p-0">
+      <div className="card shadow border-dark bg-light p-0">
         <div className="card-body text-dark">
           <img
-            className="card-img-top"
+            className="card-img-top img-produit"
             src={produit.image_url || sansImage}
             alt={produit.nom}
+            style={{ width: "210px", height: "210px", objectFit: "cover" }}
           />
-          <a
-            href={urlDetails}
-            className="btn btn-transparent p-0 fw-bold text-primary"
-          >
-            {produit.nom}
-          </a>
-          <div className="me-2">
-            <p className="text-dark card-text">{produit.prix}$</p>
+          <div style={{ height: 100 }}>
+            <div style={{ position: "absolute", bottom: 10 }}>
+              <a
+                href={urlDetails}
+                className="fw-bold text-primary d-block text-truncate"
+              >
+                {produit.nom}
+              </a>
+              <div className="me-2">
+                <p className="text-dark card-text">{produit.prix}$</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -41,9 +48,11 @@ function BoutonProduit({ produit }: { produit: Produit }) {
   );
 }
 
+// Fonction principale
 export default function AffichagePrincipalProduit() {
   const navigate = useNavigate();
   const [produits, setProduits] = useState<Produit[]>([]);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProduits({
@@ -52,6 +61,23 @@ export default function AffichagePrincipalProduit() {
     });
   };
 
+  // Rouler le 'scrollbar' à gauche
+  const scrollLeft = () => {
+    scrollRef.current?.scrollBy({
+      left: -300,
+      behavior: "smooth",
+    });
+  };
+
+  // Rouler le 'scrollbar' à droite
+  const scrollRight = () => {
+    scrollRef.current?.scrollBy({
+      left: 300,
+      behavior: "smooth",
+    });
+  };
+
+  // Cherche TOUS les produits (voir produitRouter)
   useEffect(() => {
     fetch("http://localhost:4000/produits")
       .then((res) => res.json())
@@ -68,7 +94,8 @@ export default function AffichagePrincipalProduit() {
             <div className="card shadow-lg bg-transparent col p-0">
               <div className="row card-body text-dark">
                 <div className="d-flex align-items-center ">
-                  <img className="img-fluid" src={logo} alt="Image"></img>
+                  <img className="img-fluid" src={logo} alt="Image"></img>{" "}
+                  {/* À changer plus tard */}
                 </div>
               </div>
             </div>
@@ -78,18 +105,35 @@ export default function AffichagePrincipalProduit() {
               <p className="fw-bold">█ Nos produits</p>
             </div>
             <div className="col d-flex justify-content-end">
-              <button className="btn btn-light rounded-circle border border-dark text-dark m-1">
+              <button
+                className="btn btn-light rounded-circle border border-dark text-dark m-1"
+                onClick={scrollLeft}
+              >
                 ←
               </button>
-              <button className="btn btn-light rounded-circle tborder border-dark ext-dark m-1">
+
+              <button
+                className="btn btn-light rounded-circle border border-dark text-dark m-1"
+                onClick={scrollRight}
+              >
                 →
               </button>
             </div>
             <h3>Explorez nos produits</h3>
           </div>
-          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-2">
+          {/* Affichage des produits changée dans un 'scrollbar' horizontal */}
+          <div
+            ref={scrollRef}
+            className="d-flex overflow-auto gap-4 mt-2"
+            style={{ scrollBehavior: "smooth" }}
+          >
             {produits.map((produit) => (
-              <BoutonProduit key={produit._id} produit={produit} />
+              <div
+                style={{ minWidth: "250px", maxWidth: "250px" }}
+                key={produit._id}
+              >
+                <BoutonProduit produit={produit} />
+              </div>
             ))}
           </div>
         </div>
