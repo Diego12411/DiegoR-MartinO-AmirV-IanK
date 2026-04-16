@@ -81,7 +81,7 @@ export default function AfficherPageAdmin() {
       setMessageDelete("*Il manque des champs obligatoires*");
       return;
     }
-    fetch("http://localhost:4000/utilisateur", {
+    fetch("http://localhost:4000/utilisateurs/pageAdmin/:id", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: idDelete }),

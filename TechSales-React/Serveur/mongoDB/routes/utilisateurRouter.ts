@@ -64,7 +64,7 @@ router.put("/pageAdmin/:id", async (req: Request, res: Response) => {
     res.status(200).json(resultat);
   } catch (error) {
     console.error(
-      `[${new Date().toISOString()}] PUT /pageAdmin ->`,
+      `[${new Date().toISOString()}] PUT /pageAdmin:id ->`,
       (error as Error).message,
     );
     res.status(500).json({ message: "Erreur serveur" });
@@ -84,7 +84,7 @@ router.delete("/pageAdmin/:id", async (req: Request, res: Response) => {
     res.status(200).json(resultat);
   } catch (error) {
     console.error(
-      `[${new Date().toISOString()}] DELETE /pageAdmin ->`,
+      `[${new Date().toISOString()}] DELETE /pageAdmin:id ->`,
       (error as Error).message,
     );
     res.status(500).json({ message: "Erreur serveur" });
