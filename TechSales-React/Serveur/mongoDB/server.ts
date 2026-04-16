@@ -4,13 +4,7 @@ import utilisateurRouter from "./routes/utilisateurRouter.js";
 import cors from 'cors';
 import produitRouter from "./routes/produitRouter.js";
 import { config } from "dotenv";
-import { connectToMongo, getProduits } from "./db/mongo.js";
-import {
-  createProduit,
-  getProduitById,
-  updateProduit,
-  deleteProduitById,
-} from "./controllers/produitController.js";
+import { connectToMongo } from "./db/mongo.js";
 
 config();
 

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {createProduit, getProduitById, updateProduit, deleteProduitById} from "../controllers/produitController.js";
+import {createProduit, getProduitById, getAllProduits, updateProduit, deleteProduitById} from "../controllers/produitController.js";
 import { getProduits } from "../db/mongo.js";
 import { Produit } from "../models/produit.js";
 
@@ -34,6 +34,19 @@ router.get("/:id", async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({message: "Erreur"});
+  }
+});
+
+/*
+GET - Afficher tous les produits
+*/
+router.get("/", async (req, res) => {
+  try {
+    const produits = await getAllProduits(getProduits());
+    return res.status(200).json(produits);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Erreur" });
   }
 });
 

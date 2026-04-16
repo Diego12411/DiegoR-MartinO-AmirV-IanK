@@ -15,6 +15,12 @@ export async function getProduitById(
   return await collection.findOne({ _id: new ObjectId(id) });
 }
 
+export async function getAllProduits(
+  collection: Collection<Produit>
+): Promise<Produit[]> {
+  return await collection.find().toArray();
+}
+
 export async function deleteProduitById(
   collection: Collection<Produit>,
   id: string,

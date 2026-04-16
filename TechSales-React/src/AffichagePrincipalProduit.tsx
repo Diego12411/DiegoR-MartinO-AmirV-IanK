@@ -6,6 +6,7 @@ import sansImage from "./assets/ProduitSansImage.png";
 
 type Produit = {
   _id: string;
+  specs_id_specs: number;
   nom: string;
   description: string;
   prix: number;
