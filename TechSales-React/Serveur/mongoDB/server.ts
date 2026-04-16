@@ -4,7 +4,6 @@ import utilisateurRouter from "./routes/utilisateurRouter.js";
 import cors from "cors";
 import { config } from "dotenv";
 import { connectToMongo } from "./db/mongo.js";
-import cors from "cors";
 
 config();
 
