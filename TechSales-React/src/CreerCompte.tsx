@@ -25,7 +25,7 @@ export default function AfficherCreerCompte() {
       setMessageCreationCompte("*Il manque des champs obligatoire");
       return;
     }
-    fetch("http://localhost:4000/utilisateur", {
+    fetch("http://localhost:4000/utilisateurs/creerCompte", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,8 +33,9 @@ export default function AfficherCreerCompte() {
       body: JSON.stringify({
         nom: nom,
         prenom: prenom,
-        mot_de_passe: motDePasse,
         courriel: email,
+        motDePasse: motDePasse,
+        role: "client",
       }),
     })
       .then((res) => res.json())
