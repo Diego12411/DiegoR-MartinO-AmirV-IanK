@@ -51,34 +51,35 @@ router.post("/creerCompte", async (req: Request, res: Response) => {
   }
 });
 
-router.put("/pageAdmin/:id", async (req: Request, res: Response) => {
+router.put("/changerUtilisateur/:courriel", async (req: Request, res: Response) => {
   try {
     const collection = getUtilisateurs(); //on get la collection utilisateur de mongDB
-    const idUtilisateur = req.params.id as string; //on get le id de lutilisateur du req de utilisateur a partir de lurl
+    const courrielUtilisateur = req.params.courriel as string; //on get le courriel de lutilisateur du req de utilisateur a partir de lurl
     const utilisateur = req.body; //get le req de utilisateur donc ce qui est a modif a partir de lurl
 
-    if (!ObjectId.isValid(idUtilisateur)) {
-      //verif que id est valide
-      return res.status(400).json({ message: "ID invalide" });
+    const verifierCourriel = await verifierExistenceUtilisateur(collection, courrielUtilisateur);
+    
+    if(verifierCourriel === null){
+      return res.status(404).json({ message: "Utilisateur introuvable"});
     }
 
     const resultat = await updateUtilisateur(
       collection,
-      idUtilisateur,
+      courrielUtilisateur,
       utilisateur,
     );
+    res.status(200).json({ message: "Utilisateur changé" });
 
-    res.status(200).json(resultat);
   } catch (error) {
     console.error(
-      `[${new Date().toISOString()}] PUT /pageAdmin:id ->`,
+      `[${new Date().toISOString()}] PUT /changerUtilisateur/:courriel ->`,
       (error as Error).message,
     );
     res.status(500).json({ message: "Erreur serveur" });
   }
 });
 
-router.delete("/pageAdmin/:courriel", async (req: Request, res: Response) => {
+router.delete("/retirerUtilisateur/:courriel", async (req: Request, res: Response) => {
   try {
     const collection = getUtilisateurs();
     const courrielUtilisateur = req.params.courriel as string;
@@ -96,7 +97,7 @@ router.delete("/pageAdmin/:courriel", async (req: Request, res: Response) => {
 
   } catch (error) {
     console.error(
-      `[${new Date().toISOString()}] DELETE /pageAdmin:courriel ->`,
+      `[${new Date().toISOString()}] DELETE /retirerUtilisateur/:courriel ->`,
       (error as Error).message,
     );
     res.status(500).json({ message: "Erreur serveur" });

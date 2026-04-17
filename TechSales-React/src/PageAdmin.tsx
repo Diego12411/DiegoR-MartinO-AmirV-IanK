@@ -80,7 +80,7 @@ export default function AfficherPageAdmin() {
       setMessageDelete("*Il manque des champs obligatoires*");
       return;
     }
-    fetch("http://localhost:4000/utilisateurs/pageAdmin/" + courrielDelete, {
+    fetch("http://localhost:4000/utilisateurs/retirerUtilisateur/" + courrielDelete, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ courriel: courrielDelete }),
@@ -93,7 +93,6 @@ export default function AfficherPageAdmin() {
           setMessageDelete(data.message);
         }
       })
-      .catch((err) => console.error(err));
   }
 
   function ModifierUtilisateurBouttonClicked() {
@@ -101,13 +100,13 @@ export default function AfficherPageAdmin() {
       setMessageUpdate("*Il manque des champs obligatoires*");
       return;
     }
-    fetch("http://localhost:4000/utilisateurs/pageAdmin/" + courrielUpdate, {
+    fetch("http://localhost:4000/utilisateurs/changerUtilisateur/" + courrielUpdate, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         nom: nom,
         prenom: prenom,
-        mot_de_passe: motDePasse,
+        motDePasse: motDePasse,
         courriel: courrielUpdate,
         role: role,
       }),

@@ -10,12 +10,12 @@ export async function createUtilisateur(
 
 export async function updateUtilisateur(
     collection: Collection<Utilisateur>,
-    id:string,
+    courriel:string,
     utilisateur: Utilisateur //req de express qui contient quoi modif
 ) {
     await collection.updateOne( 
-        { _id: new ObjectId(id) }, 
-        { $set: utilisateur  }
+        {courriel}, 
+        {$set: utilisateur }
     )
 }
 
