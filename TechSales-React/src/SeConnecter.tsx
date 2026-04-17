@@ -21,7 +21,7 @@ export default function SeConnecter() {
 
     setMessageErreur("");
 
-    fetch("http://localhost:4000//utilisateurs/login", {
+    fetch("http://localhost:4000//utilisateurs/connexion", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -50,7 +50,7 @@ export default function SeConnecter() {
         if (data.utilisateur.role === "admin") {
           navigate("/PageAdmin");
         } else {
-          navigate("/compte");
+          navigate("/Compte");
         }
       })
       .catch((err) => {
