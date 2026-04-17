@@ -46,7 +46,7 @@ export default function AfficherPageAdmin() {
   const [nom, setNom] = useState("");
   const [prenom, setPrenom] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("Client");
   const [messageDelete, setMessageDelete] = useState("");
   const [messageUpdate, setMessageUpdate] = useState("");
 
@@ -80,11 +80,14 @@ export default function AfficherPageAdmin() {
       setMessageDelete("*Il manque des champs obligatoires*");
       return;
     }
-    fetch("http://localhost:4000/utilisateurs/retirerUtilisateur/" + courrielDelete, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ courriel: courrielDelete }),
-    })
+    fetch(
+      "http://localhost:4000/utilisateurs/retirerUtilisateur/" + courrielDelete,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ courriel: courrielDelete }),
+      },
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.message === "Utilisateur introuvable") {
@@ -92,7 +95,7 @@ export default function AfficherPageAdmin() {
         } else if (data.message === "Utilisateur supprimé") {
           setMessageDelete(data.message);
         }
-      })
+      });
   }
 
   function ModifierUtilisateurBouttonClicked() {
@@ -100,17 +103,20 @@ export default function AfficherPageAdmin() {
       setMessageUpdate("*Il manque des champs obligatoires*");
       return;
     }
-    fetch("http://localhost:4000/utilisateurs/changerUtilisateur/" + courrielUpdate, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        nom: nom,
-        prenom: prenom,
-        motDePasse: motDePasse,
-        courriel: courrielUpdate,
-        role: role,
-      }),
-    })
+    fetch(
+      "http://localhost:4000/utilisateurs/changerUtilisateur/" + courrielUpdate,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nom: nom,
+          prenom: prenom,
+          motDePasse: motDePasse,
+          courriel: courrielUpdate,
+          role: role,
+        }),
+      },
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.message === "Utilisateur introuvable") {
@@ -260,8 +266,7 @@ export default function AfficherPageAdmin() {
                     onChange={(e) => setPrenom(e.target.value)}
                   ></input>
                 </div>
-                <div className="form-group text-start">
-                </div>
+                <div className="form-group text-start"></div>
                 <div className="form-group text-start">
                   <input
                     type="password"

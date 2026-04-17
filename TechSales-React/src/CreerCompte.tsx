@@ -35,7 +35,7 @@ export default function AfficherCreerCompte() {
         prenom: prenom,
         courriel: courriel,
         motDePasse: motDePasse,
-        role: "client",
+        role: "Client",
       }),
     })
       .then((res) => res.json())
