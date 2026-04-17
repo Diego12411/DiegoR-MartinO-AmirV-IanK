@@ -106,6 +106,8 @@ router.patch(
         return;
       }
 
+      // TODO: verifie le changement apres avoir retire le prix du panier, faire un appel a la methode dans produitController pour acceder au prix du produit
+
       if (typeof prix !== "number" || quantite <= 0) {
         res.status(400).json({ message: "prix non valide" });
         return;
