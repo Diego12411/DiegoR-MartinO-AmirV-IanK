@@ -28,7 +28,7 @@ export default function SeConnecter() {
       },
       body: JSON.stringify({
         courriel: email,
-        mot_de_passe: motDePasse,
+        motDePasse: motDePasse,
       }),
     })
       .then((res) => {
