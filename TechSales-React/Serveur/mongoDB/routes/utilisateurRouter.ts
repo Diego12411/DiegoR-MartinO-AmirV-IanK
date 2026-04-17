@@ -132,7 +132,7 @@ router.delete("/retirerUtilisateur/:courriel", async (req: Request, res: Respons
  * Auteur : Amir
  * =========================================================================================
  */
-router.post("/login", async (req: Request, res: Response) => {
+router.post("/connexion", async (req: Request, res: Response) => {
   try {
     // Récupérer la collection "utilisateurs"
     const collection = getUtilisateurs();
@@ -184,7 +184,7 @@ router.post("/login", async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error(
-      `[${new Date().toISOString()}] POST /utilisateurs/login ->`,
+      `[${new Date().toISOString()}] POST /utilisateurs/connexion ->`,
       (error as Error).message,
     );
 
