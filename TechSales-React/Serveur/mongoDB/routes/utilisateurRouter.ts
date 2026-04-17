@@ -4,11 +4,13 @@ import {
   createUtilisateur,
   deleteUtilisateur,
   getAllUtilisateurs,
+  verifierExistenceUtilisateur,
 } from "../controllers/utilisateurController.js";
 import { getUtilisateurs } from "../db/mongo.js";
 import { ObjectId } from "mongodb";
 import jwt from "jsonwebtoken";
 import { authenticateToken } from "../middleware/jwtToken.js";
+import { verifierExistenceItem } from "../controllers/panierController.js";
 
 const router = Router();
 
@@ -29,9 +31,14 @@ router.post("/creerCompte", async (req: Request, res: Response) => {
   try {
     const collection = getUtilisateurs(); //params que le controller a besoin pour create utilisateur
     const utilisateur = req.body; //params que le controller a besoin pour create utilisateur
+    const courriel = req.body.courriel as string;
+
+    const verifierCourrielExistant = await verifierExistenceUtilisateur(collection, courriel);
+    if(verifierCourrielExistant !== null){
+      return res.status(400).json({ message: "Un Compte est déja associé à ce courriel" });
+    }
 
     const resultat = await createUtilisateur(collection, utilisateur); //stocker le resultat de la function createUtilisateur
-
     res.status(201).json({
       message: "Utilisateur créé",
     });
@@ -71,20 +78,25 @@ router.put("/pageAdmin/:id", async (req: Request, res: Response) => {
   }
 });
 
-router.delete("/pageAdmin/:id", async (req: Request, res: Response) => {
+router.delete("/pageAdmin/:courriel", async (req: Request, res: Response) => {
   try {
     const collection = getUtilisateurs();
-    const idUtilisateur = req.params.id as string;
+    const courrielUtilisateur = req.params.courriel as string;
 
-    if (!ObjectId.isValid(idUtilisateur)) {
-      return res.status(400).json({ message: "ID invalide" });
+    const resultat = await deleteUtilisateur(collection, courrielUtilisateur);
+
+    if(resultat.deletedCount === 0){
+      res.status(400).json({ message : "Utilisateur introuvable"});
+      return;
+    } else
+    {
+      res.status(200).json({ message : "Utilisateur supprimé"});
+      return;
     }
 
-    const resultat = await deleteUtilisateur(collection, idUtilisateur);
-    res.status(200).json(resultat);
   } catch (error) {
     console.error(
-      `[${new Date().toISOString()}] DELETE /pageAdmin:id ->`,
+      `[${new Date().toISOString()}] DELETE /pageAdmin:courriel ->`,
       (error as Error).message,
     );
     res.status(500).json({ message: "Erreur serveur" });

@@ -16,12 +16,12 @@ export default function AfficherCreerCompte() {
   const [BouttonDisabled, setBouttonDisabled] = useState(false);
   const [nom, setNom] = useState("");
   const [prenom, setPrenom] = useState("");
-  const [email, setEmail] = useState("");
+  const [courriel, setCourriel] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
   const [messageCreationCompte, setMessageCreationCompte] = useState("");
 
   function CreationCompteBouttonClicked() {
-    if (!nom || !prenom || !email || !motDePasse) {
+    if (!nom || !prenom || !courriel || !motDePasse) {
       setMessageCreationCompte("*Il manque des champs obligatoire");
       return;
     }
@@ -33,7 +33,7 @@ export default function AfficherCreerCompte() {
       body: JSON.stringify({
         nom: nom,
         prenom: prenom,
-        courriel: email,
+        courriel: courriel,
         motDePasse: motDePasse,
         role: "client",
       }),
@@ -109,10 +109,10 @@ export default function AfficherCreerCompte() {
                     <input
                       type="text"
                       className="form-control"
-                      value={email}
+                      value={courriel}
                       placeholder="Email"
                       onChange={(e) => {
-                        setEmail(e.target.value);
+                        setCourriel(e.target.value);
                         setMessageCreationCompte("");
                       }}
                     ></input>

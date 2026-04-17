@@ -21,13 +21,17 @@ export async function updateUtilisateur(
 
 export async function deleteUtilisateur(
   collection: Collection<Utilisateur>,
-  id: string,
+  courriel: string,
 ) {
-  await collection.deleteOne({ _id: new ObjectId(id) });
+  return await collection.deleteOne({courriel});
 }
 
 export async function getAllUtilisateurs(collection: Collection<Utilisateur>) {
   return await collection.find({}).toArray();
+}
+
+export async function verifierExistenceUtilisateur(collection: Collection<Utilisateur>, courriel: string,){
+  return await collection.findOne({courriel});
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
