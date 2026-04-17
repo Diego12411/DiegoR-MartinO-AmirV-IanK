@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 
+// Inclus dans l'objet Produit
 export interface Specification {
   _id?: ObjectId;
   type_produit: string;
