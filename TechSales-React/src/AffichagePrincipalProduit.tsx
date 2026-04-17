@@ -1,6 +1,6 @@
 import { HeaderComponent, FooterComponent } from "./main.tsx";
 import { useEffect, useState, useRef } from "react";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import "./AffichagePrincipalProduit.css";
 import logo from "./assets/logo.png";
 import sansImage from "./assets/ProduitSansImage.png";
@@ -17,20 +17,24 @@ type Produit = {
 
 // Bouton pour l'affichage des produits dans la page avec les détails (nom, prix, image)
 function BoutonProduit({ produit }: { produit: Produit }) {
+  // Cet url redirige vers la page détails produit avec ses informations par son id
   const urlDetails = `/detailsProduit/${produit._id}`;
 
   return (
     <div className="col mb-4">
       <div className="card shadow border-dark bg-light p-0">
         <div className="card-body text-dark">
-          <img
-            className="card-img-top img-produit"
-            src={produit.image_url || sansImage}
-            alt={produit.nom}
-            style={{ width: "210px", height: "210px", objectFit: "cover" }}
-          />
+          <div style={{ width: "210px", height: "210px" }}>
+            <img
+              className="card-img-top img-produit"
+              src={produit.image_url || sansImage}
+              alt={produit.nom}
+              style={{ width: "100%", height: "100%", objectFit: "contain" }}
+            />
+          </div>
           <div style={{ height: 100 }}>
             <div style={{ position: "absolute", bottom: 10 }}>
+              {/* Cliquer sur le nom du produit redirige vers sa page détails produit */}
               <a
                 href={urlDetails}
                 className="fw-bold text-primary d-block text-truncate"
@@ -53,13 +57,6 @@ export default function AffichagePrincipalProduit() {
   const navigate = useNavigate();
   const [produits, setProduits] = useState<Produit[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProduits({
-      ...produits,
-      [e.target.name]: e.target.value,
-    });
-  };
 
   // Rouler le 'scrollbar' à gauche
   const scrollLeft = () => {
@@ -93,9 +90,9 @@ export default function AffichagePrincipalProduit() {
           <div className="row">
             <div className="card shadow-lg bg-transparent col p-0">
               <div className="row card-body text-dark">
+                {/* À changer plus tard */}
                 <div className="d-flex align-items-center ">
                   <img className="img-fluid" src={logo} alt="Image"></img>{" "}
-                  {/* À changer plus tard */}
                 </div>
               </div>
             </div>
@@ -127,6 +124,7 @@ export default function AffichagePrincipalProduit() {
             className="d-flex overflow-auto gap-4 mt-2"
             style={{ scrollBehavior: "smooth" }}
           >
+            {/* Afficher les produits, chacune dans une carte */}
             {produits.map((produit) => (
               <div
                 style={{ minWidth: "250px", maxWidth: "250px" }}

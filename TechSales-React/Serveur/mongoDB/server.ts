@@ -27,6 +27,7 @@ app.use(
 // Ajouter les routes dans cette section ci-dessous
 app.use("/paniers", panierRouter);
 app.use("/utilisateurs", utilisateurRouter);
+app.use("/produits", produitRouter);
 
 // Je l'ai changé, car c'est risqué comme avant. Port peut etre undifined.
 // Avant : app.listen(process.env.PORT);
