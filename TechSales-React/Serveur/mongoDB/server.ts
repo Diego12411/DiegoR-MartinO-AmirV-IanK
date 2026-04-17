@@ -1,6 +1,7 @@
 import express from "express";
 import panierRouter from "./routes/panierRouter.js";
 import utilisateurRouter from "./routes/utilisateurRouter.js";
+import commandeRouter from "./routes/commandeRouter.js";
 import cors from "cors";
 import { config } from "dotenv";
 import { connectToMongo } from "./db/mongo.js";
@@ -26,6 +27,7 @@ app.use(
 // Ajouter les routes dans cette section ci-dessous
 app.use("/paniers", panierRouter);
 app.use("/utilisateurs", utilisateurRouter);
+app.use("/commandes");
 
 // listener
 app.listen(process.env.PORT);
