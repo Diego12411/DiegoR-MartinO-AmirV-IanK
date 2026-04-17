@@ -14,9 +14,8 @@ if (!uri) {
 }
 
 await connectToMongo(uri);
-// Tester la connexion apres l'etablissement de la connection
-console.log("Connexion à MongoDB réussie !! :)");
 
+// Initialisation de l'application Express
 const app = express();
 app.use(express.json());
 app.use(
@@ -28,7 +27,6 @@ app.use(
 // Ajouter les routes dans cette section ci-dessous
 app.use("/paniers", panierRouter);
 app.use("/utilisateurs", utilisateurRouter);
-app.use("/produits", produitRouter);
 
 // Je l'ai changé, car c'est risqué comme avant. Port peut etre undifined.
 // Avant : app.listen(process.env.PORT);
@@ -44,6 +42,6 @@ app.listen(PORT, () => {
  * -> Demarrez le serveur avec commande : npm run dev
  * -> Pour acceder a vos endpoints (voici un exemple avec la collection panier) : http://localhost:4000/paniers/testTest
  *  -> le port c'est 4000, definie dans vos fichier .env
- *  -> chemin "/paniers" est defini dans server.ts a la ligne #26
+ *  -> chemin "/paniers" est defini dans server.ts a la ligne #20
  *  -> endpoint "/testTest" est definie dans le fichier routes/panierRouter.ts
  */

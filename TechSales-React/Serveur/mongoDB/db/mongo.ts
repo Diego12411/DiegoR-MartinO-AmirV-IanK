@@ -17,6 +17,7 @@ export async function connectToMongo(uri: string) {
     throw Error("Connection to MongoDB failed, error: " + error);
   }
 }
+
 // Pointe vers la base de donnees "TechSales"
 export function getTechSalesDB(): Db {
   return mongoClient.db("TechSales");

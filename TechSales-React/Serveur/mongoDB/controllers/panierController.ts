@@ -80,6 +80,24 @@ export async function retraitItemPanier(
   );
 }
 
+/**
+ * GET -- verifie s'il existe un item specifique dans le panier de l'utilisateur
+ * @param collection "TechSales.panier"
+ * @param utilisateurId id de l'utilsateur
+ * @param produitId id de l'item dans le panier
+ * @returns l'item qui concorde avec le produitId en params
+ */
+export async function verifierExistenceItem(
+  collection: Collection<Panier>,
+  utilisateurId: ObjectId,
+  produitId: ObjectId,
+): Promise<Panier | null> {
+  return await collection.findOne({
+    utilisateurId: utilisateurId,
+    "items.produitId": produitId,
+  });
+}
+
 //
 /**
  * UPDATE -- modification de la quantite d'un item
