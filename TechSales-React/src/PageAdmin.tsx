@@ -41,13 +41,12 @@ export default function AfficherPageAdmin() {
   // ----------------------------------------------------------
   // ÉTATS - Gestion des utilisateurs (de PageAdmin)
   // ----------------------------------------------------------
-  const [idDelete, setIdDelete] = useState("");
-  const [idUpdate, setIdUpdate] = useState("");
+  const [courrielDelete, setCourrielDelete] = useState("");
+  const [courrielUpdate, setCourrielUpdate] = useState("");
   const [nom, setNom] = useState("");
   const [prenom, setPrenom] = useState("");
-  const [email, setEmail] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("Client");
   const [messageDelete, setMessageDelete] = useState("");
   const [messageUpdate, setMessageUpdate] = useState("");
 
@@ -77,15 +76,18 @@ export default function AfficherPageAdmin() {
   // ----------------------------------------------------------
 
   function supprimerUtilisateurBouttonClicked() {
-    if (!idDelete) {
+    if (!courrielDelete) {
       setMessageDelete("*Il manque des champs obligatoires*");
       return;
     }
-    fetch("http://localhost:4000/utilisateur", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: idDelete }),
-    })
+    fetch(
+      "http://localhost:4000/utilisateurs/retirerUtilisateur/" + courrielDelete,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ courriel: courrielDelete }),
+      },
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.message === "Utilisateur introuvable") {
@@ -93,27 +95,28 @@ export default function AfficherPageAdmin() {
         } else if (data.message === "Utilisateur supprimé") {
           setMessageDelete(data.message);
         }
-      })
-      .catch((err) => console.error(err));
+      });
   }
 
   function ModifierUtilisateurBouttonClicked() {
-    if (!idUpdate) {
+    if (!courrielUpdate) {
       setMessageUpdate("*Il manque des champs obligatoires*");
       return;
     }
-    fetch("http://localhost:4000/utilisateur", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id_utilisateur: idUpdate,
-        nom: nom,
-        prenom: prenom,
-        mot_de_passe: motDePasse,
-        courriel: email,
-        role: role,
-      }),
-    })
+    fetch(
+      "http://localhost:4000/utilisateurs/changerUtilisateur/" + courrielUpdate,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nom: nom,
+          prenom: prenom,
+          motDePasse: motDePasse,
+          courriel: courrielUpdate,
+          role: role,
+        }),
+      },
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.message === "Utilisateur introuvable") {
@@ -187,12 +190,12 @@ export default function AfficherPageAdmin() {
               <div className="card shadow-lg m-4 mx-4 p-4">
                 <div className="form-group text-start">
                   <input
-                    type="number"
+                    type="text"
                     className="form-control"
-                    value={idDelete}
-                    placeholder="Id"
+                    value={courrielDelete}
+                    placeholder="Courriel"
                     onChange={(e) => {
-                      setIdDelete(e.target.value);
+                      setCourrielDelete(e.target.value);
                       setMessageDelete("");
                     }}
                   ></input>
@@ -236,13 +239,13 @@ export default function AfficherPageAdmin() {
               <div className="card shadow-lg m-4 mx-4 p-4">
                 <div className="form-group text-start">
                   <input
-                    type="number"
+                    type="text"
                     className="form-control"
-                    value={idUpdate}
-                    placeholder="Id"
+                    value={courrielUpdate}
+                    placeholder="Courriel"
                     onChange={(e) => {
-                      setIdUpdate(e.target.value);
-                      setMessageUpdate("");
+                      setCourrielUpdate(e.target.value);
+                      setMessageDelete("");
                     }}
                   ></input>
                   <br />
@@ -263,15 +266,7 @@ export default function AfficherPageAdmin() {
                     onChange={(e) => setPrenom(e.target.value)}
                   ></input>
                 </div>
-                <div className="form-group text-start">
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={email}
-                    placeholder="Email"
-                    onChange={(e) => setEmail(e.target.value)}
-                  ></input>
-                </div>
+                <div className="form-group text-start"></div>
                 <div className="form-group text-start">
                   <input
                     type="password"

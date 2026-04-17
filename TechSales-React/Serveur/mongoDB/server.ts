@@ -3,6 +3,7 @@ import panierRouter from "./routes/panierRouter.js";
 import utilisateurRouter from "./routes/utilisateurRouter.js";
 import commandeRouter from "./routes/commandeRouter.js";
 import cors from "cors";
+import produitRouter from "./routes/produitRouter.js";
 import { config } from "dotenv";
 import { connectToMongo } from "./db/mongo.js";
 
@@ -28,9 +29,15 @@ app.use(
 app.use("/paniers", panierRouter);
 app.use("/utilisateurs", utilisateurRouter);
 app.use("/commandes", commandeRouter);
+app.use("/produits", produitRouter);
 
-// listener
-app.listen(process.env.PORT);
+// Je l'ai changé, car c'est risqué comme avant. Port peut etre undifined.
+// Avant : app.listen(process.env.PORT);
+// Listen sur le port défini dans le fichier .env ou 4000 par défaut, et affiche un message de confirmation dans la console une fois que le serveur est démarré.
+const PORT = Number(process.env.PORT) || 4000;
+app.listen(PORT, () => {
+  console.log(`Serveur démarré sur http://localhost:${PORT}`);
+});
 
 /**
  * Pour tester vos endpoints :

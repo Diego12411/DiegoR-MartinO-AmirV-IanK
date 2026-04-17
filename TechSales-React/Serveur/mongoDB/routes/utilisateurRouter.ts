@@ -4,11 +4,14 @@ import {
   createUtilisateur,
   deleteUtilisateur,
   getAllUtilisateurs,
+  verifierExistenceUtilisateur,
+  getUtilisateurParCourriel,
 } from "../controllers/utilisateurController.js";
 import { getUtilisateurs } from "../db/mongo.js";
 import { ObjectId } from "mongodb";
 import jwt from "jsonwebtoken";
 import { authenticateToken } from "../middleware/jwtToken.js";
+import { verifierExistenceItem } from "../controllers/panierController.js";
 
 const router = Router();
 
@@ -29,9 +32,14 @@ router.post("/creerCompte", async (req: Request, res: Response) => {
   try {
     const collection = getUtilisateurs(); //params que le controller a besoin pour create utilisateur
     const utilisateur = req.body; //params que le controller a besoin pour create utilisateur
+    const courriel = req.body.courriel as string;
+
+    const verifierCourrielExistant = await verifierExistenceUtilisateur(collection, courriel);
+    if(verifierCourrielExistant !== null){
+      return res.status(400).json({ message: "Un Compte est déja associé à ce courriel" });
+    }
 
     const resultat = await createUtilisateur(collection, utilisateur); //stocker le resultat de la function createUtilisateur
-
     res.status(201).json({
       message: "Utilisateur créé",
     });
@@ -44,47 +52,53 @@ router.post("/creerCompte", async (req: Request, res: Response) => {
   }
 });
 
-router.put("/pageAdmin/:id", async (req: Request, res: Response) => {
+router.put("/changerUtilisateur/:courriel", async (req: Request, res: Response) => {
   try {
     const collection = getUtilisateurs(); //on get la collection utilisateur de mongDB
-    const idUtilisateur = req.params.id as string; //on get le id de lutilisateur du req de utilisateur a partir de lurl
+    const courrielUtilisateur = req.params.courriel as string; //on get le courriel de lutilisateur du req de utilisateur a partir de lurl
     const utilisateur = req.body; //get le req de utilisateur donc ce qui est a modif a partir de lurl
 
-    if (!ObjectId.isValid(idUtilisateur)) {
-      //verif que id est valide
-      return res.status(400).json({ message: "ID invalide" });
+    const verifierCourriel = await verifierExistenceUtilisateur(collection, courrielUtilisateur);
+    
+    if(verifierCourriel === null){
+      return res.status(404).json({ message: "Utilisateur introuvable"});
     }
 
     const resultat = await updateUtilisateur(
       collection,
-      idUtilisateur,
+      courrielUtilisateur,
       utilisateur,
     );
+    res.status(200).json({ message: "Utilisateur changé" });
 
-    res.status(200).json(resultat);
   } catch (error) {
     console.error(
-      `[${new Date().toISOString()}] PUT /pageAdmin ->`,
+      `[${new Date().toISOString()}] PUT /changerUtilisateur/:courriel ->`,
       (error as Error).message,
     );
     res.status(500).json({ message: "Erreur serveur" });
   }
 });
 
-router.delete("/pageAdmin/:id", async (req: Request, res: Response) => {
+router.delete("/retirerUtilisateur/:courriel", async (req: Request, res: Response) => {
   try {
     const collection = getUtilisateurs();
-    const idUtilisateur = req.params.id as string;
+    const courrielUtilisateur = req.params.courriel as string;
 
-    if (!ObjectId.isValid(idUtilisateur)) {
-      return res.status(400).json({ message: "ID invalide" });
+    const resultat = await deleteUtilisateur(collection, courrielUtilisateur);
+
+    if(resultat.deletedCount === 0){
+      res.status(400).json({ message : "Utilisateur introuvable"});
+      return;
+    } else
+    {
+      res.status(200).json({ message : "Utilisateur supprimé"});
+      return;
     }
 
-    const resultat = await deleteUtilisateur(collection, idUtilisateur);
-    res.status(200).json(resultat);
   } catch (error) {
     console.error(
-      `[${new Date().toISOString()}] DELETE /pageAdmin ->`,
+      `[${new Date().toISOString()}] DELETE /retirerUtilisateur/:courriel ->`,
       (error as Error).message,
     );
     res.status(500).json({ message: "Erreur serveur" });
@@ -134,7 +148,7 @@ router.post("/login", async (req: Request, res: Response) => {
     }
 
     // Rechercher l'utilisateur par son courriel
-    const utilisateur = await collection.findOne({ courriel });
+    const utilisateur = await getUtilisateurParCourriel(collection, courriel);
 
     // Vérifier si l'utilisateur existe
     if (!utilisateur) {
