@@ -27,7 +27,7 @@ app.use(
 // Ajouter les routes dans cette section ci-dessous
 app.use("/paniers", panierRouter);
 app.use("/utilisateurs", utilisateurRouter);
-app.use("/commandes");
+app.use("/commandes", commandeRouter);
 
 // listener
 app.listen(process.env.PORT);

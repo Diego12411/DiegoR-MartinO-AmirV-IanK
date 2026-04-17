@@ -17,6 +17,8 @@ import { ItemPanier } from "../models/itemPanier.js";
  * @author Martin
  */
 
+// TODO : Modifier les references a la collection utilisateur qui contient panier: ItemPanier[]
+
 const router = Router();
 
 // Test d'un endpoint avec le serveur

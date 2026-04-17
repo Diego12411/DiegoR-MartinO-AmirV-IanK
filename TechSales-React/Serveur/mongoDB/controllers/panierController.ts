@@ -6,6 +6,8 @@ import { ItemPanier } from "../models/itemPanier.js";
  * Controller pour la collection "panier" de la base de donnees "TechSales"
  */
 
+// TODO: Revoir les references pour la collection utilisateur au lieu de panier
+
 /**
  * CREATE -- un nouveau panier vide associe a un utilisateur specifique lors de son enregistrement
  * @param collection fait reference a "TechSales.panier"
