@@ -1,7 +1,7 @@
 import { Collection, ObjectId } from "mongodb";
 import { Commande, Statut, STATUTS } from "../models/commande.js";
 import { ItemAchat } from "../models/itemAchat.js";
-import { Utilisateurv2 } from "../models/utilisateurv2.js";
+import { Utilisateur } from "../models/utilisateur.js";
 import { Produit } from "../models/produit.js";
 import { getPrixProduit } from "../controllers/produitController.js";
 
@@ -19,7 +19,7 @@ import { getPrixProduit } from "../controllers/produitController.js";
  */
 export async function creationCommande(
   collectionCommande: Collection<Commande>,
-  collectionUtilisateur: Collection<Utilisateurv2>,
+  collectionUtilisateur: Collection<Utilisateur>,
   collectionProduit: Collection<Produit>,
   utilisateurId: ObjectId,
 ): Promise<ObjectId | null> {
