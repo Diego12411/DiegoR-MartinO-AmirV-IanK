@@ -4,6 +4,7 @@ import {
   createUtilisateur,
   deleteUtilisateur,
   getAllUtilisateurs,
+  getUtilisateurParCourriel,
 } from "../controllers/utilisateurController.js";
 import { getUtilisateurs } from "../db/mongo.js";
 import { ObjectId } from "mongodb";
@@ -134,7 +135,7 @@ router.post("/login", async (req: Request, res: Response) => {
     }
 
     // Rechercher l'utilisateur par son courriel
-    const utilisateur = await collection.findOne({ courriel });
+    const utilisateur = await getUtilisateurParCourriel(collection, courriel);
 
     // Vérifier si l'utilisateur existe
     if (!utilisateur) {

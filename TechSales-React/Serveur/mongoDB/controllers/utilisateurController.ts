@@ -9,14 +9,11 @@ export async function createUtilisateur(
 }
 
 export async function updateUtilisateur(
-    collection: Collection<Utilisateur>,
-    id:string,
-    utilisateur: Utilisateur //req de express qui contient quoi modif
+  collection: Collection<Utilisateur>,
+  id: string,
+  utilisateur: Utilisateur, //req de express qui contient quoi modif
 ) {
-    await collection.updateOne( 
-        { _id: new ObjectId(id) }, 
-        { $set: utilisateur  }
-    )
+  await collection.updateOne({ _id: new ObjectId(id) }, { $set: utilisateur });
 }
 
 export async function deleteUtilisateur(
