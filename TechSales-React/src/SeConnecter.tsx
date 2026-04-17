@@ -50,7 +50,7 @@ export default function SeConnecter() {
         if (data.utilisateur.role === "admin") {
           navigate("/PageAdmin");
         } else {
-          navigate("/Compte");
+          navigate("/compte");
         }
       })
       .catch((err) => {
