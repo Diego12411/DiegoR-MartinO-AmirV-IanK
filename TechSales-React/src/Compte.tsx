@@ -2,12 +2,21 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { HeaderComponent, FooterComponent } from "./main";
 
+type Adresse = {
+  noCivic: number;
+  rue: string;
+  ville: string;
+  province: string;
+  pays: string;
+  codePostale: string;
+};
+
 type Profil = {
-  id_utilisateur: number;
+  _id: string;
   nom: string;
   prenom: string;
   courriel: string;
-  adresse: string;
+  adresse?: Adresse;
   role: string;
 };
 
@@ -31,7 +40,7 @@ export default function Compte() {
       return;
     }
 
-    fetch("http://localhost:4000/profil", {
+    fetch("http://localhost:4000/utilisateurs/profil", {
       method: "GET",
       headers: {
         // Inclure le token JWT dans les en-têtes de la requête pour l'authentification
@@ -90,7 +99,7 @@ export default function Compte() {
                     <>
                       <div className="mb-3">
                         <p className="mb-2">
-                          <strong>ID :</strong> {profil.id_utilisateur}
+                          <strong>ID :</strong> {profil._id}
                         </p>
                         <p className="mb-2">
                           <strong>Nom :</strong> {profil.nom}
@@ -102,7 +111,10 @@ export default function Compte() {
                           <strong>Courriel :</strong> {profil.courriel}
                         </p>
                         <p className="mb-2">
-                          <strong>Adresse :</strong> {profil.adresse}
+                          <strong>Adresse :</strong>{" "}
+                          {profil.adresse
+                            ? `${profil.adresse.noCivic} ${profil.adresse.rue}, ${profil.adresse.ville}, ${profil.adresse.province}, ${profil.adresse.pays}, ${profil.adresse.codePostale}`
+                            : "Aucune adresse"}
                         </p>
                         <p className="mb-0">
                           <strong>Rôle :</strong> {profil.role}
