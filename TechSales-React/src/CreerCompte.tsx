@@ -173,7 +173,7 @@ export default function AfficherCreerCompte() {
                 <button
                   type="button"
                   className="btn btn-outline-dark mt-3 mb-3"
-                  onClick={() => navigate("/connexion")}
+                  onClick={() => navigate("/seConnecter")}
                 >
                   Se Connecter
                 </button>
