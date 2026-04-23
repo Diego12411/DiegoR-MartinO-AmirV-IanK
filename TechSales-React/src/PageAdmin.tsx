@@ -1,37 +1,19 @@
 import { HeaderComponent, FooterComponent } from "./main";
 import { useState, useEffect } from "react";
+import "./PageAdmin.css";
 
 // ============================================================
 // TYPES
 // ============================================================
 
 type Produit = {
-  id_produit: number;
+  _id: number;
   nom: string;
   description: string;
   prix: number;
   stock: number;
   image_url: string;
 };
-
-// ============================================================
-// SOUS-COMPOSANT - Info Produit (de PageAdminProduit)
-// ============================================================
-
-function InfoProduit({ produit }: { produit: Produit }) {
-  return (
-    <li className="list-group-item d-flex align-items-center">
-      <div className="flex-grow-1 text-start">
-        <p className="mb-0 fw-bold">{produit.nom}</p>
-        <p className="mb-0">ID: {produit.id_produit}</p>
-      </div>
-      <div className="text-end">
-        <p className="mb-0 fw-bold">{produit.prix}$</p>
-        <p>Stock:{produit.stock}</p>
-      </div>
-    </li>
-  );
-}
 
 // ============================================================
 // PAGE ADMIN PRINCIPALE
@@ -54,10 +36,14 @@ export default function AfficherPageAdmin() {
   // ÉTATS - Gestion des produits (de PageAdminProduit)
   // ----------------------------------------------------------
   const [id, setId] = useState("");
+  const [idDelete, setIdDelete] = useState("");
   const [nomProduit, setNomProduit] = useState("");
   const [prix, setPrix] = useState("");
   const [stock, setStock] = useState("");
+  const [selected, setSelected] = useState("");
   const [produits, setProduits] = useState<Produit[]>([]);
+  const [produitListe, setProduitListe] = useState("");
+  const [produitListeNom, setProduitListeNom] = useState("");
   const [messageIdVide, setMessageIdVide] = useState("");
   const [BouttonDisabled, setBouttonDisabled] = useState(false);
 
@@ -86,7 +72,7 @@ export default function AfficherPageAdmin() {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ courriel: courrielDelete }),
-      },
+      }
     )
       .then((res) => res.json())
       .then((data) => {
@@ -115,7 +101,7 @@ export default function AfficherPageAdmin() {
           courriel: courrielUpdate,
           role: role,
         }),
-      },
+      }
     )
       .then((res) => res.json())
       .then((data) => {
@@ -162,6 +148,39 @@ export default function AfficherPageAdmin() {
         alert("Produit modifié");
       })
       .catch((err) => console.error(err));
+  }
+
+  // ============================================================
+  // SOUS-COMPOSANT - Info Produit (de PageAdminProduit)
+  // ============================================================
+
+  function InfoProduit({ produit }: { produit: Produit }) {
+    const handleClick = () => {
+      if (selected == "Supprimer") {
+        setIdDelete(produit._id.toString());
+      } else if (selected == "Modifier") {
+        setId(produit._id.toString());
+        setNomProduit(produit.nom);
+        setPrix(produit.prix.toString());
+        setStock(produit.stock.toString());
+      }
+      setSelected("");
+    };
+    return (
+      <button
+        className="list-group-item d-flex align-items-center m-1 produitBouton"
+        onMouseDown={handleClick}
+      >
+        <div className="flex-grow-1 text-start">
+          <p className="mb-0 fw-bold">{produit.nom}</p>
+          <p className="mb-0">ID: {produit._id}</p>
+        </div>
+        <div className="text-end">
+          <p className="mb-0 fw-bold">{produit.prix}$</p>
+          <p>Stock: {produit.stock}</p>
+        </div>
+      </button>
+    );
   }
 
   // ----------------------------------------------------------
@@ -312,25 +331,47 @@ export default function AfficherPageAdmin() {
           SECTION PRODUITS (de PageAdminProduit)
       ========================================================== */}
       <h2 className="my-4">Gestion des Produits</h2>
+      {/* Rechercher produit */}
       <div className="d-flex justify-content-center align-items-left">
         <div className="row">
-          <div className="p-3">
+          <div className="col-12 p-3">
             <div
               className="card shadow-lg p-1"
               style={{ backgroundColor: "#000000", color: "white" }}
             >
-              <h2 className="mt-4">Liste des produits</h2>
-              <div className="overflow-auto" style={{ height: "300px" }}>
+              <h3 className="card-title text-white">
+                <br />
+                Liste des produits
+              </h3>
+              <br />
+              <input
+                type="text"
+                className="form-control mb-1"
+                placeholder="Rechercher"
+                onChange={(e) => {
+                  setProduitListe(e.target.value);
+                  setProduitListeNom(e.target.value);
+                }}
+              />
+              <div className="overflow-auto" style={{ height: "200px" }}>
                 <ul className="list-group mt-1">
-                  {produits.map((produit) => (
-                    <InfoProduit key={produit.id_produit} produit={produit} />
-                  ))}
+                  {produits
+                    .filter(
+                      (produit) =>
+                        produit._id.toString().startsWith(`${produitListe}`) ||
+                        produit.nom
+                          .toString()
+                          .toLowerCase()
+                          .startsWith(`${produitListeNom}`)
+                    )
+                    .map((produit) => (
+                      <InfoProduit key={produit._id} produit={produit} />
+                    ))}
                 </ul>
               </div>
             </div>
           </div>
         </div>
-
         {/* Modifier produit */}
         <div className="row">
           <div className="col-12 p-3">
@@ -342,14 +383,28 @@ export default function AfficherPageAdmin() {
                 <br />
                 Modifier un produit
               </h3>
+              <p
+                className="text-white font-italic"
+                style={{ fontStyle: "italic" }}
+              >
+                Cliquez sur un produit dans la liste
+              </p>
               <div className="card shadow-lg m-4 mx-4 p-4">
                 <div className="form-group text-start">
                   <input
-                    type="number"
+                    type="text"
                     className="form-control mb-2"
                     placeholder="Id produit"
                     value={id}
-                    onChange={(e) => setId(e.target.value)}
+                    onChange={(e) => {
+                      setId(e.target.value);
+                    }}
+                    onFocus={(e) => {
+                      setSelected("Modifier");
+                    }}
+                    onBlur={(e) => {
+                      setSelected("");
+                    }}
                   />
                   <input
                     type="text"
@@ -388,7 +443,6 @@ export default function AfficherPageAdmin() {
             </div>
           </div>
         </div>
-
         {/* Supprimer produit */}
         <div className="row">
           <div className="col-12 p-3">
@@ -400,16 +454,25 @@ export default function AfficherPageAdmin() {
                 <br />
                 Supprimer un produit
               </h3>
+              <p className="text-white" style={{ fontStyle: "italic" }}>
+                Cliquez sur un produit dans la liste
+              </p>
               <div className="card shadow-lg m-4 mx-4 p-4">
                 <div className="form-group text-start">
                   <input
-                    type="number"
+                    type="text"
                     className="form-control mb-3"
-                    value={id}
+                    value={idDelete}
                     placeholder="Id du produit"
                     onChange={(e) => {
-                      setId(e.target.value);
+                      setIdDelete(e.target.value);
                       setMessageIdVide("");
+                    }}
+                    onFocus={(e) => {
+                      setSelected("Supprimer");
+                    }}
+                    onBlur={(e) => {
+                      setSelected("");
                     }}
                   />
                   <button
@@ -429,7 +492,6 @@ export default function AfficherPageAdmin() {
           </div>
         </div>
       </div>
-
       <FooterComponent />
     </main>
   );
