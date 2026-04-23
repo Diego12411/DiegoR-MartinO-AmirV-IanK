@@ -34,9 +34,14 @@ router.post("/creerCompte", async (req: Request, res: Response) => {
     const utilisateur = req.body; //params que le controller a besoin pour create utilisateur
     const courriel = req.body.courriel as string;
 
-    const verifierCourrielExistant = await verifierExistenceUtilisateur(collection, courriel);
-    if(verifierCourrielExistant !== null){
-      return res.status(400).json({ message: "Un Compte est déja associé à ce courriel" });
+    const verifierCourrielExistant = await verifierExistenceUtilisateur(
+      collection,
+      courriel,
+    );
+    if (verifierCourrielExistant !== null) {
+      return res
+        .status(400)
+        .json({ message: "Un Compte est déja associé à ce courriel" });
     }
 
     const resultat = await createUtilisateur(collection, utilisateur); //stocker le resultat de la function createUtilisateur
@@ -52,58 +57,64 @@ router.post("/creerCompte", async (req: Request, res: Response) => {
   }
 });
 
-router.put("/changerUtilisateur/:courriel", async (req: Request, res: Response) => {
-  try {
-    const collection = getUtilisateurs(); //on get la collection utilisateur de mongDB
-    const courrielUtilisateur = req.params.courriel as string; //on get le courriel de lutilisateur du req de utilisateur a partir de lurl
-    const utilisateur = req.body; //get le req de utilisateur donc ce qui est a modif a partir de lurl
+router.put(
+  "/changerUtilisateur/:courriel",
+  async (req: Request, res: Response) => {
+    try {
+      const collection = getUtilisateurs(); //on get la collection utilisateur de mongDB
+      const courrielUtilisateur = req.params.courriel as string; //on get le courriel de lutilisateur du req de utilisateur a partir de lurl
+      const utilisateur = req.body; //get le req de utilisateur donc ce qui est a modif a partir de lurl
 
-    const verifierCourriel = await verifierExistenceUtilisateur(collection, courrielUtilisateur);
-    
-    if(verifierCourriel === null){
-      return res.status(404).json({ message: "Utilisateur introuvable"});
+      const verifierCourriel = await verifierExistenceUtilisateur(
+        collection,
+        courrielUtilisateur,
+      );
+
+      if (verifierCourriel === null) {
+        return res.status(404).json({ message: "Utilisateur introuvable" });
+      }
+
+      const resultat = await updateUtilisateur(
+        collection,
+        courrielUtilisateur,
+        utilisateur,
+      );
+      res.status(200).json({ message: "Utilisateur changé" });
+    } catch (error) {
+      console.error(
+        `[${new Date().toISOString()}] PUT /changerUtilisateur/:courriel ->`,
+        (error as Error).message,
+      );
+      res.status(500).json({ message: "Erreur serveur" });
     }
+  },
+);
 
-    const resultat = await updateUtilisateur(
-      collection,
-      courrielUtilisateur,
-      utilisateur,
-    );
-    res.status(200).json({ message: "Utilisateur changé" });
+router.delete(
+  "/retirerUtilisateur/:courriel",
+  async (req: Request, res: Response) => {
+    try {
+      const collection = getUtilisateurs();
+      const courrielUtilisateur = req.params.courriel as string;
 
-  } catch (error) {
-    console.error(
-      `[${new Date().toISOString()}] PUT /changerUtilisateur/:courriel ->`,
-      (error as Error).message,
-    );
-    res.status(500).json({ message: "Erreur serveur" });
-  }
-});
+      const resultat = await deleteUtilisateur(collection, courrielUtilisateur);
 
-router.delete("/retirerUtilisateur/:courriel", async (req: Request, res: Response) => {
-  try {
-    const collection = getUtilisateurs();
-    const courrielUtilisateur = req.params.courriel as string;
-
-    const resultat = await deleteUtilisateur(collection, courrielUtilisateur);
-
-    if(resultat.deletedCount === 0){
-      res.status(400).json({ message : "Utilisateur introuvable"});
-      return;
-    } else
-    {
-      res.status(200).json({ message : "Utilisateur supprimé"});
-      return;
+      if (resultat.deletedCount === 0) {
+        res.status(400).json({ message: "Utilisateur introuvable" });
+        return;
+      } else {
+        res.status(200).json({ message: "Utilisateur supprimé" });
+        return;
+      }
+    } catch (error) {
+      console.error(
+        `[${new Date().toISOString()}] DELETE /retirerUtilisateur/:courriel ->`,
+        (error as Error).message,
+      );
+      res.status(500).json({ message: "Erreur serveur" });
     }
-
-  } catch (error) {
-    console.error(
-      `[${new Date().toISOString()}] DELETE /retirerUtilisateur/:courriel ->`,
-      (error as Error).message,
-    );
-    res.status(500).json({ message: "Erreur serveur" });
-  }
-});
+  },
+);
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //Amir//////////////////////////////////////////////////////////////////////////////////////
@@ -127,12 +138,12 @@ router.delete("/retirerUtilisateur/:courriel", async (req: Request, res: Respons
  * - Échec : message d'erreur approprié
  *
  * Route :
- * POST /utilisateurs/login
+ * POST /utilisateurs/connexion
  *
  * Auteur : Amir
  * =========================================================================================
  */
-router.post("/login", async (req: Request, res: Response) => {
+router.post("/connexion", async (req: Request, res: Response) => {
   try {
     // Récupérer la collection "utilisateurs"
     const collection = getUtilisateurs();
@@ -184,7 +195,7 @@ router.post("/login", async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error(
-      `[${new Date().toISOString()}] POST /utilisateurs/login ->`,
+      `[${new Date().toISOString()}] POST /utilisateurs/connexion ->`,
       (error as Error).message,
     );
 
@@ -212,8 +223,7 @@ router.post("/login", async (req: Request, res: Response) => {
  * Route :
  * GET /utilisateurs/profil
  *
- * Auteur :
- * Amir
+ * Auteur : Amir
  * =========================================================================================
  */
 router.get(

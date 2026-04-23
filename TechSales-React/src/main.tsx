@@ -25,7 +25,7 @@ const router = createBrowserRouter([
   { path: "/detailsProduit/:id", element: <ProduitDetails /> },
   { path: "/panier", element: <Panier /> },
   {
-    path: "/affichageprincipalproduit",
+    path: "/",
     element: <AffichagePrincipalProduit />,
   },
   { path: "/motPasseOublie", element: <MotPasseOublie /> },

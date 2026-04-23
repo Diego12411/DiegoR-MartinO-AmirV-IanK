@@ -21,14 +21,14 @@ export default function SeConnecter() {
 
     setMessageErreur("");
 
-    fetch("http://localhost:4000/login", {
+    fetch("http://localhost:4000/utilisateurs/connexion", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         courriel: email,
-        mot_de_passe: motDePasse,
+        motDePasse: motDePasse,
       }),
     })
       .then((res) => {

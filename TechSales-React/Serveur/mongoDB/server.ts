@@ -19,11 +19,7 @@ await connectToMongo(uri);
 // Initialisation de l'application Express
 const app = express();
 app.use(express.json());
-app.use(
-  cors({
-    origin: process.env.REACT_URI,
-  }),
-);
+app.use(cors());
 
 // Ajouter les routes dans cette section ci-dessous
 app.use("/paniers", panierRouter);
