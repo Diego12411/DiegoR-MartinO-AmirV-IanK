@@ -35,14 +35,14 @@ router.post("/creerCommande/:utilisateurId", async (req, res) => {
       return;
     }
 
-    // FIXME[]: Utilisation des collections necessaires pour appeler creationCommande
+    // TODO[]: Utilisation des collections necessaires pour appeler creationCommande
     const collectionCommande = getCommandes();
     const collectionUtilisateur = getUtilisateurs();
     const collectionProduit = getProduits();
 
     const utilisateur = new ObjectId(req.params.utilisateurId);
 
-    // FIXME[]: relier a la collection utilisateur approprie qui contient {panier: ItemAchat[]}
+    // TODO[]: relier a la collection utilisateur approprie qui contient {panier: ItemAchat[]}
     const resultat = await creationCommande(
       collectionCommande,
       collectionUtilisateur,
