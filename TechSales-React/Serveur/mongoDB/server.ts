@@ -1,7 +1,7 @@
 import express from "express";
 import panierRouter from "./routes/panierRouter.js";
 import utilisateurRouter from "./routes/utilisateurRouter.js";
-import cors from 'cors';
+import cors from "cors";
 import produitRouter from "./routes/produitRouter.js";
 import { config } from "dotenv";
 import { connectToMongo } from "./db/mongo.js";
@@ -18,11 +18,12 @@ await connectToMongo(uri);
 // Initialisation de l'application Express
 const app = express();
 app.use(express.json());
-app.use(
-  cors({
-    origin: process.env.PORT_URI // À mettre, dans .env, le port 5173
-  })
-)
+// app.use(
+//   cors({
+//     origin: process.env.PORT_URI // À mettre, dans .env, le port 5173
+//   })
+// )
+app.use(cors());
 
 // Ajouter les routes dans cette section ci-dessous
 app.use("/paniers", panierRouter);
