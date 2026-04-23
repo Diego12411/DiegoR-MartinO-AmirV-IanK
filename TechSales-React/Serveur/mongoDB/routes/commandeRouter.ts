@@ -35,14 +35,13 @@ router.post("/creerCommande/:utilisateurId", async (req, res) => {
       return;
     }
 
-    // TODO[]: Utilisation des collections necessaires pour appeler creationCommande
+    // Recuperation des collections necessaires
     const collectionCommande = getCommandes();
     const collectionUtilisateur = getUtilisateurs();
     const collectionProduit = getProduits();
 
     const utilisateur = new ObjectId(req.params.utilisateurId);
 
-    // TODO[]: relier a la collection utilisateur approprie qui contient {panier: ItemAchat[]}
     const resultat = await creationCommande(
       collectionCommande,
       collectionUtilisateur,
@@ -61,7 +60,9 @@ router.post("/creerCommande/:utilisateurId", async (req, res) => {
   }
 });
 
-// GET -- obtenir les commandes pour un utilisateur specifique
+/**
+ * GET -- obtenir les commandes pour un utilisateur specifique
+ */
 router.get("/commandesPasseesPar/:utilisateurId", async (req, res) => {
   try {
     if (!ObjectId.isValid(req.params.utilisateurId)) {
@@ -70,6 +71,7 @@ router.get("/commandesPasseesPar/:utilisateurId", async (req, res) => {
     }
 
     const collection = getCommandes();
+
     const utilisateur = new ObjectId(req.params.utilisateurId);
 
     const resultat = await obtenirCommandesParUtilisateur(
@@ -77,7 +79,7 @@ router.get("/commandesPasseesPar/:utilisateurId", async (req, res) => {
       utilisateur,
     );
 
-    // retourne un array contenant toutes les commandes de l'utilisateur
+    // retourne un array contenant toutes les commandes d'un utilisateur
     res.status(200).json(resultat);
   } catch (error) {
     console.error(
@@ -96,7 +98,7 @@ router.get("/obtenirToutesLesCommandes", async (req, res) => {
   try {
     const collection = getCommandes();
 
-    // commmandes represente un tableau contenant toutes les commandes passees
+    // "commmandes" represente un tableau contenant toutes les commandes passees
     const commandes = await obtenirToutesCommandes(collection);
 
     res.status(200).json(commandes);

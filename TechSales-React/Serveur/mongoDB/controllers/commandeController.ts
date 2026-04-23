@@ -27,12 +27,13 @@ export async function creationCommande(
   const utilisateur = await collectionUtilisateur.findOne({
     _id: utilisateurId,
   });
+
   // Si l'utilisateur n'existe pas ou que le panier est vide, on return null
   if (!utilisateur || utilisateur.panier.length === 0) {
     return null;
   }
 
-  // Convertir ItemPanier[] en ItemAchat[]
+  // Convertion Utilisateur/ItemPanier[] en Commande/ItemAchat[]
   const achat: ItemAchat[] = await Promise.all(
     utilisateur.panier.map(async (item) => {
       const prix = await getPrixProduit(collectionProduit, item.produitId);
