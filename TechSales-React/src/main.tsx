@@ -115,17 +115,30 @@ export const HeaderComponent = () => {
   );
 };
 export const FooterComponent = () => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   return (
     <div className="row">
+      <a
+        href="#"
+        className="text-white d-flex justify-content-center py-2 btn border-0 shadow-none rounded-0"
+        style={{
+          backgroundColor: "#594f74",
+        }}
+        onClick={scrollToTop}
+      >
+        Retournez en haut de page
+      </a>
       <div
         className="col p-3"
         style={{
           backgroundColor: "#40365a",
         }}
       >
-        <footer className="border border-dark mt-5 p-5">
+        <footer className=" mt-5 py-2">
           <div className="container">
-            <h3 className="text-left text-decoration-underline text-white">
+            <h3 className="text-center text-decoration-underline text-white">
               T E C H S A L E S
             </h3>
             <div className="d-flex justify-content-center row row-cols-4 row-cols-sm-4 row-cols-md-4 row-cols-lg-5 g-4 mt-2">
@@ -135,7 +148,7 @@ export const FooterComponent = () => {
                     Nos produits
                   </li>
                   <a
-                    href="#"
+                    href="/"
                     className="list-group-item bg-transparent text-white mb-2"
                   >
                     Laptop
@@ -160,7 +173,7 @@ export const FooterComponent = () => {
                     Créer une compte
                   </a>
                   <a
-                    href="#"
+                    href="Panier"
                     className="list-group-item bg-transparent text-white mb-2"
                   >
                     Panier
