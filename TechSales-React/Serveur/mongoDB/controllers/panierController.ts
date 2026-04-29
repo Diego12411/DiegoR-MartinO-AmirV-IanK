@@ -1,127 +1,107 @@
-import { Collection, ObjectId } from "mongodb";
-import { Panier } from "../models/panier.js";
+import { Collection, ObjectId, UpdateResult } from "mongodb";
 import { ItemPanier } from "../models/itemPanier.js";
+import { Utilisateur } from "../models/utilisateur.js";
 
 /**
  * Controller pour la collection "panier" de la base de donnees "TechSales"
  */
 
-// TODO: Revoir les references pour la collection utilisateur au lieu de panier
-
-/**
- * CREATE -- un nouveau panier vide associe a un utilisateur specifique lors de son enregistrement
- * @param collection fait reference a "TechSales.panier"
- * @param userId identification d'un usager specifique
- * @returns la creation d'un nouveau document "panier"
- */
-export async function creationNouveauPanier(
-  collection: Collection<Panier>,
-  userId: ObjectId,
-) {
-  // ===>> Verfie la collection utilisee
-  const nouveauPanier: Panier = {
-    utilisateurId: userId,
-    items: [],
-    modificationTemps: new Date(),
-  };
-
-  return await collection.insertOne(nouveauPanier);
-}
-
 /**
  * READ -- get le panier d'un utilisateur specifique
- * @param collection "TechSales.panier"
+ * @param collection "TechSales.utilisateur"
  * @param utilisateurId Id de l'utilisateur associe au panier
- * @returns le panier au complet d'un utilisateur
+ * @returns le panier au complet d'un utilisateur sous forme de array
  */
 export async function demandePanierUtilisateur(
-  collection: Collection<Panier>,
+  collection: Collection<Utilisateur>,
   utilisateurId: ObjectId,
-): Promise<Panier | null> {
-  return await collection.findOne({ utilisateurId: utilisateurId });
+): Promise<ItemPanier[] | null> {
+  const utilisateur = await collection.findOne(
+    { _id: utilisateurId },
+    { projection: { panier: 1 } },
+  );
+
+  return utilisateur ? utilisateur.panier : null;
 }
 
 /**
- * UPDATE -- ajout d'un item dans le panier
- * @param collection "TechSales.panier"
+ * UPDATE -- ajout d'un item dans le panier d'un utilisateur
+ * @param collection "TechSales.utilisateur"
  * @param utilisateurId id de l'utilisateur
- * @param item nouvel item a rajouter au panier
- * @returns l'ajout d'un nouvel item dans le array "items" du panier de l'utilisateur
+ * @param item nouvel ItemPanier a rajouter au panier
+ * @returns l'ajout d'un nouvel ItemPanier dans le array "panier" de l'utilisateur
  */
 export async function ajoutItemPanier(
-  collection: Collection<Panier>,
+  collection: Collection<Utilisateur>,
   utilisateurId: ObjectId,
   item: ItemPanier,
-) {
+): Promise<UpdateResult<Utilisateur>> {
   return await collection.updateOne(
-    { utilisateurId: utilisateurId },
+    { _id: utilisateurId },
     {
-      $push: { items: item },
-      $set: { modificationTemps: new Date() },
+      $push: { panier: item },
     },
   );
 }
 
 /**
  * UPDATE -- retrait d'un element du panier
- * @param collection "TechSales.panier"
+ * @param collection "TechSales.utilisateur"
  * @param utilisateurId id de l'utilisateur
  * @param produitId id du produit a retirer
- * @returns retrait de l'"item" du panier de l'utilisateur
+ * @returns retrait de l'ItemPanier du panier de l'utilisateur
  */
 export async function retraitItemPanier(
-  collection: Collection<Panier>,
+  collection: Collection<Utilisateur>,
   utilisateurId: ObjectId,
   produitId: ObjectId,
-) {
+): Promise<UpdateResult<Utilisateur>> {
   return await collection.updateOne(
-    { utilisateurId: utilisateurId },
+    { _id: utilisateurId },
     {
-      $pull: { items: { produitId: produitId } },
-      $set: { modificationTemps: new Date() },
+      $pull: { panier: { produitId: produitId } },
     },
   );
 }
 
 /**
  * GET -- verifie s'il existe un item specifique dans le panier de l'utilisateur
- * @param collection "TechSales.panier"
+ * @param collection "TechSales.utilisateur"
  * @param utilisateurId id de l'utilsateur
- * @param produitId id de l'item dans le panier
+ * @param produitId id de l'ItemPanier contenu dans le panier
  * @returns l'item qui concorde avec le produitId en params
  */
 export async function verifierExistenceItem(
-  collection: Collection<Panier>,
+  collection: Collection<Utilisateur>,
   utilisateurId: ObjectId,
   produitId: ObjectId,
-): Promise<Panier | null> {
+): Promise<Utilisateur | null> {
   return await collection.findOne({
-    utilisateurId: utilisateurId,
-    "items.produitId": produitId,
+    _id: utilisateurId,
+    "panier.produitId": produitId,
   });
 }
 
 //
 /**
  * UPDATE -- modification de la quantite d'un item
- * @param collection "TechSales.panier"
+ * @param collection "TechSales.utilisateur"
  * @param utilisateurId id de l'utilisateur
- * @param produitId id du produit vise
+ * @param produitId id de l'ItemPanier a modifier
  * @param nouvelleQuantite nouvelle quantite
  * @returns update de la quantite dans le panier d'un utilisateur
  */
 export async function miseAJourQuantiteItem(
-  collection: Collection<Panier>,
+  collection: Collection<Utilisateur>,
   utilisateurId: ObjectId,
   produitId: ObjectId,
   nouvelleQuantite: number,
-) {
+): Promise<UpdateResult<Utilisateur>> {
   return await collection.updateOne(
-    { utilisateurId: utilisateurId, "items.produitId": produitId },
+    { _id: utilisateurId, "panier.produitId": produitId },
     {
       $set: {
-        "items.$.quantite": nouvelleQuantite,
-        modificationTemps: new Date(),
+        "panier.$.quantite": nouvelleQuantite,
       },
     },
   );
@@ -129,21 +109,20 @@ export async function miseAJourQuantiteItem(
 
 //
 /**
- * DELETE -- on vide le panier lorsque la commande est passee
- * @param collection "TechSales.panier"
+ * DELETE -- on vide le panier lorsque lors d'une commande
+ * @param collection "TechSales.utilisateur"
  * @param utilisateurId id de l'utilisateur
- * @returns vide le array "items" contenant les items selectionne par l'utilisateur
+ * @returns vide le array panier de l'utilisateur
  */
 export async function viderPanier(
-  collection: Collection<Panier>,
+  collection: Collection<Utilisateur>,
   utilisateurId: ObjectId,
-) {
+): Promise<UpdateResult<Utilisateur>> {
   return await collection.updateOne(
-    { utilisateurId: utilisateurId },
+    { _id: utilisateurId },
     {
       $set: {
-        items: [],
-        modificationTemps: new Date(),
+        panier: [],
       },
     },
   );
