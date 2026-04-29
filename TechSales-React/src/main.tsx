@@ -61,7 +61,7 @@ export const HeaderComponent = () => {
           {/* Partie gauche */}
           <div className="d-flex align-items-center gap-3">
             <img src={logo} alt="logo" width={150} height={25} />
-            <Link to="/affichageprincipalproduit">
+            <Link to="/">
               <button
                 type="button"
                 className="text-dark fw-bold btn btn-link ms-2"

@@ -1,6 +1,7 @@
 import { HeaderComponent } from "./main";
 import { FooterComponent } from "./main";
 import logo from "./assets/logo.png";
+import background from "./assets/background2.webp";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -50,101 +51,132 @@ export default function AfficherCreerCompte() {
       })
       .catch((err) => console.error(err));
   }
+
   return (
     <div
       className="rectangle"
       style={{
-        backgroundColor: "#40365a",
+        backgroundImage: `url(${background})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
       <main className="container-fluid text-center p-0">
         <HeaderComponent />
         <div className="d-flex justify-content-center align-items-center vh-100">
-          <div className="row">
-            {/*Formulaire De Creation Compte*/}
-            <div className="col-12 my-3 p-5">
+          <div className="row justify-content-center">
+            <div className="col-7">
               <div
-                className="card shadow-lg p-3"
-                style={{ backgroundColor: "#f3efef", color: "white" }}
+                className="card shadow-lg px-5 py-5 d-flex flex-column"
+                style={{ backgroundColor: "#ffffff" }}
               >
-                <h3 className="card-title text-dark">
-                  <img
-                    src={logo}
-                    className="rounded mx-auto d-block"
-                    alt="logo"
-                    width={200}
-                    height={35}
-                  ></img>
+                {/* Logo + Titre */}
+                <div className="card-title text-dark py-4">
+                  <div className="d-flex justify-content-start">
+                    <img
+                      src={logo}
+                      className="img-fluid"
+                      alt="logo"
+                      width={200}
+                      height={35}
+                    />
+                  </div>
                   <br />
-                  Créez votre Compte TechSales
-                </h3>
-                <div className="card shadow-lg m-4 mx-4 p-4">
-                  <div className="form-group text-start">
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={nom}
-                      placeholder="Nom"
-                      onChange={(e) => {
-                        setNom(e.target.value);
-                        setMessageCreationCompte("");
-                      }}
-                    ></input>
-                    <br />
-                  </div>
-                  <div className="form-group text-start">
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={prenom}
-                      placeholder="Prénom"
-                      onChange={(e) => {
-                        setPrenom(e.target.value);
-                        setMessageCreationCompte("");
-                      }}
-                    ></input>
-                    <br />
-                  </div>
-                  <div className="form-group text-start">
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={courriel}
-                      placeholder="Email"
-                      onChange={(e) => {
-                        setCourriel(e.target.value);
-                        setMessageCreationCompte("");
-                      }}
-                    ></input>
-                    <br />
-                  </div>
-                  <div className="form-group text-start">
-                    <input
-                      type="password"
-                      className="form-control"
-                      value={motDePasse}
-                      placeholder="Mot de passe"
-                      onChange={(e) => {
-                        setMotDePasse(e.target.value);
-                        setMessageCreationCompte("");
-                      }}
-                    ></input>
-                    <br />
-                  </div>
-                  <button
-                    type="button"
-                    className="btn btn-dark"
-                    disabled={BouttonDisabled}
-                    onClick={() => {
-                      CreationCompteBouttonClicked();
-                    }}
-                  >
-                    Créer Mon Compte
-                  </button>
-                  {messageCreationCompte && (
-                    <p className="text-danger">{messageCreationCompte}</p>
-                  )}
+                  <h1 className="text-black text-start">
+                    Créez votre Compte TechSales !
+                  </h1>
                 </div>
+
+                {/* Inputs */}
+                <div className="form-group text-start">
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={nom}
+                    placeholder="Nom"
+                    onChange={(e) => {
+                      setNom(e.target.value);
+                      setMessageCreationCompte("");
+                    }}
+                  />
+                  <br />
+                </div>
+                <div className="form-group text-start">
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={prenom}
+                    placeholder="Prénom"
+                    onChange={(e) => {
+                      setPrenom(e.target.value);
+                      setMessageCreationCompte("");
+                    }}
+                  />
+                  <br />
+                </div>
+                <div className="form-group text-start">
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={courriel}
+                    placeholder="Email"
+                    onChange={(e) => {
+                      setCourriel(e.target.value);
+                      setMessageCreationCompte("");
+                    }}
+                  />
+                  <br />
+                </div>
+                <div className="form-group text-start">
+                  <input
+                    type="password"
+                    className="form-control"
+                    value={motDePasse}
+                    placeholder="Mot de passe"
+                    onChange={(e) => {
+                      setMotDePasse(e.target.value);
+                      setMessageCreationCompte("");
+                    }}
+                  />
+                  <br />
+                </div>
+
+                {/* Bouton */}
+                <button
+                  type="button"
+                  className="btn btn-dark"
+                  disabled={BouttonDisabled}
+                  onClick={() => CreationCompteBouttonClicked()}
+                >
+                  Créer Mon Compte
+                </button>
+
+                {messageCreationCompte && (
+                  <p className="text-danger">{messageCreationCompte}</p>
+                )}
+
+                {/* Séparateur */}
+                <div className="d-flex align-items-center my-3 w-100">
+                  <hr className="flex-grow-1" />
+                  <span className="mx-3 text-muted">Ou connectez vous</span>
+                  <hr className="flex-grow-1" />
+                </div>
+
+                {/* Texte conditions */}
+                <div className="text-muted">
+                  En cliquant "Créer Mon Compte" vous acceptez les conditions
+                  d'utilisation et la politique de confidentialité.
+                </div>
+
+                {/* Bouton Se Connecter */}
+                <button
+                  type="button"
+                  className="btn btn-outline-dark mt-3 mb-3"
+                  onClick={() => navigate("/seConnecter")}
+                >
+                  Se Connecter
+                </button>
               </div>
             </div>
           </div>
