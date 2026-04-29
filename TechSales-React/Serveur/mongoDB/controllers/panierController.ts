@@ -18,6 +18,7 @@ export async function creationNouveauPanier(
   collection: Collection<Panier>,
   userId: ObjectId,
 ) {
+  // ===>> Verfie la collection utilisee
   const nouveauPanier: Panier = {
     utilisateurId: userId,
     items: [],
