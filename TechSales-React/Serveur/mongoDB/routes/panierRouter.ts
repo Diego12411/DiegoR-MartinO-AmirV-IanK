@@ -1,6 +1,5 @@
 import { Router, Request, Response } from "express";
 import {
-  creationNouveauPanier,
   demandePanierUtilisateur,
   ajoutItemPanier,
   retraitItemPanier,
@@ -8,7 +7,7 @@ import {
   viderPanier,
   verifierExistenceItem,
 } from "../controllers/panierController.js";
-import { getPaniers } from "../db/mongo.js";
+import { getUtilisateurs } from "../db/mongo.js";
 import { ObjectId } from "mongodb";
 import { ItemPanier } from "../models/itemPanier.js";
 
@@ -17,42 +16,19 @@ import { ItemPanier } from "../models/itemPanier.js";
  * @author Martin
  */
 
-// TODO : Modifier les references a la collection utilisateur qui contient panier: ItemPanier[]
-
 const router = Router();
 
-// Test d'un endpoint avec le serveur
+/**
+ * Test d'un endpoint avec le serveur
+ */
 router.get("/testTest", async (req: Request, res: Response) => {
   res.send("Endpoint test reussi!!");
 });
 
-// POST -- creation d'un nouveau panier pour un nouvel utilisateur
-router.post(
-  "/creerPanier/:utilisateurId",
-  async (req: Request, res: Response) => {
-    try {
-      if (!ObjectId.isValid(req.params.utilisateurId as string)) {
-        res.status(400).json({ message: "Identifiant utilisateur non valide" });
-        return;
-      }
-
-      const collection = getPaniers();
-      const utilisateur = new ObjectId(req.params.utilisateurId as string);
-
-      const resultat = await creationNouveauPanier(collection, utilisateur);
-
-      res.status(201).json(resultat);
-    } catch (error) {
-      console.error(
-        `[${new Date().toISOString()}] POST /creerPanier/:utilisateurId ->`,
-        (error as Error).message,
-      );
-      res.status(500).json({ message: "Database error" });
-    }
-  },
-);
-
-// GET -- retourne le panier d'un utilisateur specifique
+/**
+ * GET -- retourne le panier d'un utilisateur specifique
+ * @param utilisateurId est envoye par le req.params.utilisateurId
+ */
 router.get(
   "/panierUtilisateur/:utilisateurId",
   async (req: Request, res: Response) => {
@@ -62,18 +38,19 @@ router.get(
         return;
       }
 
-      const collection = getPaniers(); // permet "TechSales.panier"
+      const collection = getUtilisateurs();
       const utilisateur = new ObjectId(req.params.utilisateurId as string);
       const panier = await demandePanierUtilisateur(collection, utilisateur);
 
       if (!panier) {
-        res.status(404).json({ message: "Panier introuvable" });
+        res.status(404).json({ message: "Utilisateur introuvable" });
         return;
       }
+
       res.status(200).json(panier);
     } catch (error) {
       console.error(
-        `[${new Date().toISOString()}] GET /panierUtilisateur/:userId ->`,
+        `[${new Date().toISOString()}] GET /panierUtilisateur/:utilisateurId ->`,
         (error as Error).message,
       );
       res.status(500).json({ message: "Database error" });
@@ -81,7 +58,11 @@ router.get(
   },
 );
 
-// PATCH -- ajout d'un item dans le panier d'un utilisateur
+/**
+ * PATCH -- ajout d'un item dans le panier d'un utilisateur
+ * @param utilisateurId est passer par req.params
+ * @param ItemPanier a ajouter est passe par req.body
+ */
 router.patch(
   "/ajoutItem/:utilisateurId",
   async (req: Request, res: Response) => {
@@ -91,10 +72,10 @@ router.patch(
         return;
       }
 
-      const { produitId, quantite, prix } = req.body;
+      const { produitId, quantite } = req.body;
 
-      if (!produitId || !quantite || !prix) {
-        res.status(400).json({ message: "produitId, quantite et prix requis" });
+      if (!produitId || !quantite) {
+        res.status(400).json({ message: "produitId et quantite requis" });
         return;
       }
 
@@ -108,22 +89,15 @@ router.patch(
         return;
       }
 
-      // TODO: verifie le changement apres avoir retire le prix du panier, faire un appel a la methode dans produitController pour acceder au prix du produit
-
-      if (typeof prix !== "number" || quantite <= 0) {
-        res.status(400).json({ message: "prix non valide" });
-        return;
-      }
-
-      const collection = getPaniers();
+      const collection = getUtilisateurs();
       const utilisateur = new ObjectId(req.params.utilisateurId as string);
       const item: ItemPanier = {
         produitId: new ObjectId(produitId),
         quantite: quantite,
-        prix: prix,
       };
 
       const result = await ajoutItemPanier(collection, utilisateur, item);
+
       res.status(200).json(result);
     } catch (error) {
       console.error(
@@ -135,7 +109,11 @@ router.patch(
   },
 );
 
-// DELETE -- retirer un element du array item d'un panier d'un utilisateur
+/**
+ * DELETE -- retirer un element du array item d'un panier d'un utilisateur
+ * @param utilisateurId est passe par req.params
+ * @param itemId est passe par req.params
+ */
 router.delete(
   "/retirerItem/:utilisateurId/:itemId",
   async (req: Request, res: Response) => {
@@ -150,7 +128,7 @@ router.delete(
         return;
       }
 
-      const collection = getPaniers();
+      const collection = getUtilisateurs();
       const utilisateur = new ObjectId(req.params.utilisateurId as string);
 
       const itemId = new ObjectId(req.params.itemId as string);
@@ -162,8 +140,8 @@ router.delete(
       );
 
       if (!itemExiste) {
-        res.status(400).json({
-          message: "le produit a efface ne se retrouve pas dans le panier",
+        res.status(404).json({
+          message: "le produit a effacer ne se retrouve pas dans le panier",
         });
         return;
       }
@@ -181,7 +159,10 @@ router.delete(
   },
 );
 
-// PATCH -- modifier la quantite d'un item du panier de l'utilisateur
+/**
+ * PATCH -- modifier la quantite d'un item du panier de l'utilisateur
+ * utilisateurId, itemId et nouvelleQuantity sont passes par req.params
+ */
 router.patch(
   "/modifierQuantite/:utilisateurId/:itemId/:nouvelleQuantite",
   async (req: Request, res: Response) => {
@@ -192,7 +173,7 @@ router.patch(
       }
 
       if (!ObjectId.isValid(req.params.itemId as string)) {
-        res.status(400).json({ message: "Identifiant utilisateur non valide" });
+        res.status(400).json({ message: "Identifiant produit non valide" });
         return;
       }
 
@@ -203,7 +184,7 @@ router.patch(
         return;
       }
 
-      const collection = getPaniers();
+      const collection = getUtilisateurs();
       const utilisateur = new ObjectId(req.params.utilisateurId as string);
       const item = new ObjectId(req.params.itemId as string);
 
@@ -213,7 +194,7 @@ router.patch(
         item,
       );
       if (!itemExiste) {
-        res.status(400).json({ message: "l'item n'existe pas" });
+        res.status(404).json({ message: "l'item n'existe pas" });
         return;
       }
 
@@ -235,7 +216,10 @@ router.patch(
   },
 );
 
-// PUT -- vider le panier d'un utilisateur
+/**
+ * PUT -- vider le panier d'un utilisateur
+ * @param utilisateurId est passe par req.params
+ */
 router.put(
   "/viderPanier/:utilisateurId",
   async (req: Request, res: Response) => {
@@ -245,7 +229,7 @@ router.put(
         return;
       }
 
-      const collection = getPaniers();
+      const collection = getUtilisateurs();
       const utilisateur = new ObjectId(req.params.utilisateurId as string);
 
       const result = await viderPanier(collection, utilisateur);
