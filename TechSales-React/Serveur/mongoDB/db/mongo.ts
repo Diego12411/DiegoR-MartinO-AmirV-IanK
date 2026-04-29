@@ -2,6 +2,7 @@ import { Collection, Db, MongoClient } from "mongodb";
 import { Panier } from "../models/panier.js";
 import { Produit } from "../models/produit.js";
 import { Utilisateur } from "../models/utilisateur.js";
+import { Commande } from "../models/commande.js";
 
 let mongoClient: MongoClient;
 
@@ -26,6 +27,11 @@ export function getTechSalesDB(): Db {
 // Reference la collection "panier"
 export function getPaniers(): Collection<Panier> {
   return getTechSalesDB().collection("panier");
+}
+
+// Reference la collection "commande"
+export function getCommandes(): Collection<Commande> {
+  return getTechSalesDB().collection("commandes");
 }
 
 // Reference la collection "produit"

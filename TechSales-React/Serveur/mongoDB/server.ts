@@ -1,6 +1,7 @@
 import express from "express";
 import panierRouter from "./routes/panierRouter.js";
 import utilisateurRouter from "./routes/utilisateurRouter.js";
+import commandeRouter from "./routes/commandeRouter.js";
 import cors from "cors";
 import produitRouter from "./routes/produitRouter.js";
 import { config } from "dotenv";
@@ -18,16 +19,12 @@ await connectToMongo(uri);
 // Initialisation de l'application Express
 const app = express();
 app.use(express.json());
-// app.use(
-//   cors({
-//     origin: process.env.PORT_URI // À mettre, dans .env, le port 5173
-//   })
-// )
 app.use(cors());
 
 // Ajouter les routes dans cette section ci-dessous
 app.use("/paniers", panierRouter);
 app.use("/utilisateurs", utilisateurRouter);
+app.use("/commandes", commandeRouter);
 app.use("/produits", produitRouter);
 
 // Je l'ai changé, car c'est risqué comme avant. Port peut etre undifined.
