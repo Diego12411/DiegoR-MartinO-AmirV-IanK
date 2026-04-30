@@ -4,6 +4,7 @@ import logo from "./assets/logo.png";
 import background from "./assets/background2.webp";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ItemPanier } from "./models/itemPanier";
 
 {
   /*source Card : https://getbootstrap.com/docs/4.0/components/card/
@@ -19,6 +20,7 @@ export default function AfficherCreerCompte() {
   const [prenom, setPrenom] = useState("");
   const [courriel, setCourriel] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
+  const [itemPanier, setItemPanier] = useState<ItemPanier[]>([]);
   const [messageCreationCompte, setMessageCreationCompte] = useState("");
 
   function CreationCompteBouttonClicked() {
@@ -37,6 +39,7 @@ export default function AfficherCreerCompte() {
         courriel: courriel,
         motDePasse: motDePasse,
         role: "Client",
+        itemPanier: itemPanier
       }),
     })
       .then((res) => res.json())
