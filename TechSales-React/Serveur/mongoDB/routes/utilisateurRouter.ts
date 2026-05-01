@@ -133,8 +133,7 @@ router.delete(
  * - Correspondance du mot de passe
  *
  * Réponse :
- * - Succès : retourne les informations de l'utilisateur (sans mot de passe)
- *   ainsi qu'un token JWT
+ * - Succès : envoie le token JWT dans un cookie HttpOnly et retourne le rôle
  * - Échec : message d'erreur approprié
  *
  * Route :
@@ -184,14 +183,18 @@ router.post("/connexion", async (req: Request, res: Response) => {
       { expiresIn: "1m" },
     );
 
-    // Retirer le mot de passe avant d'envoyer la réponse
-    const { motDePasse: _, ...utilisateurSansMotDePasse } = utilisateur;
+    // Envoyer le token JWT dans un cookie HttpOnly
+    res.cookie("refresh", token, {
+      httpOnly: true,
+      maxAge: 60 * 1000, // 1 minute en millisecondes
+      sameSite: "lax",
+      secure: false,
+    });
 
-    // Retourner la réponse de succès
+    // Retourner seulement les informations nécessaires au frontend
     return res.status(200).json({
       message: "Connexion réussie.",
-      token,
-      utilisateur: utilisateurSansMotDePasse,
+      role: utilisateur.role,
     });
   } catch (error) {
     console.error(
