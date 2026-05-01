@@ -1,0 +1,60 @@
+/****************************************************************************************
+ * Script : Initialisation de la collection "utilisateurs"
+ * Projet : TechSales
+ * Auteur : Amir
+ *
+ * Description :
+ * - Supprime les utilisateurs de test existants (évite les doublons)
+ * - Ajoute 2 utilisateurs (client + admin)
+ *
+ * Utilisation :
+ * - MongoDB Compass (Playground)
+ * - ou mongosh
+ ****************************************************************************************/
+
+// 1. Sélectionner la base de données
+use("TechSales");
+
+// 2. Nettoyer les anciens utilisateurs de test (optionnel mais recommandé)
+db.utilisateurs.deleteMany({
+  courriel: { $in: ["test1@mail.com", "test2@mail.com"] }
+});
+
+// 3. Insérer les utilisateurs
+db.utilisateurs.insertMany([
+  {
+    nom: "Test",
+    prenom: "1",
+    courriel: "test1@mail.com",
+    motDePasse: "1234", // À remplacer par bcrypt plus tard
+    role: "client",
+    adresse: {
+      noCivic: NumberInt(123),
+      rue: "Rue Sherbrooke",
+      ville: "Montréal",
+      province: "QC",
+      pays: "Canada",
+      codePostale: "H1A 2B3"
+    },
+    panier: []
+  },
+  {
+    nom: "Test",
+    prenom: "2",
+    courriel: "test2@mail.com",
+    motDePasse: "1234", // À remplacer par bcrypt plus tard
+    role: "admin",
+    adresse: {
+      noCivic: NumberInt(123),
+      rue: "Rue Sherbrooke",
+      ville: "Montréal",
+      province: "QC",
+      pays: "Canada",
+      codePostale: "H1A 2B3"
+    },
+    panier: []
+  }
+]);
+
+// 4. Vérification
+db.utilisateurs.find().pretty();
