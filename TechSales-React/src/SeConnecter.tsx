@@ -34,10 +34,6 @@ export default function SeConnecter() {
     })
       .then((res) => {
         return res.json().then((data) => {
-          // pour debugger et voir ce que le backend nous retourne (il faut l'enlever après)
-          console.log("Status :", res.status);
-          console.log("Data backend :", data);
-
           if (!res.ok) {
             throw new Error(data.message || "Erreur de connexion.");
           }
@@ -45,10 +41,7 @@ export default function SeConnecter() {
         });
       })
       .then((data) => {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("utilisateur", JSON.stringify(data.utilisateur));
-
-        if (data.utilisateur.role === "admin") {
+        if (data.role === "admin") {
           navigate("/PageAdmin");
         } else {
           navigate("/compte");
