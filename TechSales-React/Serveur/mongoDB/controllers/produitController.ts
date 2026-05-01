@@ -79,7 +79,7 @@ export async function getPrixProduit(
  */
 export async function get4ProduitsHasard(
   collection: Collection<Produit>,
-): Promise<Produit[] | null> {
+): Promise<Produit[]> {
   return await collection
     .aggregate<Produit>([{ $sample: { size: 4 } }])
     .toArray();

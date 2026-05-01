@@ -12,6 +12,20 @@ import { Produit } from "../models/produit.js";
 
 const router = Router();
 
+/**
+ * GET -- Retourne 4 items random parmis ceux disponible dans la base mongodb
+ */
+router.get("/lireProduitsHasard", async (req, res) => {
+  try {
+    const produits = await get4ProduitsHasard(getProduits());
+
+    return res.status(200).json(produits);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Erreur" });
+  }
+});
+
 /* 
 CREER - Créer un produit à l'aide d'un raw JSON 
 (voir ScriptsAjoutProduits/Script_CreerProduits_NoSql.txt)
@@ -106,19 +120,5 @@ router.delete("/:id", async (req, res) => {
 });
 
 ////
-
-/**
- * GET -- Retourne 4 items random parmis ceux disponible dans la base mongodb
- */
-router.get("/lireProduitsHasard", async (req, res) => {
-  try {
-    const produits = await get4ProduitsHasard(getProduits());
-
-    return res.status(200).json(produits);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Erreur" });
-  }
-});
 
 export default router;
