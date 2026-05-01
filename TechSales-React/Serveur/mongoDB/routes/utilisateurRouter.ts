@@ -214,14 +214,16 @@ router.post("/connexion", async (req: Request, res: Response) => {
  * -----------------------------------------------------------------------------------------
  * Description :
  * Retourne les informations du profil de l'utilisateur connecté à partir
- * du token JWT envoyé dans le header Authorization.
+ * du token JWT envoyé automatiquement dans un cookie HttpOnly.
  *
  * Sécurité :
  * - Route protégée par le middleware authenticateToken
+ * - Le token n'est pas lu depuis le localStorage ni depuis un header manuel
+ * - Le mot de passe n'est jamais retourné au frontend
  *
  * Réponse :
  * - Succès : retourne les informations de l'utilisateur sans le mot de passe
- * - Échec : message d'erreur si le token est invalide ou absent
+ * - Échec : message d'erreur si le token est invalide, expiré ou absent
  *
  * Route :
  * GET /utilisateurs/profil

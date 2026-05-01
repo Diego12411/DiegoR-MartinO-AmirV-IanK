@@ -23,6 +23,7 @@ export default function SeConnecter() {
 
     fetch("http://localhost:4000/utilisateurs/connexion", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
