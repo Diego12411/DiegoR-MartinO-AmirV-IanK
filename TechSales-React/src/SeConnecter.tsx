@@ -21,7 +21,7 @@ export default function SeConnecter() {
 
     setMessageErreur("");
 
-    fetch("http://localhost:4000/utilisateurs/connexion", {
+    fetch("http://127.0.0.1:4000/utilisateurs/connexion", {
       method: "POST",
       credentials: "include",
       headers: {
