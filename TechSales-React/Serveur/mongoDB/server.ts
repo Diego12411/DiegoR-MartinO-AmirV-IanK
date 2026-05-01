@@ -21,7 +21,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "http://127.0.0.1:5173", // Remplacez par l'URL de votre frontend
     credentials: true,
   }),
 );
