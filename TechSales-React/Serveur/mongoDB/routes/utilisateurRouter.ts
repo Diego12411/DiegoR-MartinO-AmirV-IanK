@@ -11,6 +11,8 @@ import { getUtilisateurs } from "../db/mongo.js";
 import { ObjectId } from "mongodb";
 import jwt from "jsonwebtoken";
 import { authenticateToken } from "../middleware/jwtToken.js";
+import bcrypt from "bcrypt";
+// à vérifier si on a besoin de cette fonction verifierExistenceItem, sinon on peut la supprimer
 import { verifierExistenceItem } from "../controllers/panierController.js";
 
 const router = Router();
@@ -28,32 +30,79 @@ router.get("/", async (req: Request, res: Response) => {
   res.status(200).json(resultat);
 });
 
+/**
+ * =========================================================================================
+ * CRÉATION D'UN COMPTE UTILISATEUR
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Permet de créer un nouveau compte utilisateur dans la collection MongoDB "utilisateurs".
+ *
+ * Vérifications :
+ * - Vérifie si un compte existe déjà avec le même courriel
+ * - Hache le mot de passe avec bcrypt avant l'enregistrement
+ *
+ * Sécurité :
+ * - Le mot de passe n'est jamais enregistré en clair dans la base de données
+ * - Le mot de passe est remplacé par sa version hachée avant l'insertion
+ *
+ * Réponse :
+ * - Succès : retourne un message de confirmation
+ * - Échec : retourne un message si le courriel est déjà utilisé
+ * - Erreur : retourne un message d'erreur serveur
+ *
+ * Route :
+ * POST /utilisateurs/creerCompte
+ *
+ * Auteur : Diego, Amir (ajout de la partie hachage du mot de passe avec bcrypt)
+ * =========================================================================================
+ */
 router.post("/creerCompte", async (req: Request, res: Response) => {
   try {
     const collection = getUtilisateurs(); //params que le controller a besoin pour create utilisateur
-    const utilisateur = req.body; //params que le controller a besoin pour create utilisateur
+
+    // Récupérer les informations de l'utilisateur envoyées par le frontend
+    const utilisateur = req.body;
     const courriel = req.body.courriel as string;
 
+    // Vérifier si un compte existe déjà avec ce courriel
     const verifierCourrielExistant = await verifierExistenceUtilisateur(
       collection,
       courriel,
     );
+
     if (verifierCourrielExistant !== null) {
       return res
         .status(400)
         .json({ message: "Un Compte est déja associé à ce courriel" });
     }
 
-    const resultat = await createUtilisateur(collection, utilisateur); //stocker le resultat de la function createUtilisateur
-    res.status(201).json({
-      message: "Utilisateur créé",
+    if (!utilisateur.motDePasse) {
+      return res.status(400).json({
+        message: "Mot de passe requis.",
+      });
+    }
+
+    // Hacher le mot de passe avant de l'enregistrer dans MongoDB
+    const motDePasseHash = await bcrypt.hash(utilisateur.motDePasse, 10);
+
+    // Remplacer le mot de passe en clair par le mot de passe haché
+    utilisateur.motDePasse = motDePasseHash;
+
+    // Créer l'utilisateur avec le mot de passe haché
+    await createUtilisateur(collection, utilisateur);
+
+    return res.status(201).json({
+      message: "Utilisateur créé.",
     });
   } catch (error) {
     console.error(
       `[${new Date().toISOString()}] POST /creerCompte ->`,
       (error as Error).message,
     );
-    res.status(500).json({ message: "Erreur serveur" });
+
+    return res.status(500).json({
+      message: "Erreur serveur",
+    });
   }
 });
 
