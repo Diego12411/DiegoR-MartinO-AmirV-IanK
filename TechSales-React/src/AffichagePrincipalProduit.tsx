@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import "./AffichagePrincipalProduit.css";
 import logo from "./assets/logo.png";
 import sansImage from "./assets/ProduitSansImage.png";
+import { AffichagePrincipalProduitBanner } from "./AffichagePrincipalProduitBanner.tsx";
 
 type Produit = {
   _id: string; // Changé en _id (format en react)
@@ -85,6 +86,7 @@ export default function AffichagePrincipalProduit() {
   return (
     <main className="container-fluid p-0">
       <HeaderComponent />
+      <AffichagePrincipalProduitBanner />
       <div>
         <div className="m-5 bg-transparent">
           <div className="row">
