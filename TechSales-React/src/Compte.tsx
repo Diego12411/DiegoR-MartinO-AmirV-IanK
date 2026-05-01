@@ -25,9 +25,22 @@ export default function Compte() {
   const [messageErreur, setMessageErreur] = useState("");
   const navigate = useNavigate();
 
-  // temporaire pour simuler la déconnexion en supprimant le token et redirigeant vers la page de connexion
   function handleLogout() {
-    navigate("/SeConnecter");
+    fetch("http://127.0.0.1:4000/utilisateurs/deconnexion", {
+      method: "POST",
+      credentials: "include",
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Erreur lors de la déconnexion.");
+        }
+
+        navigate("/SeConnecter");
+      })
+      .catch((err) => {
+        console.error(err);
+        setMessageErreur("Erreur lors de la déconnexion.");
+      });
   }
 
   useEffect(() => {
