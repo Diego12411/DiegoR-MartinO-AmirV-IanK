@@ -1,6 +1,7 @@
 import express from "express";
 import panierRouter from "./routes/panierRouter.js";
 import utilisateurRouter from "./routes/utilisateurRouter.js";
+import commandeRouter from "./routes/commandeRouter.js";
 import cors from "cors";
 import produitRouter from "./routes/produitRouter.js";
 import { config } from "dotenv";
@@ -32,6 +33,7 @@ app.use(express.json());
 // Ajouter les routes dans cette section ci-dessous
 app.use("/paniers", panierRouter);
 app.use("/utilisateurs", utilisateurRouter);
+app.use("/commandes", commandeRouter);
 app.use("/produits", produitRouter);
 
 // Avant : app.listen(process.env.PORT);
