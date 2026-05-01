@@ -167,25 +167,34 @@ router.delete(
 
 /**
  * =========================================================================================
- * AUTHENTIFICATION UTILISATEUR (LOGIN)
+ * AUTHENTIFICATION UTILISATEUR (CONNEXION)
  * -----------------------------------------------------------------------------------------
  * Description :
  * Permet à un utilisateur de se connecter à son compte en validant son courriel
  * et son mot de passe.
  *
  * Vérifications :
- * - Champs requis (courriel, mot de passe)
- * - Existence de l'utilisateur
- * - Correspondance du mot de passe
+ * - Vérifie que le courriel et le mot de passe sont présents
+ * - Recherche l'utilisateur dans MongoDB à partir du courriel
+ * - Vérifie l'existence de l'utilisateur
+ * - Compare le mot de passe entré avec le mot de passe haché dans MongoDB avec bcrypt
+ *
+ * Sécurité :
+ * - Le mot de passe n'est jamais comparé directement en clair
+ * - Le mot de passe réel n'est jamais retourné au frontend
+ * - Le token JWT est envoyé dans un cookie HttpOnly
+ * - Le cookie HttpOnly n'est pas accessible avec JavaScript côté client
  *
  * Réponse :
- * - Succès : envoie le token JWT dans un cookie HttpOnly et retourne le rôle
- * - Échec : message d'erreur approprié
+ * - Succès : crée un cookie HttpOnly contenant le token JWT et retourne le rôle de l'utilisateur
+ * - Échec : retourne un message si les champs sont manquants ou invalides
+ * - Erreur : retourne un message d'erreur serveur
  *
  * Route :
  * POST /utilisateurs/connexion
  *
- * Auteur : Amir
+ * Auteur :
+ * Amir
  * =========================================================================================
  */
 router.post("/connexion", async (req: Request, res: Response) => {
@@ -197,7 +206,12 @@ router.post("/connexion", async (req: Request, res: Response) => {
     const { courriel, motDePasse } = req.body;
 
     // Vérifier que les champs requis sont présents
-    if (!courriel || !motDePasse) {
+    if (
+      typeof courriel !== "string" ||
+      typeof motDePasse !== "string" ||
+      !courriel.trim() ||
+      !motDePasse.trim()
+    ) {
       return res.status(400).json({
         message: "Courriel et mot de passe requis.",
       });
@@ -213,9 +227,14 @@ router.post("/connexion", async (req: Request, res: Response) => {
       });
     }
 
-    // Vérifier que le mot de passe correspond
-    // Version temporaire sans bcrypt
-    if (utilisateur.motDePasse !== motDePasse) {
+    // Comparer le mot de passe entré avec le mot de passe haché dans MongoDB
+    const motDePasseValide = await bcrypt.compare(
+      motDePasse,
+      utilisateur.motDePasse,
+    );
+
+    // Vérifier si le mot de passe est valide
+    if (!motDePasseValide) {
       return res.status(401).json({
         message: "Mot de passe incorrect.",
       });
