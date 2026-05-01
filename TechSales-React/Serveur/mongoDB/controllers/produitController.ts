@@ -27,7 +27,7 @@ export async function getProduitById(
 LIRE - Afficher TOUS les produits existants
 */
 export async function getAllProduits(
-  collection: Collection<Produit>
+  collection: Collection<Produit>,
 ): Promise<Produit[]> {
   return await collection.find().toArray();
 }
@@ -72,3 +72,15 @@ export async function getPrixProduit(
 }
 
 ///////////////////////////////////////
+
+/**
+ * READ -- Permet de recuperer 4 produits selectionnes au hasard
+ * @param collection fait reference a "TechSales.produits"
+ */
+export async function get4ProduitsHasard(
+  collection: Collection<Produit>,
+): Promise<Produit[] | null> {
+  return await collection
+    .aggregate<Produit>([{ $sample: { size: 4 } }])
+    .toArray();
+}
