@@ -5,6 +5,7 @@ import cors from "cors";
 import produitRouter from "./routes/produitRouter.js";
 import { config } from "dotenv";
 import { connectToMongo } from "./db/mongo.js";
+import cookieParser from "cookie-parser";
 
 config();
 
@@ -17,20 +18,22 @@ await connectToMongo(uri);
 
 // Initialisation de l'application Express
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
+
+app.use(cookieParser());
 app.use(express.json());
-// app.use(
-//   cors({
-//     origin: process.env.PORT_URI // À mettre, dans .env, le port 5173
-//   })
-// )
-app.use(cors());
 
 // Ajouter les routes dans cette section ci-dessous
 app.use("/paniers", panierRouter);
 app.use("/utilisateurs", utilisateurRouter);
 app.use("/produits", produitRouter);
 
-// Je l'ai changé, car c'est risqué comme avant. Port peut etre undifined.
 // Avant : app.listen(process.env.PORT);
 // Listen sur le port défini dans le fichier .env ou 4000 par défaut, et affiche un message de confirmation dans la console une fois que le serveur est démarré.
 const PORT = Number(process.env.PORT) || 4000;
