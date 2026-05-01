@@ -69,13 +69,13 @@ router.post("/creerCompte", async (req: Request, res: Response) => {
       collection,
       courriel,
     );
-
     if (verifierCourrielExistant !== null) {
       return res
         .status(400)
         .json({ message: "Un Compte est déja associé à ce courriel" });
     }
 
+    // Vérifier que le mot de passe est présent avant de le hacher
     if (!utilisateur.motDePasse) {
       return res.status(400).json({
         message: "Mot de passe requis.",
