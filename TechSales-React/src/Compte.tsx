@@ -25,9 +25,8 @@ export default function Compte() {
   const [messageErreur, setMessageErreur] = useState("");
   const navigate = useNavigate();
 
+  // temporaire pour simuler la déconnexion en supprimant le token et redirigeant vers la page de connexion
   function handleLogout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("utilisateur");
     navigate("/SeConnecter");
   }
 
