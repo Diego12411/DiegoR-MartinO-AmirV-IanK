@@ -31,20 +31,9 @@ export default function Compte() {
   }
 
   useEffect(() => {
-    // Récupérer le token JWT depuis le localStorage
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      setMessageErreur("Aucun utilisateur connecté.");
-      return;
-    }
-
-    fetch("http://localhost:4000/utilisateurs/profil", {
+    fetch("http://127.0.0.1:4000/utilisateurs/profil", {
       method: "GET",
-      headers: {
-        // Inclure le token JWT dans les en-têtes de la requête pour l'authentification
-        Authorization: `Bearer ${token}`,
-      },
+      credentials: "include",
     })
       .then((res) => res.json().then((data) => ({ ok: res.ok, data })))
       .then(({ ok, data }) => {
