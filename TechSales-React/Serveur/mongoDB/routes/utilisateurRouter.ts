@@ -261,6 +261,50 @@ router.get(
   },
 );
 
+/**
+ * =========================================================================================
+ * DÉCONNEXION UTILISATEUR
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Déconnecte l'utilisateur en supprimant le cookie HttpOnly contenant le token JWT.
+ *
+ * Sécurité :
+ * - Le cookie "refresh" est supprimé côté navigateur
+ * - L'utilisateur devra se reconnecter pour accéder aux routes protégées
+ *
+ * Réponse :
+ * - Succès : message de confirmation
+ *
+ * Route :
+ * POST /utilisateurs/deconnexion
+ *
+ * Auteur : Amir
+ * =========================================================================================
+ */
+router.post("/deconnexion", async (req: Request, res: Response) => {
+  try {
+    // Supprimer le cookie HttpOnly contenant le token JWT
+    res.clearCookie("refresh", {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: false,
+    });
+
+    return res.status(200).json({
+      message: "Déconnexion réussie.",
+    });
+  } catch (error) {
+    console.error(
+      `[${new Date().toISOString()}] POST /utilisateurs/deconnexion ->`,
+      (error as Error).message,
+    );
+
+    return res.status(500).json({
+      message: "Erreur serveur.",
+    });
+  }
+});
+
 //Amir//////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
