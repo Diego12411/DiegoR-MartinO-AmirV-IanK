@@ -8,55 +8,57 @@ import { useEffect, useState } from "react";
  * Lorsque l'image est clicke, ca nous redirige vers une nouvelle page avec les informations detaillees du prochain produit.
  */
 
+// _id d'un produit pour tester la page
+// http://127.0.0.1:5173/detailsProduit/69f3f6770aba9a7149661c00
+
+type Categorie = {
+  nom_categorie: string;
+};
+
+type Specification = {
+  type_produit: string;
+  processeur: string;
+  frequence_processeur: string;
+  type_ram: string;
+  taille_ram: number;
+  type_stockage: string;
+  taille_stockage: number;
+  carte_graphique: string;
+};
+
 type Produit = {
-  id_produit: number;
-  specs_id_specs: number;
+  _id: string;
   nom: string;
   description: string;
   prix: number;
   stock: number;
   image_url: string;
-};
-
-type Spec = {
-  idSpec: number;
-  type_produit: string;
-  processeur: string;
-  frequence_processeur: number;
-  taille_ram: number;
-  type_ram: string;
-  taille_stockage: number;
-  type_stockage: string;
-  carte_graphique: string;
+  categorie: Categorie;
+  specification: Specification;
 };
 
 export default function ProduitDetails() {
   // on recupere le parametre de l'id du produit recu par le lien
   const { id } = useParams();
 
-  // on recupere les donnes a partir de l'API GET /produits/${id}
-  const [produitFetched, setProduitFetched] = useState<Produit | null>(null);
+  // On recupere 4 produits au hasard a presente dans le bas de page
+  const [produitsHasard, setProduitsHasard] = useState<Produit[]>([]);
   useEffect(() => {
-    fetch(`http://localhost:4000/produits/${id}`)
-      .then((response) => response.json()) // parse JSON data
-      .then((data) => setProduitFetched(data[0]));
+    fetch("http://localhost:4000/produits/lireProduitsHasard")
+      .then((response) => response.json())
+      .then((data: Produit[]) => setProduitsHasard(data ?? []));
   }, [id]);
 
-  // on recupere les informations du specs a partir des informations fetch pour le produit ci-haut
-  const [specsFetched, setSpecsFetched] = useState<Spec | null>(null);
+  // Avec mongodb, le produit contient deja les specs integres (embedded document)
+  // un seul fetch suffit, plus besoin d'un 2e appel pour les aspect aka "on cherche les attributs d'un objet"
+  const [produit, setProduit] = useState<Produit | null>(null);
   useEffect(() => {
-    fetch(`http://localhost:4000/specs/${produitFetched?.specs_id_specs}`)
+    fetch(`http://localhost:4000/produits/${id}`)
       .then((response) => response.json())
-      .then((data) => setSpecsFetched(data));
-  }, [produitFetched]);
+      .then((data) => setProduit(data)); // mongo retourne un objet Produit directement
+  }, [id]);
 
-  const [randomProduits, setRandomProduits] = useState<Produit[]>([]);
-  useEffect(() => {
-    fetch("http://localhost:4000/produits/random")
-      .then((response) => response.json())
-      .then((data) => setRandomProduits(data));
-  }, []);
-
+  // On deplace la page "window" a la position (0,0), soit le haut de la page lorsque le id du produit initiale change
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
@@ -66,12 +68,14 @@ export default function ProduitDetails() {
 
   // s'occupe de la couleur de l'affichage du stock
   const HandleAffichageStock = () => {
-    if (Number(produitFetched?.prix) > 0) {
+    if (produit && produit.stock > 0) {
       return <h5 className="text-success">En stock</h5>;
     } else {
       return <h5 className="text-danger">Rupture de stock</h5>;
     }
   };
+
+  // ===== Debut du developpement de la page details d'un produit =====
 
   return (
     <>
@@ -87,7 +91,7 @@ export default function ProduitDetails() {
           {/* Affichage de l'image du laptop */}
           <div className="col">
             <img
-              src={produitFetched?.image_url}
+              src={produit?.image_url}
               alt="Image d'un laptop :')"
               style={{ width: "100%", height: "auto", objectFit: "cover" }}
             />
@@ -95,10 +99,10 @@ export default function ProduitDetails() {
 
           {/* Affichage des informations generales de l'ordinateur */}
           <div className="col">
-            <h4 className="fw-bold">{produitFetched?.nom}</h4>
+            <h4 className="fw-bold">{produit?.nom}</h4>
             {HandleAffichageStock()}
-            <h5>${produitFetched?.prix}</h5>
-            <p className="fs-6">{produitFetched?.description}</p>
+            <h5>${produit?.prix}</h5>
+            <p className="fs-6">{produit?.description}</p>
             <hr className="w-75" style={{ border: "1px solid", opacity: 1 }} />
 
             {/* Affichage des caracteristiques du laptop */}
@@ -118,8 +122,8 @@ export default function ProduitDetails() {
                   <div>
                     <small className="text-body-secondary">Processeur</small>
                     <br />
-                    {specsFetched?.processeur}{" "}
-                    {specsFetched?.frequence_processeur} GHz
+                    {produit?.specification?.processeur}{" "}
+                    {produit?.specification?.frequence_processeur} GHz
                   </div>
                 </li>
                 {/* Affichage de la carte graphique */}
@@ -138,7 +142,7 @@ export default function ProduitDetails() {
                       Carte Graphique
                     </small>
                     <br />
-                    {specsFetched?.carte_graphique}
+                    {produit?.specification?.carte_graphique}
                   </div>
                 </li>
                 {/* Affichage de la memoire */}
@@ -155,7 +159,8 @@ export default function ProduitDetails() {
                   <div>
                     <small className="text-body-secondary">Memoire</small>
                     <br />
-                    {specsFetched?.taille_ram} Go
+                    {produit?.specification?.taille_ram} Go{" "}
+                    {produit?.specification?.type_ram}
                   </div>
                 </li>
                 {/* Affichage de la capacite de stockage */}
@@ -172,8 +177,8 @@ export default function ProduitDetails() {
                   <div>
                     <small className="text-body-secondary">Stockage</small>
                     <br />
-                    {specsFetched?.taille_stockage} Go{" "}
-                    {specsFetched?.type_stockage}
+                    {produit?.specification?.taille_stockage} Go{" "}
+                    {produit?.specification?.type_stockage}
                   </div>
                 </li>
               </ul>
@@ -226,10 +231,10 @@ export default function ProduitDetails() {
           />
           <h5>Autres produits</h5>
           <div className="row row-cols-1 row-cols-md-4 g-3 mb-5">
-            {randomProduits.map((produit) => (
-              <div className="col" key={produit.id_produit}>
+            {produitsHasard?.map((produit) => (
+              <div className="col" key={produit._id}>
                 <div className="card h-100">
-                  <Link to={`/detailsProduit/${produit.id_produit}`}>
+                  <Link to={`/detailsProduit/${produit._id}`}>
                     <img
                       src={produit.image_url}
                       alt={produit.nom}

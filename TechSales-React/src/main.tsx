@@ -1,8 +1,8 @@
 import { StrictMode } from "react";
 import logo from "./assets/logo.png";
 import { Link } from "react-router";
-import user from "./assets/user.png";
-import panier from "./assets/panier.png";
+import user from "./assets/userLogo.png";
+import panier from "./assets/cartLogo.png";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -45,7 +45,12 @@ createRoot(document.getElementById("root")!).render(
 
 export const HeaderComponent = () => {
   return (
-    <header className="container-fluid text-center px-0 border border-black">
+    <header
+      className="container-fluid text-center px-0 sticky-top"
+      style={{
+        boxShadow: "0 0 8px rgba(0,0,0,0.3)",
+      }}
+    >
       <div className="row">
         <div
           className="col p-3"
@@ -61,29 +66,47 @@ export const HeaderComponent = () => {
         <div className="px-3 col bg-white p-3 d-flex justify-content-between align-items-center">
           {/* Partie gauche */}
           <div className="d-flex align-items-center gap-3">
-            <img src={logo} alt="logo" width={150} height={25} />
+            <img src={logo} alt="logo" width={210} height={35} />
             <Link to="/">
               <button
                 type="button"
-                className="text-dark fw-bold btn btn-link ms-2"
-                style={{ fontSize: "12px" }}
+                className="text-black btn btn-link ms-4"
+                style={{ fontSize: "13px" }}
               >
-                Affichage Produits
+                Nos produits
+              </button>
+            </Link>
+            <Link to="/">
+              <button
+                type="button"
+                className="text-black btn btn-link"
+                style={{ fontSize: "13px" }}
+              >
+                À propos de nous
+              </button>
+            </Link>
+            <Link to="/">
+              <button
+                type="button"
+                className="text-black btn btn-link"
+                style={{ fontSize: "13px" }}
+              >
+                Support
               </button>
             </Link>
           </div>
 
           {/* Partie droite */}
-          <div className="d-flex align-items-center gap-3">
+          <div className="d-flex align-items-center gap-4 mx-3">
             <Link to="/Compte">
               <button type="button" className="btn p-0">
                 <img src={user} alt="user" width={30} height={30} />
               </button>
             </Link>
 
-            <Link to="/">
+            <Link to="/panier">
               <button type="button" className="btn p-0">
-                <img src={panier} alt="panier" width={45} height={25} />
+                <img src={panier} alt="panier" width={32} height={27} />
               </button>
             </Link>
           </div>
@@ -93,17 +116,30 @@ export const HeaderComponent = () => {
   );
 };
 export const FooterComponent = () => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   return (
     <div className="row">
+      <a
+        href="#"
+        className="text-white d-flex justify-content-center py-2 btn border-0 shadow-none rounded-0"
+        style={{
+          backgroundColor: "#594f74",
+        }}
+        onClick={scrollToTop}
+      >
+        Retournez en haut de page
+      </a>
       <div
         className="col p-3"
         style={{
           backgroundColor: "#40365a",
         }}
       >
-        <footer className="border border-dark mt-5 p-5">
+        <footer className=" mt-5 py-2">
           <div className="container">
-            <h3 className="text-left text-decoration-underline text-white">
+            <h3 className="text-center text-decoration-underline text-white">
               T E C H S A L E S
             </h3>
             <div className="d-flex justify-content-center row row-cols-4 row-cols-sm-4 row-cols-md-4 row-cols-lg-5 g-4 mt-2">
@@ -113,7 +149,7 @@ export const FooterComponent = () => {
                     Nos produits
                   </li>
                   <a
-                    href="#"
+                    href="/"
                     className="list-group-item bg-transparent text-white mb-2"
                   >
                     Laptop
@@ -138,7 +174,7 @@ export const FooterComponent = () => {
                     Créer une compte
                   </a>
                   <a
-                    href="#"
+                    href="Panier"
                     className="list-group-item bg-transparent text-white mb-2"
                   >
                     Panier

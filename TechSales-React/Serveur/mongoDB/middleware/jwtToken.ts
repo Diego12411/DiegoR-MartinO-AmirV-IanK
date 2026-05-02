@@ -6,20 +6,21 @@ import { MyTokenPayload } from "../interfaces/interfaces.js";
 
 /**
  * =========================================================================================
- * MIDDLEWARE D'AUTHENTIFICATION JWT
+ * MIDDLEWARE D'AUTHENTIFICATION JWT AVEC COOKIE HTTPONLY
  * -----------------------------------------------------------------------------------------
  * Description :
- * Vérifie si la requête contient un token JWT valide dans l'en-tête Authorization.
+ * Vérifie si la requête contient un token JWT valide dans un cookie HttpOnly.
  *
  * Fonctionnement :
- * - Lit le header Authorization
+ * - Lit le cookie "refresh"
  * - Vérifie que le token est présent
  * - Décode et valide le token avec JWT_SECRET
  * - Récupère l'utilisateur correspondant dans MongoDB
  * - Ajoute l'utilisateur dans req.user
  *
- * Format attendu :
- * Authorization: Bearer <token>
+ * Sécurité :
+ * - Le cookie HttpOnly n'est pas accessible avec JavaScript
+ * - Le token n'est plus stocké dans localStorage
  *
  * Réponse :
  * - Succès : passe au contrôleur
@@ -34,16 +35,13 @@ export async function authenticateToken(
   next: NextFunction,
 ) {
   try {
-    // Récupérer l'en-tête Authorization
-    const authHeader = req.headers.authorization;
+    // Récupérer le token JWT dans le cookie HttpOnly
+    const token = req.cookies.refresh;
 
-    // Vérifier que le header existe et commence par "Bearer "
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ message: "Token manquant ou invalide." });
+    // Vérifier que le token existe
+    if (!token) {
+      return res.status(401).json({ message: "Token manquant." });
     }
-
-    // Extraire le token après "Bearer "
-    const token = authHeader.split(" ")[1];
 
     // Vérifier et décoder le token JWT
     const decoded = jwt.verify(

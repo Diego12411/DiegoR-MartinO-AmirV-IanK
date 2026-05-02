@@ -26,26 +26,27 @@ export default function Compte() {
   const navigate = useNavigate();
 
   function handleLogout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("utilisateur");
-    navigate("/SeConnecter");
+    fetch("http://127.0.0.1:4000/utilisateurs/deconnexion", {
+      method: "POST",
+      credentials: "include",
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Erreur lors de la déconnexion.");
+        }
+
+        navigate("/SeConnecter");
+      })
+      .catch((err) => {
+        console.error(err);
+        setMessageErreur("Erreur lors de la déconnexion.");
+      });
   }
 
   useEffect(() => {
-    // Récupérer le token JWT depuis le localStorage
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      setMessageErreur("Aucun utilisateur connecté.");
-      return;
-    }
-
-    fetch("http://localhost:4000/utilisateurs/profil", {
+    fetch("http://127.0.0.1:4000/utilisateurs/profil", {
       method: "GET",
-      headers: {
-        // Inclure le token JWT dans les en-têtes de la requête pour l'authentification
-        Authorization: `Bearer ${token}`,
-      },
+      credentials: "include",
     })
       .then((res) => res.json().then((data) => ({ ok: res.ok, data })))
       .then(({ ok, data }) => {

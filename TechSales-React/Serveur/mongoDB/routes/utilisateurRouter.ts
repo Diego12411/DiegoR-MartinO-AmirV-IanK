@@ -133,8 +133,7 @@ router.delete(
  * - Correspondance du mot de passe
  *
  * Réponse :
- * - Succès : retourne les informations de l'utilisateur (sans mot de passe)
- *   ainsi qu'un token JWT
+ * - Succès : envoie le token JWT dans un cookie HttpOnly et retourne le rôle
  * - Échec : message d'erreur approprié
  *
  * Route :
@@ -184,14 +183,18 @@ router.post("/connexion", async (req: Request, res: Response) => {
       { expiresIn: "1m" },
     );
 
-    // Retirer le mot de passe avant d'envoyer la réponse
-    const { motDePasse: _, ...utilisateurSansMotDePasse } = utilisateur;
+    // Envoyer le token JWT dans un cookie HttpOnly
+    res.cookie("refresh", token, {
+      httpOnly: true,
+      maxAge: 60 * 1000, // 1 minute en millisecondes
+      sameSite: "lax",
+      secure: false,
+    });
 
-    // Retourner la réponse de succès
+    // Retourner seulement les informations nécessaires au frontend
     return res.status(200).json({
       message: "Connexion réussie.",
-      token,
-      utilisateur: utilisateurSansMotDePasse,
+      role: utilisateur.role,
     });
   } catch (error) {
     console.error(
@@ -211,14 +214,16 @@ router.post("/connexion", async (req: Request, res: Response) => {
  * -----------------------------------------------------------------------------------------
  * Description :
  * Retourne les informations du profil de l'utilisateur connecté à partir
- * du token JWT envoyé dans le header Authorization.
+ * du token JWT envoyé automatiquement dans un cookie HttpOnly.
  *
  * Sécurité :
  * - Route protégée par le middleware authenticateToken
+ * - Le token n'est pas lu depuis le localStorage ni depuis un header manuel
+ * - Le mot de passe n'est jamais retourné au frontend
  *
  * Réponse :
  * - Succès : retourne les informations de l'utilisateur sans le mot de passe
- * - Échec : message d'erreur si le token est invalide ou absent
+ * - Échec : message d'erreur si le token est invalide, expiré ou absent
  *
  * Route :
  * GET /utilisateurs/profil
@@ -255,6 +260,50 @@ router.get(
     }
   },
 );
+
+/**
+ * =========================================================================================
+ * DÉCONNEXION UTILISATEUR
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Déconnecte l'utilisateur en supprimant le cookie HttpOnly contenant le token JWT.
+ *
+ * Sécurité :
+ * - Le cookie "refresh" est supprimé côté navigateur
+ * - L'utilisateur devra se reconnecter pour accéder aux routes protégées
+ *
+ * Réponse :
+ * - Succès : message de confirmation
+ *
+ * Route :
+ * POST /utilisateurs/deconnexion
+ *
+ * Auteur : Amir
+ * =========================================================================================
+ */
+router.post("/deconnexion", async (req: Request, res: Response) => {
+  try {
+    // Supprimer le cookie HttpOnly contenant le token JWT
+    res.clearCookie("refresh", {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: false,
+    });
+
+    return res.status(200).json({
+      message: "Déconnexion réussie.",
+    });
+  } catch (error) {
+    console.error(
+      `[${new Date().toISOString()}] POST /utilisateurs/deconnexion ->`,
+      (error as Error).message,
+    );
+
+    return res.status(500).json({
+      message: "Erreur serveur.",
+    });
+  }
+});
 
 //Amir//////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////

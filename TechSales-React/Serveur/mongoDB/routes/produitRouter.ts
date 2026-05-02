@@ -1,9 +1,30 @@
 import { Router } from "express";
-import {createProduit, getProduitById, getAllProduits, updateProduit, deleteProduitById} from "../controllers/produitController.js";
+import {
+  createProduit,
+  getProduitById,
+  getAllProduits,
+  updateProduit,
+  deleteProduitById,
+  get4ProduitsHasard,
+} from "../controllers/produitController.js";
 import { getProduits } from "../db/mongo.js";
 import { Produit } from "../models/produit.js";
 
 const router = Router();
+
+/**
+ * GET -- Retourne 4 items random parmis ceux disponible dans la base mongodb
+ */
+router.get("/lireProduitsHasard", async (req, res) => {
+  try {
+    const produits = await get4ProduitsHasard(getProduits());
+
+    return res.status(200).json(produits);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Erreur" });
+  }
+});
 
 /* 
 CREER - Créer un produit à l'aide d'un raw JSON 
@@ -13,10 +34,11 @@ router.post("/create", async (req, res) => {
   try {
     const produit: Produit = req.body;
     await createProduit(getProduits(), produit);
-    return res.status(201).json({message: "Produit crée"});
-  } catch (error) { // Erreur de connection
+    return res.status(201).json({ message: "Produit crée" });
+  } catch (error) {
+    // Erreur de connection
     console.error(error);
-    return res.status(500).json({message: "Erreur"});
+    return res.status(500).json({ message: "Erreur" });
   }
 });
 
@@ -27,13 +49,15 @@ router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const produit = await getProduitById(getProduits(), id);
-    if (!produit) { // Si le produit avec cet id n'existe pas, erreur
-      return res.status(404).json({message: "Produit introuvable"});
+    if (!produit) {
+      // Si le produit avec cet id n'existe pas, erreur
+      return res.status(404).json({ message: "Produit introuvable" });
     }
     return res.status(200).json(produit);
-  } catch (error) { // Erreur de connection
+  } catch (error) {
+    // Erreur de connection
     console.error(error);
-    return res.status(500).json({message: "Erreur"});
+    return res.status(500).json({ message: "Erreur" });
   }
 });
 
@@ -44,7 +68,8 @@ router.get("/", async (req, res) => {
   try {
     const produits = await getAllProduits(getProduits());
     return res.status(200).json(produits);
-  } catch (error) { // Erreur de connection
+  } catch (error) {
+    // Erreur de connection
     console.error(error);
     return res.status(500).json({ message: "Erreur" });
   }
@@ -63,13 +88,15 @@ router.put("/:id", async (req, res) => {
     const { id } = req.params;
     const produitUpdates = req.body;
     await updateProduit(getProduits(), id, produitUpdates);
-    if (!produitUpdates) { // Si le produit avec cet id n'existe pas, erreur
-      return res.status(404).json({message: "Produit introuvable"});
+    if (!produitUpdates) {
+      // Si le produit avec cet id n'existe pas, erreur
+      return res.status(404).json({ message: "Produit introuvable" });
     }
-    return res.status(200).json({message: "Produit mis à jour"});
-  } catch (error) { // Erreur de connection
+    return res.status(200).json({ message: "Produit mis à jour" });
+  } catch (error) {
+    // Erreur de connection
     console.error(error);
-    return res.status(500).json({message: "Erreur"});
+    return res.status(500).json({ message: "Erreur" });
   }
 });
 
@@ -81,17 +108,17 @@ router.delete("/:id", async (req, res) => {
     const { id } = req.params;
     const produit = req.body;
     await deleteProduitById(getProduits(), id);
-    if (!produit) { // Si le produit avec cet id n'existe pas, erreur
-      return res.status(404).json({message: "Produit introuvable"});
+    if (!produit) {
+      // Si le produit avec cet id n'existe pas, erreur
+      return res.status(404).json({ message: "Produit introuvable" });
     }
-    return res.status(200).json({message: "Produit supprimé"});
+    return res.status(200).json({ message: "Produit supprimé" });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({message: "Erreur"});
+    return res.status(500).json({ message: "Erreur" });
   }
 });
 
 ////
-
 
 export default router;
