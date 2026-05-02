@@ -1,5 +1,7 @@
 import { HeaderComponent, FooterComponent } from "./main";
 import { useState, useEffect } from "react";
+import { getProduitById } from "../Serveur/mongoDB/controllers/produitController";
+import { getProduits } from "../Serveur/mongoDB/db/mongo.js";
 import "./PageAdmin.css";
 
 // ============================================================
@@ -44,7 +46,8 @@ export default function AfficherPageAdmin() {
   const [produits, setProduits] = useState<Produit[]>([]);
   const [produitListe, setProduitListe] = useState("");
   const [produitListeNom, setProduitListeNom] = useState("");
-  const [messageIdVide, setMessageIdVide] = useState("");
+  const [messageIdVideModifier, setMessageIdVideModifier] = useState("");
+  const [messageIdVideSupprimer, setMessageIdVideSupprimer] = useState("");
   const [BouttonDisabled, setBouttonDisabled] = useState(false);
 
   // ----------------------------------------------------------
@@ -56,7 +59,6 @@ export default function AfficherPageAdmin() {
       .then((data) => setProduits(data))
       .catch((err) => console.error(err));
   }, []);
-
   // ----------------------------------------------------------
   // FONCTIONS - Utilisateurs (de PageAdmin)
   // ----------------------------------------------------------
@@ -118,23 +120,30 @@ export default function AfficherPageAdmin() {
   // FONCTIONS - Produits (de PageAdminProduit)
   // ----------------------------------------------------------
 
+  // Supprimer le produit
   function supprimerProduit() {
     if (!id) {
-      setMessageIdVide("*Il manque des champs obligatoires*");
+      setMessageIdVideSupprimer("*Il manque des champs obligatoires*");
       return;
     }
     fetch("http://localhost:4000/produits/" + id, { method: "DELETE" })
       .then((res) => res.json())
       .then((data) => {
+        if (
+          data.message === "Produit introuvable" ||
+          data.message === "Produit supprimé"
+        ) {
+          setMessageIdVideSupprimer(data.message);
+        }
         console.log(data);
-        alert("Produit supprimé");
       })
       .catch((err) => console.error(err));
   }
 
+  // Modifier le produit
   function modifierProduit() {
     if (!id || !nomProduit || !prix || !stock) {
-      setMessageIdVide("*Il manque des champs obligatoires*");
+      setMessageIdVideModifier("*Il manque des champs obligatoires*");
       return;
     }
     fetch("http://localhost:4000/produits/" + id, {
@@ -144,10 +153,27 @@ export default function AfficherPageAdmin() {
     })
       .then((res) => res.json())
       .then((data) => {
+        if (
+          data.message === "Produit introuvable" ||
+          data.message === "Produit mis à jour"
+        ) {
+          setMessageIdVideModifier(data.message);
+        }
         console.log(data);
-        alert("Produit modifié");
       })
       .catch((err) => console.error(err));
+  }
+
+  // Mettre les champs de texte vides
+  function reinitialiserProduit(modifier: boolean) {
+    if (modifier) {
+      setId("");
+      setNomProduit("");
+      setPrix("");
+      setStock("");
+    } else {
+      setIdDelete("");
+    }
   }
 
   // ============================================================
@@ -347,7 +373,7 @@ export default function AfficherPageAdmin() {
               <input
                 type="text"
                 className="form-control mb-1"
-                placeholder="Rechercher"
+                placeholder="Rechercher (nom, ID)"
                 onChange={(e) => {
                   setProduitListe(e.target.value);
                   setProduitListeNom(e.target.value);
@@ -383,24 +409,19 @@ export default function AfficherPageAdmin() {
                 <br />
                 Modifier un produit
               </h3>
-              <p
-                className="text-white font-italic"
-                style={{ fontStyle: "italic" }}
-              >
-                Cliquez sur un produit dans la liste
-              </p>
               <div className="card shadow-lg m-4 mx-4 p-4">
                 <div className="form-group text-start">
                   <input
                     type="text"
                     className="form-control mb-2"
-                    placeholder="Id produit"
+                    placeholder="(Sélectionnez un produit)"
                     value={id}
                     onChange={(e) => {
                       setId(e.target.value);
                     }}
                     onFocus={(e) => {
                       setSelected("Modifier");
+                      setMessageIdVideModifier("");
                     }}
                     onBlur={(e) => {
                       setSelected("");
@@ -429,14 +450,22 @@ export default function AfficherPageAdmin() {
                   />
                   <button
                     type="button"
-                    className="btn btn-dark"
+                    className="btn btn-dark m-1"
                     disabled={BouttonDisabled}
                     onClick={modifierProduit}
                   >
                     Modifier
                   </button>
-                  {messageIdVide && (
-                    <p className="text-danger">{messageIdVide}</p>
+                  <button
+                    type="button"
+                    className="btn btn-danger m-1"
+                    disabled={BouttonDisabled}
+                    onClick={() => reinitialiserProduit(true)}
+                  >
+                    Réinitialiser
+                  </button>
+                  {messageIdVideModifier && (
+                    <p className="text-danger">{messageIdVideModifier}</p>
                   )}
                 </div>
               </div>
@@ -454,22 +483,19 @@ export default function AfficherPageAdmin() {
                 <br />
                 Supprimer un produit
               </h3>
-              <p className="text-white" style={{ fontStyle: "italic" }}>
-                Cliquez sur un produit dans la liste
-              </p>
               <div className="card shadow-lg m-4 mx-4 p-4">
                 <div className="form-group text-start">
                   <input
                     type="text"
                     className="form-control mb-3"
                     value={idDelete}
-                    placeholder="Id du produit"
+                    placeholder="(Sélectionnez un produit)"
                     onChange={(e) => {
                       setIdDelete(e.target.value);
-                      setMessageIdVide("");
                     }}
                     onFocus={(e) => {
                       setSelected("Supprimer");
+                      setMessageIdVideSupprimer("");
                     }}
                     onBlur={(e) => {
                       setSelected("");
@@ -477,14 +503,22 @@ export default function AfficherPageAdmin() {
                   />
                   <button
                     type="button"
-                    className="btn btn-dark"
+                    className="btn btn-dark m-1"
                     disabled={BouttonDisabled}
                     onClick={supprimerProduit}
                   >
                     Supprimer
                   </button>
-                  {messageIdVide && (
-                    <p className="text-danger">{messageIdVide}</p>
+                  <button
+                    type="button"
+                    className="btn btn-danger m-1"
+                    disabled={BouttonDisabled}
+                    onClick={() => reinitialiserProduit(false)}
+                  >
+                    Réinitialiser
+                  </button>
+                  {messageIdVideSupprimer && (
+                    <p className="text-danger">{messageIdVideSupprimer}</p>
                   )}
                 </div>
               </div>
