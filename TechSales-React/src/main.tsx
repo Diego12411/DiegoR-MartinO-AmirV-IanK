@@ -19,6 +19,7 @@ import SeConnecter from "./SeConnecter";
 import MotPasseOublie from "./MotPasseOublie";
 import Panier from "./Panier";
 import Commande from "./Commande";
+import AffichagePrincipalProduitBanner from "./AffichagePrincipalProduitBanner";
 
 // Routage des pages
 const router = createBrowserRouter([

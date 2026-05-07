@@ -67,6 +67,7 @@ export default function AfficherCreerCompte() {
     >
       <main className="container-fluid text-center p-0">
         <HeaderComponent />
+        
         <div className="d-flex justify-content-center align-items-center vh-100">
           <div className="row justify-content-center">
             <div className="col-7">
