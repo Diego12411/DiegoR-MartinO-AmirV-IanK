@@ -39,7 +39,7 @@ export default function AfficherCreerCompte() {
         courriel: courriel,
         motDePasse: motDePasse,
         role: "Client",
-        itemPanier: itemPanier
+        itemPanier: itemPanier,
       }),
     })
       .then((res) => res.json())
@@ -67,7 +67,7 @@ export default function AfficherCreerCompte() {
     >
       <main className="container-fluid text-center p-0">
         <HeaderComponent />
-        
+
         <div className="d-flex justify-content-center align-items-center vh-100">
           <div className="row justify-content-center">
             <div className="col-7">
@@ -121,7 +121,7 @@ export default function AfficherCreerCompte() {
                 </div>
                 <div className="form-group text-start">
                   <input
-                    type="text"
+                    type="email"
                     className="form-control"
                     value={courriel}
                     placeholder="Email"
