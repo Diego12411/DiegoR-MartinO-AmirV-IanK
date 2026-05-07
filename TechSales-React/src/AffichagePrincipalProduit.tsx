@@ -2,6 +2,7 @@ import { HeaderComponent, FooterComponent } from "./main.tsx";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router";
 import "./AffichagePrincipalProduit.css";
+import video from "./assets/VideoBackground.webm";
 import logo from "./assets/logo.png";
 import sansImage from "./assets/ProduitSansImage.png";
 import { AffichagePrincipalProduitBanner } from "./AffichagePrincipalProduitBanner.tsx";
@@ -84,61 +85,91 @@ export default function AffichagePrincipalProduit() {
   }, []);
 
   return (
-    <main className="container-fluid p-0">
-      <HeaderComponent />
-      <AffichagePrincipalProduitBanner />
-      <div>
-        <div className="m-5 bg-transparent">
-          <div className="row">
-            <div className="card shadow-lg bg-transparent col p-0">
-              <div className="row card-body text-dark">
-                {/* À changer plus tard */}
-                <div className="d-flex align-items-center ">
-                  <img className="img-fluid" src={logo} alt="Image"></img>{" "}
+    <div
+      className="rectangle"
+      style={{ position: "relative", overflow: "hidden" }}
+    >
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          minWidth: "100%",
+          minHeight: "100%",
+          objectFit: "cover",
+          zIndex: 0,
+        }}
+      >
+        <source src={video} type="video/webm" />
+      </video>
+      <main
+        className="container-fluid p-0"
+        style={{ position: "relative", zIndex: 1 }}
+      >
+        <HeaderComponent />
+        <AffichagePrincipalProduitBanner />
+        <div>
+          <div className="m-5 bg-transparent">
+            <div className="row">
+              <div className="card shadow-lg bg-transparent col p-0">
+                <div className="row card-body text-dark">
+                  {/* À changer plus tard */}
+                  <div className="d-flex align-items-center ">
+                    <img
+                      className="img-fluid"
+                      src={logo}
+                      alt="Image"
+                    ></img>{" "}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="row mt-5">
-            <div className="col-8">
-              <p className="fw-bold">█ Nos produits</p>
-            </div>
-            <div className="col d-flex justify-content-end">
-              <button
-                className="btn btn-light rounded-circle border border-dark text-dark m-1"
-                onClick={scrollLeft}
-              >
-                ←
-              </button>
-
-              <button
-                className="btn btn-light rounded-circle border border-dark text-dark m-1"
-                onClick={scrollRight}
-              >
-                →
-              </button>
-            </div>
-            <h3>Explorez nos produits</h3>
-          </div>
-          {/* Affichage des produits changée dans un 'scrollbar' horizontal */}
-          <div
-            ref={scrollRef}
-            className="d-flex overflow-auto gap-4 mt-2"
-            style={{ scrollBehavior: "smooth" }}
-          >
-            {/* Afficher les produits, chacune dans une carte */}
-            {produits.map((produit) => (
-              <div
-                style={{ minWidth: "250px", maxWidth: "250px" }}
-                key={produit._id}
-              >
-                <BoutonProduit produit={produit} />
+            <div className="row mt-5">
+              <div className="col-8">
+                <p className="fw-bold">█ Nos produits</p>
               </div>
-            ))}
+              <div className="col d-flex justify-content-end">
+                <button
+                  className="btn btn-dark rounded m-1 px-3 py-2"
+                  onClick={scrollLeft}
+                >
+                  ←
+                </button>
+
+                <button
+                  className="btn btn-dark rounded m-1 px-3 py-2"
+                  onClick={scrollRight}
+                >
+                  →
+                </button>
+              </div>
+              <h3>Explorez nos produits</h3>
+            </div>
+            {/* Affichage des produits changée dans un 'scrollbar' horizontal */}
+            <div
+              ref={scrollRef}
+              className="d-flex overflow-auto gap-4 mt-2"
+              style={{ scrollBehavior: "smooth" }}
+            >
+              {/* Afficher les produits, chacune dans une carte */}
+              {produits.map((produit) => (
+                <div
+                  style={{ minWidth: "250px", maxWidth: "250px" }}
+                  key={produit._id}
+                >
+                  <BoutonProduit produit={produit} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-      <FooterComponent />
-    </main>
+        <FooterComponent />
+      </main>
+    </div>
   );
 }
