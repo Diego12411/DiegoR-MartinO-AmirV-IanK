@@ -4,7 +4,7 @@ import logo from "./assets/logo.png";
 import "./Panier.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {loadStripe} from "@stripe/stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
 interface Produit {
   nom: string;
@@ -34,8 +34,19 @@ export function AfficherProduit({ produit }: { produit: Produit }) {
 
 export default function afficherPanier() {
 
-  const fairePaiement = async ()=>{
+  const fairePaiement = async () => {
     const stripe = await loadStripe("pk_test_51TUcjm2K6lYYB09CZ0eccEwLkvK9nYSJQ9J4sxqdMsyEhuZyPolnOmH4lOenCxAuRbozOAWBBg1MdNbjkxI9gYVj00GGNXlA0v");
+    const response = await fetch("http://localhost:4000/session-caisse", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ produits: panier }),
+    });
+
+    const session = await response.json();
+
+    window.location.href = session.url;
   }
 
   const navigate = useNavigate();
