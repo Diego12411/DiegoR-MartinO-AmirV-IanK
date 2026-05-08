@@ -8,12 +8,9 @@ import {
   getUtilisateurParCourriel,
 } from "../controllers/utilisateurController.js";
 import { getUtilisateurs } from "../db/mongo.js";
-import { ObjectId } from "mongodb";
 import jwt from "jsonwebtoken";
 import { authenticateToken } from "../middleware/jwtToken.js";
 import bcrypt from "bcrypt";
-// à vérifier si on a besoin de cette fonction verifierExistenceItem, sinon on peut la supprimer
-import { verifierExistenceItem } from "../controllers/panierController.js";
 
 const router = Router();
 
