@@ -4,6 +4,7 @@ import logo from "./assets/logo.png";
 import "./Panier.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {loadStripe} from "@stripe/stripe-js";
 
 interface Produit {
   nom: string;
@@ -32,6 +33,11 @@ export function AfficherProduit({ produit }: { produit: Produit }) {
 }
 
 export default function afficherPanier() {
+
+  const fairePaiement = async ()=>{
+    const stripe = await loadStripe("pk_test_51TUcjm2K6lYYB09CZ0eccEwLkvK9nYSJQ9J4sxqdMsyEhuZyPolnOmH4lOenCxAuRbozOAWBBg1MdNbjkxI9gYVj00GGNXlA0v");
+  }
+
   const navigate = useNavigate();
   const [panier, setPanier] = useState<Produit[]>([
     { _id: "1", nom: "Produit Test", prix: 99.99, quantite: 2, image: "" },
@@ -153,6 +159,7 @@ export default function afficherPanier() {
               >
                 Procéder au Paiement
               </button>
+              onClick={fairePaiement}
             </div>
             {messageBouttonAcheter && (
               <p className="text-danger text-center">{messageBouttonAcheter}</p>
