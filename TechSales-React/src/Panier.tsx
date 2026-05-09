@@ -33,26 +33,43 @@ export function AfficherProduit({ produit }: { produit: Produit }) {
 }
 
 export default function afficherPanier() {
-
   const fairePaiement = async () => {
-    const stripe = await loadStripe("pk_test_51TUcjm2K6lYYB09CZ0eccEwLkvK9nYSJQ9J4sxqdMsyEhuZyPolnOmH4lOenCxAuRbozOAWBBg1MdNbjkxI9gYVj00GGNXlA0v");
+    //fairePaiement est une constante qui contient une fonction async ou l'on utilise stripe
+    const stripe = await loadStripe(
+      "pk_test_51TUcjm2K6lYYB09CZ0eccEwLkvK9nYSJQ9J4sxqdMsyEhuZyPolnOmH4lOenCxAuRbozOAWBBg1MdNbjkxI9gYVj00GGNXlA0v",
+    ); //contient une instance de Stripe initialisée avec une clée publique
     const response = await fetch("http://localhost:4000/session-caisse", {
+      //on fetch vers /session-caisse dans stripeRouter
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ produits: panier }),
+      body: JSON.stringify({ produits: panier }), //panier est un tableau qui contient les produits affichés dans le panier
     });
 
-    const session = await response.json();
+    const session = await response.json(); //contient la réponse du stripeRouter /session-caisse (contient un objet session qui contient l'url)
 
-    window.location.href = session.url;
-  }
+    window.location.href = session.url; //change l'url du navigateur pour accéder à la page Stripe (checkout)
+  };
 
   const navigate = useNavigate();
-  const [panier, setPanier] = useState<Produit[]>([
-    { _id: "1", nom: "Produit Test", prix: 99.99, quantite: 2, image: "" },
-    { _id: "2", nom: "Deuxième Produit", prix: 49.99, quantite: 1, image: "" },
+  const [panier, setPanier] = useState<Produit[]>([ //panier qui contient les produits qui sont envoyés au backend et Stripe
+    {
+      _id: "1",
+      nom: "Produit Test",
+      prix: 99.99,
+      quantite: 2,
+      image:
+        "https://cdn.britannica.com/77/170477-050-1C747EE3/Laptop-computer.jpg", //il faut que les produits contiennent des images sinon conflits avec Stripe
+    },
+    {
+      _id: "2",
+      nom: "Deuxième Produit",
+      prix: 49.99,
+      quantite: 1,
+      image:
+        "https://cdn.britannica.com/77/170477-050-1C747EE3/Laptop-computer.jpg",
+    },
   ]);
   const [messageBouttonAcheter, setMessageBouttonAcheter] = useState("");
   const livraison = 0;
@@ -164,13 +181,10 @@ export default function afficherPanier() {
             <div className="bg-white d-flex justify-content-center">
               <button
                 className="p-3 m-2 btn btn-outline-dark w-100"
-                onClick={() => {
-                  verificationAchat();
-                }}
+                onClick={fairePaiement}
               >
                 Procéder au Paiement
               </button>
-              onClick={fairePaiement}
             </div>
             {messageBouttonAcheter && (
               <p className="text-danger text-center">{messageBouttonAcheter}</p>
