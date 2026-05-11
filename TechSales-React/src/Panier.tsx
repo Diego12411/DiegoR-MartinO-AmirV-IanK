@@ -6,6 +6,7 @@ import { Link } from "react-router";
 import { useState, useEffect } from "react";
 import sansImage from "./assets/ProduitSansImage.png";
 import { useNavigate } from "react-router-dom";
+import { loadStripe } from "@stripe/stripe-js";
 
 interface Produit {
   nom: string;
@@ -70,15 +71,35 @@ export function AfficherProduit({ produit }: { produit: Produit }) {
 }
 
 export default function afficherPanier() {
+  const fairePaiement = async () => {
+    //fairePaiement est une constante qui contient une fonction async ou l'on utilise stripe
+    const stripe = await loadStripe(
+      "pk_test_51TUcjm2K6lYYB09CZ0eccEwLkvK9nYSJQ9J4sxqdMsyEhuZyPolnOmH4lOenCxAuRbozOAWBBg1MdNbjkxI9gYVj00GGNXlA0v",
+    ); //contient une instance de Stripe initialisée avec une clée publique
+    const response = await fetch("http://localhost:4000/session-caisse", {
+      //on fetch vers /session-caisse dans stripeRouter
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ produits: panier }), //panier est un tableau qui contient les produits affichés dans le panier
+    });
+
+    const session = await response.json(); //contient la réponse du stripeRouter /session-caisse (contient un objet session qui contient l'url)
+
+    window.location.href = session.url; //change l'url du navigateur pour accéder à la page Stripe (checkout)
+  };
+
   const navigate = useNavigate();
-  const [panier, setPanier] = useState<Produit[]>([
+  const [panier, setPanier] = useState<Produit[]>([ //panier qui contient les produits qui sont envoyés au backend et Stripe
     {
       _id: "1",
       nom: "Produit Test",
       prix: 99.99,
       quantite: 2,
       image:
-        "https://dlcdnwebimgs.asus.com/gain/3C38EBCB-420C-438B-B02F-072F4A9E47DB",
+        //"https://dlcdnwebimgs.asus.com/gain/3C38EBCB-420C-438B-B02F-072F4A9E47DB",
+        "https://cdn.britannica.com/77/170477-050-1C747EE3/Laptop-computer.jpg", //il faut que les produits contiennent des images sinon conflits avec Stripe
     },
     {
       _id: "2",
@@ -93,8 +114,11 @@ export default function afficherPanier() {
       nom: "Ordinateur",
       prix: 1299.99,
       quantite: 1,
+      //image:
+        //"https://www.lg.com/content/dam/channel/wcms/ca_en/images/laptops/gram/17z90sp-g-aa75a9/DZ-02.jpg",
+      //quantite: 1,
       image:
-        "https://www.lg.com/content/dam/channel/wcms/ca_en/images/laptops/gram/17z90sp-g-aa75a9/DZ-02.jpg",
+        "https://cdn.britannica.com/77/170477-050-1C747EE3/Laptop-computer.jpg",
     },
   ]);
   const [messageBouttonAcheter, setMessageBouttonAcheter] = useState("");
@@ -225,9 +249,7 @@ export default function afficherPanier() {
             <div className="bg-white d-flex justify-content-center">
               <button
                 className="p-3 m-2 btn btn-outline-dark w-100"
-                onClick={() => {
-                  verificationAchat();
-                }}
+                onClick={fairePaiement}
               >
                 Procéder au Paiement
               </button>
