@@ -19,6 +19,7 @@ import SeConnecter from "./SeConnecter";
 import MotPasseOublie from "./MotPasseOublie";
 import Panier from "./Panier";
 import Commande from "./Commande";
+import AffichagePrincipalProduitBanner from "./AffichagePrincipalProduitBanner";
 
 // Routage des pages
 const router = createBrowserRouter([
@@ -39,7 +40,7 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>,
+  </StrictMode>
 );
 
 export const HeaderComponent = () => {
@@ -65,15 +66,8 @@ export const HeaderComponent = () => {
         <div className="px-3 col bg-white p-3 d-flex justify-content-between align-items-center">
           {/* Partie gauche */}
           <div className="d-flex align-items-center gap-3">
-            <img src={logo} alt="logo" width={210} height={35} />
             <Link to="/">
-              <button
-                type="button"
-                className="text-black btn btn-link ms-4"
-                style={{ fontSize: "13px" }}
-              >
-                Nos produits
-              </button>
+              <img src={logo} alt="logo" width={210} height={35} />
             </Link>
             <Link to="/">
               <button

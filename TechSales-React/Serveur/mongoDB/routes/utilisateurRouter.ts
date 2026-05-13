@@ -16,7 +16,6 @@ import bcrypt from "bcrypt";
 import { verifierExistenceItem } from "../controllers/panierController.js";
 
 const router = Router();
-
 //test dun endpoint test
 router.get("/test", async (req: Request, res: Response) => {
   res.send("Endpoint test reussis!");
