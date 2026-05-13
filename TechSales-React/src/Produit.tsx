@@ -241,6 +241,7 @@ export default function ProduitDetails() {
                 type="button"
                 className="btn btn-dark w-100"
                 onClick={ajouterItemAuPanier}
+                disabled={!produit || produit.stock < 1}
               >
                 Ajouter au panier
               </button>
