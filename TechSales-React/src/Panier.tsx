@@ -108,10 +108,18 @@ export default function afficherPanier() {
   const taxes = sousTotal * 0.15;
   const total = taxes + sousTotal + livraison;
 
-  // on rempli le panier presente dans la page avec les elements du panier de l'utilisateur
+  // state qui va faire apparaitre un pop up window lorsque l'utilisateur n'est pas connecte
+  const [nonConnecte, setNonConnecte] = useState(false);
+
+  /**
+   * === useEffet() qui va chercher les items dans le panier de l'utilisateur ===
+   * On rempli le panier presente dans la page avec les elements du panier de l'utilisateur
+   * Attention: on fetch les ItemPanier -> on fetch les infos des produits selon -> produire tableau d'item
+   */
   useEffect(() => {
     const fetchPanier = async () => {
       try {
+        // on recupere les informations de ItemPanier d'un utilisateur (seulement produitId et quantite)
         const response = await fetch(
           `${API_DEFAULT}/paniers/panierUtilisateur`,
           {
@@ -125,23 +133,52 @@ export default function afficherPanier() {
 
         // le statut 401 provient de Middleware/authenticateToken() => lorsque erreur
         if (response.status === 401) {
-          alert("Vous devez être connecté pour regarder votre panier.");
+          setNonConnecte(true);
           return;
         }
 
-        const data = await response.json();
+        // itemsPanier = [{produitId, quantite}, {...}]
+        const itemsPanier = await response.json();
+
+        // pour chaque produit dans itemsPanier, on recupere les informations complete des produits
+        const produitsComplets = await Promise.all(
+          itemsPanier.map(
+            async (item: { produitId: string; quantite: number }) => {
+              const produitResponse = await fetch(
+                `${API_DEFAULT}/produits/${item.produitId}`,
+              );
+
+              const produit = await produitResponse.json();
+
+              // on fusionne les donnees du produit avec la quantite du panier
+              // on "construit" un nouveau Produit avec les informations necessaires seulement
+              return {
+                _id: produit._id,
+                nom: produit.nom,
+                prix: produit.prix,
+                image: produit.image_url,
+                quantite: item.quantite,
+              };
+            },
+          ),
+        );
 
         // on associe le tableau d'item qui se trouve dans le panier de l'utilisateur
-        setPanier(data);
+        setPanier(produitsComplets);
       } catch (error) {
         // message d'erreur dans le terminal si le panier n'est pas fetch adequatement
         console.error("Erreur fetch panier: ", error);
       }
     };
+
+    // apres avoir defini fetchPanier (fonction lambda)
+    // il faut l'appeler pour remplir le panier afin d'afficher les items de l'utilisateur
+    fetchPanier();
   }, []);
 
   function verificationAchat() {
     if (panier.length === 0) {
+      // utilisation du state pour afficher le pop up en disant de se connecter prealablement
       setMessageBouttonAcheter("Aucun produit dans le Panier");
     } else navigate("/Commande");
   }
@@ -154,6 +191,29 @@ export default function afficherPanier() {
   return (
     <main className="container-fluid p-0">
       <HeaderComponent />
+
+      {nonConnecte && (
+        <div className="alert alert-warning text-center mx-5 my-3">
+          <p className="mb-2">
+            Vous devez être connecté pour voir votre panier.
+          </p>
+          <div className="d-flex justify-content-center gap-3">
+            <button
+              className="btn btn-dark"
+              onClick={() => navigate("/seConnecter")}
+            >
+              Se connecter
+            </button>
+            <button
+              className="btn btn-outline-dark"
+              onClick={() => setNonConnecte(false)}
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="my-3 text-start mx-5 p-1">
         <strong>Panier</strong>
       </div>
