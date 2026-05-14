@@ -16,8 +16,11 @@ interface Produit {
   _id: string;
 }
 
+// meme signature que declare dans server.ts/CORS sinon bug
+const API_DEFAULT = "http://127.0.0.1:4000";
+
 function RetirerProduit(produit: Produit) {
-  // A travailler
+  // TODO [ ] : retirer un seul produit du panier de l'utilisateur
 }
 
 export function AfficherProduit({ produit }: { produit: Produit }) {
@@ -76,6 +79,7 @@ export default function afficherPanier() {
     const stripe = await loadStripe(
       "pk_test_51TUcjm2K6lYYB09CZ0eccEwLkvK9nYSJQ9J4sxqdMsyEhuZyPolnOmH4lOenCxAuRbozOAWBBg1MdNbjkxI9gYVj00GGNXlA0v",
     ); //contient une instance de Stripe initialisée avec une clée publique
+
     const response = await fetch("http://localhost:4000/session-caisse", {
       //on fetch vers /session-caisse dans stripeRouter
       method: "POST",
@@ -91,46 +95,49 @@ export default function afficherPanier() {
   };
 
   const navigate = useNavigate();
-  const [panier, setPanier] = useState<Produit[]>([ //panier qui contient les produits qui sont envoyés au backend et Stripe
-    {
-      _id: "1",
-      nom: "Produit Test",
-      prix: 99.99,
-      quantite: 2,
-      image:
-        //"https://dlcdnwebimgs.asus.com/gain/3C38EBCB-420C-438B-B02F-072F4A9E47DB",
-        "https://cdn.britannica.com/77/170477-050-1C747EE3/Laptop-computer.jpg", //il faut que les produits contiennent des images sinon conflits avec Stripe
-    },
-    {
-      _id: "2",
-      nom: "Deuxième Produit",
-      prix: 49.99,
-      quantite: 4,
-      image:
-        "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mbp14-spacegray-select-202310",
-    },
-    {
-      _id: "3",
-      nom: "Ordinateur",
-      prix: 1299.99,
-      quantite: 1,
-      //image:
-        //"https://www.lg.com/content/dam/channel/wcms/ca_en/images/laptops/gram/17z90sp-g-aa75a9/DZ-02.jpg",
-      //quantite: 1,
-      image:
-        "https://cdn.britannica.com/77/170477-050-1C747EE3/Laptop-computer.jpg",
-    },
-  ]);
+
+  // panier qui va contenir les items de l'utilisateur connecte
+  const [panier, setPanier] = useState<Produit[]>([]);
+
   const [messageBouttonAcheter, setMessageBouttonAcheter] = useState("");
   const livraison = 0;
   const sousTotal = panier.reduce(
     (total, produit) => total + produit.prix * produit.quantite,
-    0
+    0,
   );
   const taxes = sousTotal * 0.15;
   const total = taxes + sousTotal + livraison;
+
+  // on rempli le panier presente dans la page avec les elements du panier de l'utilisateur
   useEffect(() => {
-    // fetch ici
+    const fetchPanier = async () => {
+      try {
+        const response = await fetch(
+          `${API_DEFAULT}/paniers/panierUtilisateur`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          },
+        );
+
+        // le statut 401 provient de Middleware/authenticateToken() => lorsque erreur
+        if (response.status === 401) {
+          alert("Vous devez être connecté pour regarder votre panier.");
+          return;
+        }
+
+        const data = await response.json();
+
+        // on associe le tableau d'item qui se trouve dans le panier de l'utilisateur
+        setPanier(data);
+      } catch (error) {
+        // message d'erreur dans le terminal si le panier n'est pas fetch adequatement
+        console.error("Erreur fetch panier: ", error);
+      }
+    };
   }, []);
 
   function verificationAchat() {
@@ -138,6 +145,12 @@ export default function afficherPanier() {
       setMessageBouttonAcheter("Aucun produit dans le Panier");
     } else navigate("/Commande");
   }
+
+  // methode qui est appele lorsque l'utilisateur choisi d'effacer son panier au complet
+  const effacerPanier = () => {
+    // TODO [] : implementer l'action de vider tout le panier de l'utilisateur
+  };
+
   return (
     <main className="container-fluid p-0">
       <HeaderComponent />
@@ -184,7 +197,10 @@ export default function afficherPanier() {
         </div>
         <div className="col-6 p-2 d-flex justify-content-end">
           {" "}
-          <button className="p-3 mx-5 w-50 btn btn-outline-dark btn-panier">
+          <button
+            className="p-3 mx-5 w-50 btn btn-outline-dark btn-panier"
+            onClick={effacerPanier}
+          >
             Vider le Panier
           </button>
         </div>
