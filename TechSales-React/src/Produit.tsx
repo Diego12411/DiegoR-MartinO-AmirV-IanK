@@ -8,9 +8,6 @@ import { useEffect, useState } from "react";
  * Lorsque l'image est clicke, ca nous redirige vers une nouvelle page avec les informations detaillees du prochain produit.
  */
 
-// _id d'un produit pour tester la page
-// http://127.0.0.1:5173/detailsProduit/69f3f6770aba9a7149661c00
-
 type Categorie = {
   nom_categorie: string;
 };
@@ -37,6 +34,9 @@ type Produit = {
   specification: Specification;
 };
 
+// meme signature que declare dans server.ts/CORS sinon bug
+const API_DEFAULT = "http://127.0.0.1:4000";
+
 export default function ProduitDetails() {
   // on recupere le parametre de l'id du produit recu par le lien
   const { id } = useParams();
@@ -44,16 +44,16 @@ export default function ProduitDetails() {
   // On recupere 4 produits au hasard a presente dans le bas de page
   const [produitsHasard, setProduitsHasard] = useState<Produit[]>([]);
   useEffect(() => {
-    fetch("http://localhost:4000/produits/lireProduitsHasard")
+    fetch(`${API_DEFAULT}/produits/lireProduitsHasard`)
       .then((response) => response.json())
       .then((data: Produit[]) => setProduitsHasard(data ?? []));
   }, [id]);
 
   // Avec mongodb, le produit contient deja les specs integres (embedded document)
-  // un seul fetch suffit, plus besoin d'un 2e appel pour les aspect aka "on cherche les attributs d'un objet"
+  // un seul fetch suffit, plus besoin d'un 2e appel pour les aspects aka "on cherche les attributs d'un objet"
   const [produit, setProduit] = useState<Produit | null>(null);
   useEffect(() => {
-    fetch(`http://localhost:4000/produits/${id}`)
+    fetch(`${API_DEFAULT}/produits/${id}`)
       .then((response) => response.json())
       .then((data) => setProduit(data)); // mongo retourne un objet Produit directement
   }, [id]);
@@ -72,6 +72,32 @@ export default function ProduitDetails() {
       return <h5 className="text-success">En stock</h5>;
     } else {
       return <h5 className="text-danger">Rupture de stock</h5>;
+    }
+  };
+
+  const ajouterItemAuPanier = async () => {
+    try {
+      const response = await fetch(`${API_DEFAULT}/paniers/ajoutItem`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          produitId: produit?._id,
+          quantite: quantiteAcheter,
+        }),
+      });
+
+      // le statut 401 provient de Middleware/authenticateToken() => lorsque erreur
+      if (response.status === 401) {
+        alert("Vous devez être connecté pour ajouter un produit au panier.");
+        return;
+      }
+
+      alert("Produit ajouté au panier!");
+    } catch (error) {
+      alert("Erreur lors de l'ajout au panier");
     }
   };
 
@@ -211,11 +237,14 @@ export default function ProduitDetails() {
                 value={quantiteAcheter}
                 onChange={(e) => setQuantiteAcheter(Number(e.target.value))}
               />
-              <Link to="/" className="flex-fill">
-                <button type="button" className="btn btn-dark w-100">
-                  Acheter
-                </button>
-              </Link>
+              <button
+                type="button"
+                className="btn btn-dark w-100"
+                onClick={ajouterItemAuPanier}
+                disabled={!produit || produit.stock < 1}
+              >
+                Ajouter au panier
+              </button>
             </div>
           </div>
         </div>
