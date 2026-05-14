@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router";
 import { HeaderComponent, FooterComponent } from "./main.tsx";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 /**
  * Page qui affiche les informations detaillees d'un produit specifique
@@ -34,10 +35,13 @@ type Produit = {
   specification: Specification;
 };
 
-// meme signature que declare dans server.ts/CORS sinon bug
-const API_DEFAULT = "http://127.0.0.1:4000";
-
 export default function ProduitDetails() {
+  // meme signature que declare dans server.ts/CORS sinon bug
+  const API_DEFAULT = "http://127.0.0.1:4000";
+
+  // variable qui permet la nagivation des pages
+  const navigate = useNavigate();
+
   // on recupere le parametre de l'id du produit recu par le lien
   const { id } = useParams();
 
@@ -75,6 +79,9 @@ export default function ProduitDetails() {
     }
   };
 
+  // state qui va faire apparaitre un pop up window lorsque l'utilisateur n'est pas connecte
+  const [nonConnecte, setNonConnecte] = useState(false);
+
   const ajouterItemAuPanier = async () => {
     try {
       const response = await fetch(`${API_DEFAULT}/paniers/ajoutItem`, {
@@ -91,7 +98,7 @@ export default function ProduitDetails() {
 
       // le statut 401 provient de Middleware/authenticateToken() => lorsque erreur
       if (response.status === 401) {
-        alert("Vous devez être connecté pour ajouter un produit au panier.");
+        setNonConnecte(true);
         return;
       }
 
@@ -107,6 +114,28 @@ export default function ProduitDetails() {
     <>
       {/* Header developpe dans le main */}
       <HeaderComponent />
+
+      {nonConnecte && (
+        <div className="alert alert-warning text-center mx-5 my-3">
+          <p className="mb-2">
+            Vous devez être connecté pour ajouter des items a votre panier.
+          </p>
+          <div className="d-flex justify-content-center gap-3">
+            <button
+              className="btn btn-dark"
+              onClick={() => navigate("/seConnecter")}
+            >
+              Se connecter
+            </button>
+            <button
+              className="btn btn-outline-dark"
+              onClick={() => setNonConnecte(false)}
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Element semantique qui contient l'information principale de la page */}
       <main className="container-fluid vw-100 px-5">
