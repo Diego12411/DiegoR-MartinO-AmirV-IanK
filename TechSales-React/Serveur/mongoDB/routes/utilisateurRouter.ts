@@ -81,6 +81,14 @@ router.post("/creerCompte", async (req: Request, res: Response) => {
       });
     }
 
+    const formatCourrielValide = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!formatCourrielValide.test(courriel)) {
+      return res.status(400).json({
+        message: "Le format du courriel est invalide.",
+      });
+    }
+
     // Vérifier si un compte existe déjà avec ce courriel
     const verifierCourrielExistant = await verifierExistenceUtilisateur(
       collection,
