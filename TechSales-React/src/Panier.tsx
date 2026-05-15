@@ -40,7 +40,7 @@ export default function afficherPanier() {
         {
           method: "DELETE",
           credentials: "include", // cookie jwt necessaire pour authenticateToken()
-        },
+        }
       );
 
       if (response.status === 401) {
@@ -53,7 +53,7 @@ export default function afficherPanier() {
       // panierActuel est un nom de variable qui fait reference a panier
       //on enleve completement le produit selectionne
       setPanier((panierActuel) =>
-        panierActuel.filter((p) => p._id !== produit._id),
+        panierActuel.filter((p) => p._id !== produit._id)
       );
     } catch (error) {
       console.error("Erreur lors du retrait du produit");
@@ -96,7 +96,7 @@ export default function afficherPanier() {
             </div>
             <div className="d-flex justify-content-left align-items-center col-2">
               {/* TODO [ ] : formater le prix * quantite pour afficher jusqua x,00$ */}
-              {produit.prix * produit.quantite} $
+              {Math.round(produit.prix * produit.quantite)} $
             </div>
             {/*Bouton retirer le produit du panier*/}
             <button
@@ -118,7 +118,7 @@ export default function afficherPanier() {
     try {
       //fairePaiement est une constante qui contient une fonction async ou l'on utilise stripe
       const stripe = await loadStripe(
-        "pk_test_51TUcjm2K6lYYB09CZ0eccEwLkvK9nYSJQ9J4sxqdMsyEhuZyPolnOmH4lOenCxAuRbozOAWBBg1MdNbjkxI9gYVj00GGNXlA0v",
+        "pk_test_51TUcjm2K6lYYB09CZ0eccEwLkvK9nYSJQ9J4sxqdMsyEhuZyPolnOmH4lOenCxAuRbozOAWBBg1MdNbjkxI9gYVj00GGNXlA0v"
       ); //contient une instance de Stripe initialisée avec une clée publique
 
       // on verifie que Stripe a bien charge
@@ -167,7 +167,7 @@ export default function afficherPanier() {
     } catch (error) {
       console.error("Erreur lors fairePaiement : ", error);
       setMessageBouttonAcheter(
-        "Une erreur est survenue. Veuillez réessayer plus tard.",
+        "Une erreur est survenue. Veuillez réessayer plus tard."
       );
     }
   };
@@ -175,7 +175,7 @@ export default function afficherPanier() {
   const livraison = 0;
   const sousTotal = panier.reduce(
     (total, produit) => total + produit.prix * produit.quantite,
-    0,
+    0
   );
   const taxes = sousTotal * 0.15;
   const total = taxes + sousTotal + livraison;
@@ -198,7 +198,7 @@ export default function afficherPanier() {
               "Content-Type": "application/json",
             },
             credentials: "include",
-          },
+          }
         );
 
         // le statut 401 provient de Middleware/authenticateToken() => lorsque erreur
@@ -216,7 +216,7 @@ export default function afficherPanier() {
           itemsPanier.map(
             async (item: { produitId: string; quantite: number }) => {
               const produitResponse = await fetch(
-                `${API_DEFAULT}/produits/${item.produitId}`,
+                `${API_DEFAULT}/produits/${item.produitId}`
               );
 
               const produit = await produitResponse.json();
@@ -230,8 +230,8 @@ export default function afficherPanier() {
                 image: produit.image_url,
                 quantite: item.quantite,
               };
-            },
-          ),
+            }
+          )
         );
 
         // on associe le tableau d'item qui se trouve dans le panier de l'utilisateur
