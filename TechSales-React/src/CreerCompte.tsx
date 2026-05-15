@@ -67,8 +67,11 @@ export default function AfficherCreerCompte() {
     >
       <main className="container-fluid text-center p-0">
         <HeaderComponent />
+        <div style={{
+          marginBottom: '40px',
+        }}></div>
 
-        <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="d-flex justify-content-center align-items-center">
           <div className="row justify-content-center">
             <div className="col-7">
               <div
@@ -185,6 +188,9 @@ export default function AfficherCreerCompte() {
             </div>
           </div>
         </div>
+        <div style={{
+          marginBottom: '40px',
+        }}></div>
         <FooterComponent />
       </main>
     </div>
