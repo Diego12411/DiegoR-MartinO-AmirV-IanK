@@ -82,7 +82,7 @@ export default function afficherPanier() {
               ></img>
               {/*Ramene a la page details du produit associé lorsqu'on clique le nom du produit*/}
               <Link
-                to={`../produits/detailsProduit/${produit._id}`}
+                to={`../detailsProduit/${produit._id}`}
                 className="text-secondary text-decoration-none"
               >
                 <div>{produit.nom}</div>
@@ -96,7 +96,7 @@ export default function afficherPanier() {
             </div>
             <div className="d-flex justify-content-left align-items-center col-2">
               {/* TODO [ ] : formater le prix * quantite pour afficher jusqua x,00$ */}
-              {Math.round(produit.prix * produit.quantite)} $
+              {Math.round(produit.prix * produit.quantite * 100) / 100} $
             </div>
             {/*Bouton retirer le produit du panier*/}
             <button
