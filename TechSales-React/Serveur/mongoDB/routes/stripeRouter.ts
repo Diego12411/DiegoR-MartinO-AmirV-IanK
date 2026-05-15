@@ -1,9 +1,10 @@
 import { Router, Request, Response } from "express";
 import Stripe from "stripe";
+import { authenticateToken } from "../middleware/jwtToken.js";
 
 const router = Router();
 
-router.post("/", async (req, res) => {
+router.post("/", authenticateToken, async (req, res) => {
   try {
     const stripe = new Stripe(process.env.STRIPE_SECRET!); //ne garanti pas qu'il existe
     // 1. récupérer les données envoyées par le frontend

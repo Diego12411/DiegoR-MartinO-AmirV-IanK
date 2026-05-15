@@ -111,13 +111,10 @@ export default function afficherPanier() {
     );
   }
 
+  // TODO [X] : adapter l'implementation de stripe
+  // Implementer Strip comme mode de paiement
   const fairePaiement = async () => {
     try {
-      if (panier.length === 0) {
-        setMessageBouttonAcheter("Attention! Le panier est vide.");
-        return;
-      }
-
       //fairePaiement est une constante qui contient une fonction async ou l'on utilise stripe
       const stripe = await loadStripe(
         "pk_test_51TUcjm2K6lYYB09CZ0eccEwLkvK9nYSJQ9J4sxqdMsyEhuZyPolnOmH4lOenCxAuRbozOAWBBg1MdNbjkxI9gYVj00GGNXlA0v",
@@ -131,12 +128,27 @@ export default function afficherPanier() {
 
       const response = await fetch(`${API_DEFAULT}/session-caisse`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ produits: panier }), //panier est un tableau qui contient les produits affichés dans le panier
       });
 
+      // verification si l'utilisateur est connecte a partir de authenticateToken()
+      if (response.status === 401) {
+        setNonConnecte(true);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+
+      // le status code deja defini dans stripeRouter.ts
+      if (response.status === 400) {
+        setMessageBouttonAcheter("Attention! Le panier est vide.");
+        return;
+      }
+
+      // status ok = [200, 299] | status not ok = tout autre nombre
       if (!response.ok) {
         const erreur = await response.json();
         setMessageBouttonAcheter(erreur.error || "Erreur lor du paiement.");
