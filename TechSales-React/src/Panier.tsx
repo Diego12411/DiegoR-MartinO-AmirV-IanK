@@ -12,7 +12,7 @@ interface Produit {
   nom: string;
   prix: number;
   quantite: number;
-  image: string;
+  image: string; // dans AfficherProduit(), produit.image est utilise donc image_url -> image
   _id: string;
 }
 
@@ -112,23 +112,51 @@ export default function afficherPanier() {
   }
 
   const fairePaiement = async () => {
-    //fairePaiement est une constante qui contient une fonction async ou l'on utilise stripe
-    const stripe = await loadStripe(
-      "pk_test_51TUcjm2K6lYYB09CZ0eccEwLkvK9nYSJQ9J4sxqdMsyEhuZyPolnOmH4lOenCxAuRbozOAWBBg1MdNbjkxI9gYVj00GGNXlA0v",
-    ); //contient une instance de Stripe initialisée avec une clée publique
+    try {
+      if (panier.length === 0) {
+        setMessageBouttonAcheter("Attention! Le panier est vide.");
+        return;
+      }
 
-    const response = await fetch("http://localhost:4000/session-caisse", {
-      //on fetch vers /session-caisse dans stripeRouter
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ produits: panier }), //panier est un tableau qui contient les produits affichés dans le panier
-    });
+      //fairePaiement est une constante qui contient une fonction async ou l'on utilise stripe
+      const stripe = await loadStripe(
+        "pk_test_51TUcjm2K6lYYB09CZ0eccEwLkvK9nYSJQ9J4sxqdMsyEhuZyPolnOmH4lOenCxAuRbozOAWBBg1MdNbjkxI9gYVj00GGNXlA0v",
+      ); //contient une instance de Stripe initialisée avec une clée publique
 
-    const session = await response.json(); //contient la réponse du stripeRouter /session-caisse (contient un objet session qui contient l'url)
+      // on verifie que Stripe a bien charge
+      if (!stripe) {
+        setMessageBouttonAcheter("Erreur lors du chargement de Stripe!");
+        return;
+      }
 
-    window.location.href = session.url; //change l'url du navigateur pour accéder à la page Stripe (checkout)
+      const response = await fetch(`${API_DEFAULT}/session-caisse`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ produits: panier }), //panier est un tableau qui contient les produits affichés dans le panier
+      });
+
+      if (!response.ok) {
+        const erreur = await response.json();
+        setMessageBouttonAcheter(erreur.error || "Erreur lor du paiement.");
+        return;
+      }
+
+      const session = await response.json(); //contient la réponse du stripeRouter /session-caisse (contient un objet session qui contient l'url)
+
+      if (!session.url) {
+        setMessageBouttonAcheter("URL de paiement introuvable");
+        return;
+      }
+
+      window.location.href = session.url; //change l'url du navigateur pour accéder à la page Stripe (checkout)
+    } catch (error) {
+      console.error("Erreur lors fairePaiement : ", error);
+      setMessageBouttonAcheter(
+        "Une erreur est survenue. Veuillez réessayer plus tard.",
+      );
+    }
   };
 
   const livraison = 0;
@@ -205,13 +233,6 @@ export default function afficherPanier() {
     // il faut l'appeler pour remplir le panier afin d'afficher les items de l'utilisateur
     fetchPanier();
   }, []);
-
-  function verificationAchat() {
-    if (panier.length === 0) {
-      // utilisation du state pour afficher le pop up en disant de se connecter prealablement
-      setMessageBouttonAcheter("Aucun produit dans le Panier");
-    } else navigate("/Commande");
-  }
 
   // TODO [X] : implementer l'action de vider tout le panier de l'utilisateur
   // methode qui est appele lorsque l'utilisateur choisi d'effacer son panier au complet
