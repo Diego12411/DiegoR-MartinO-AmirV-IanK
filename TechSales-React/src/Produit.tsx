@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router";
 import { HeaderComponent, FooterComponent } from "./main.tsx";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 /**
  * Page qui affiche les informations detaillees d'un produit specifique
@@ -34,12 +35,27 @@ type Produit = {
   specification: Specification;
 };
 
-// meme signature que declare dans server.ts/CORS sinon bug
-const API_DEFAULT = "http://127.0.0.1:4000";
-
 export default function ProduitDetails() {
+  // meme signature que declare dans server.ts/CORS sinon bug
+  const API_DEFAULT = "http://127.0.0.1:4000";
+
+  // variable qui permet la nagivation des pages
+  const navigate = useNavigate();
+
   // on recupere le parametre de l'id du produit recu par le lien
   const { id } = useParams();
+
+  // state qui contient la quantite de produit a acheter
+  const [quantiteAcheter, setQuantiteAcheter] = useState(1);
+
+  // state qui va faire apparaitre un pop up window lorsque l'utilisateur n'est pas connecte
+  const [nonConnecte, setNonConnecte] = useState(false);
+  // state qui va faire apparaitre un pop up window lorsque l'utilisateur ajoute un produit a son panier
+  const [itemAjoute, setItemAjoute] = useState(false);
+
+  // Avec mongodb, le produit contient deja les specs integres (embedded document)
+  // un seul fetch suffit, plus besoin d'un 2e appel pour les aspects aka "on cherche les attributs d'un objet"
+  const [produit, setProduit] = useState<Produit | null>(null);
 
   // On recupere 4 produits au hasard a presente dans le bas de page
   const [produitsHasard, setProduitsHasard] = useState<Produit[]>([]);
@@ -49,9 +65,6 @@ export default function ProduitDetails() {
       .then((data: Produit[]) => setProduitsHasard(data ?? []));
   }, [id]);
 
-  // Avec mongodb, le produit contient deja les specs integres (embedded document)
-  // un seul fetch suffit, plus besoin d'un 2e appel pour les aspects aka "on cherche les attributs d'un objet"
-  const [produit, setProduit] = useState<Produit | null>(null);
   useEffect(() => {
     fetch(`${API_DEFAULT}/produits/${id}`)
       .then((response) => response.json())
@@ -61,10 +74,9 @@ export default function ProduitDetails() {
   // On deplace la page "window" a la position (0,0), soit le haut de la page lorsque le id du produit initiale change
   useEffect(() => {
     window.scrollTo(0, 0);
+    setNonConnecte(false);
+    setItemAjoute(false);
   }, [id]);
-
-  // state qui contient la quantite de produit a acheter
-  const [quantiteAcheter, setQuantiteAcheter] = useState(1);
 
   // s'occupe de la couleur de l'affichage du stock
   const HandleAffichageStock = () => {
@@ -91,11 +103,13 @@ export default function ProduitDetails() {
 
       // le statut 401 provient de Middleware/authenticateToken() => lorsque erreur
       if (response.status === 401) {
-        alert("Vous devez être connecté pour ajouter un produit au panier.");
+        setNonConnecte(true);
+        window.scrollTo({ top: 0, behavior: "smooth" }); // remonte la page lorsque le pop up apparait
         return;
       }
 
-      alert("Produit ajouté au panier!");
+      setItemAjoute(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
       alert("Erreur lors de l'ajout au panier");
     }
@@ -107,6 +121,40 @@ export default function ProduitDetails() {
     <>
       {/* Header developpe dans le main */}
       <HeaderComponent />
+
+      {nonConnecte && (
+        <div className="alert alert-warning text-center mx-5 my-3">
+          <p className="mb-2">
+            Vous devez être connecté pour ajouter des items a votre panier.
+          </p>
+          <div className="d-flex justify-content-center gap-3">
+            <button
+              className="btn btn-dark"
+              onClick={() => navigate("/seConnecter")}
+            >
+              Se connecter
+            </button>
+            <button
+              className="btn btn-outline-dark"
+              onClick={() => setNonConnecte(false)}
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
+      )}
+
+      {itemAjoute && (
+        <div className="alert alert-success text-center mx-5 my-3">
+          <p className="mb-2">Item ajouté au panier avec succès.</p>
+          <button
+            className="btn btn-outline-dark"
+            onClick={() => setItemAjoute(false)}
+          >
+            Fermer
+          </button>
+        </div>
+      )}
 
       {/* Element semantique qui contient l'information principale de la page */}
       <main className="container-fluid vw-100 px-5">

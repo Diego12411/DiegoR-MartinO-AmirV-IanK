@@ -239,18 +239,20 @@ router.post("/connexion", async (req: Request, res: Response) => {
       });
     }
 
+    // TODO [ ] : decider sur une longevite du token
     // Générer un token JWT contenant l'identifiant de l'utilisateur
     const token = jwt.sign(
       { id: utilisateur._id?.toString() },
       process.env.JWT_SECRET as string,
-      // Token valide pendant 1 minute pour les tests, à ajuster en production pour 1h ou plus
-      { expiresIn: "1m" },
+      // Token valide pendant 1h
+      { expiresIn: "1h" },
     );
 
+    // TODO [ ] : decider sur une longevite du cookie
     // Envoyer le token JWT dans un cookie HttpOnly
     res.cookie("refresh", token, {
       httpOnly: true,
-      maxAge: 60 * 1000, // 1 minute en millisecondes
+      maxAge: 60 * 60 * 1000, // 1h en millisecondes
       sameSite: "lax",
       secure: false,
     });
