@@ -81,6 +81,8 @@ export default function ProduitDetails() {
 
   // state qui va faire apparaitre un pop up window lorsque l'utilisateur n'est pas connecte
   const [nonConnecte, setNonConnecte] = useState(false);
+  // state qui va faire apparaitre un pop up window lorsque l'utilisateur ajoute un produit a son panier
+  const [itemAjoute, setItemAjoute] = useState(false);
 
   const ajouterItemAuPanier = async () => {
     try {
@@ -99,10 +101,12 @@ export default function ProduitDetails() {
       // le statut 401 provient de Middleware/authenticateToken() => lorsque erreur
       if (response.status === 401) {
         setNonConnecte(true);
+        window.scrollTo({ top: 0, behavior: "smooth" }); // remonte la page lorsque le pop up apparait
         return;
       }
 
-      alert("Produit ajouté au panier!");
+      setItemAjoute(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
       alert("Erreur lors de l'ajout au panier");
     }
@@ -134,6 +138,18 @@ export default function ProduitDetails() {
               Fermer
             </button>
           </div>
+        </div>
+      )}
+
+      {itemAjoute && (
+        <div className="alert alert-success text-center mx-5 my-3">
+          <p className="mb-2">Item ajouté au panier.</p>
+          <button
+            className="btn btn-outline-dark"
+            onClick={() => setItemAjoute(false)}
+          >
+            Fermer
+          </button>
         </div>
       )}
 
