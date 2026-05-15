@@ -29,6 +29,13 @@ export default function AfficherCreerCompte() {
       return;
     }
 
+    const formatCourrielValide = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!formatCourrielValide.test(courriel)) {
+      setMessageCreationCompte("*Le format du courriel est invalide");
+      return;
+    }
+
     setBouttonDisabled(true);
     setMessageCreationCompte("");
 
