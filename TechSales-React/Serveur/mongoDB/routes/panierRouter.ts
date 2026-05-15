@@ -19,6 +19,7 @@ import { authenticateToken } from "../middleware/jwtToken.js";
 
 const router = Router();
 
+// TODO [X] : toutes les routes doivent etre protegees pour panier
 // On force toutes les routes a utiliser Middleware/authenticateToken()
 // Donc, on n'a plus a le declarer dans chaque route
 router.use(authenticateToken);

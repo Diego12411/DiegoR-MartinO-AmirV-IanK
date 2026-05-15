@@ -111,6 +111,7 @@ export default function afficherPanier() {
   // state qui va faire apparaitre un pop up window lorsque l'utilisateur n'est pas connecte
   const [nonConnecte, setNonConnecte] = useState(false);
 
+  // TODO [X] : implementer le fetch des produits du panier d'un utilisateur
   /**
    * === useEffet() qui va chercher les items dans le panier de l'utilisateur ===
    * On rempli le panier presente dans la page avec les elements du panier de l'utilisateur
@@ -134,6 +135,7 @@ export default function afficherPanier() {
         // le statut 401 provient de Middleware/authenticateToken() => lorsque erreur
         if (response.status === 401) {
           setNonConnecte(true);
+          window.scrollTo({ top: 0, behavior: "smooth" });
           return;
         }
 
@@ -183,9 +185,26 @@ export default function afficherPanier() {
     } else navigate("/Commande");
   }
 
+  // TODO [ ] : implementer l'action de vider tout le panier de l'utilisateur
   // methode qui est appele lorsque l'utilisateur choisi d'effacer son panier au complet
-  const effacerPanier = () => {
-    // TODO [] : implementer l'action de vider tout le panier de l'utilisateur
+  const effacerPanier = async () => {
+    try {
+      const response = await fetch(`${API_DEFAULT}/paniers/viderPanier`, {
+        method: "PUT",
+        credentials: "include", // cookie jwt requis, car route protege -> authenticateToken()
+      });
+
+      if (response.status === 401) {
+        setNonConnecte(true);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+
+      // on reset le panier de la page a un panier vide pour ne pas refetch le panier de l'utilisateur
+      setPanier([]);
+    } catch (error) {
+      console.error("Erreur /paniers/viderPanier : ", error);
+    }
   };
 
   return (
@@ -195,7 +214,7 @@ export default function afficherPanier() {
       {nonConnecte && (
         <div className="alert alert-warning text-center mx-5 my-3">
           <p className="mb-2">
-            Vous devez être connecté pour voir votre panier.
+            Vous devez être connecté pour accéder à votre panier.
           </p>
           <div className="d-flex justify-content-center gap-3">
             <button
