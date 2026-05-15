@@ -74,6 +74,8 @@ export default function ProduitDetails() {
   // On deplace la page "window" a la position (0,0), soit le haut de la page lorsque le id du produit initiale change
   useEffect(() => {
     window.scrollTo(0, 0);
+    setNonConnecte(false);
+    setItemAjoute(false);
   }, [id]);
 
   // s'occupe de la couleur de l'affichage du stock
