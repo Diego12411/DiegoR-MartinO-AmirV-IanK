@@ -28,58 +28,73 @@ router.get("/", async (req: Request, res: Response) => {
 
 /**
  * =========================================================================================
- * CRÉATION D'UN COMPTE UTILISATEUR
+ * CRÉATION D'UN COMPTE UTILISATEUR AVEC CONNEXION AUTOMATIQUE
  * -----------------------------------------------------------------------------------------
  * Description :
  * Permet de créer un nouveau compte utilisateur dans la collection MongoDB "utilisateurs".
+ * Après la création du compte, l'utilisateur est automatiquement connecté avec un
+ * token JWT envoyé dans un cookie HttpOnly.
  *
  * Vérifications :
+ * - Vérifie que les champs requis sont présents et valides
  * - Vérifie si un compte existe déjà avec le même courriel
  * - Hache le mot de passe avec bcrypt avant l'enregistrement
  *
  * Sécurité :
  * - Le mot de passe n'est jamais enregistré en clair dans la base de données
  * - Le mot de passe est remplacé par sa version hachée avant l'insertion
+ * - Le token JWT est envoyé dans un cookie HttpOnly
+ * - Le token n'est pas stocké dans le localStorage
  *
  * Réponse :
- * - Succès : retourne un message de confirmation
- * - Échec : retourne un message si le courriel est déjà utilisé
+ * - Succès : crée le compte, crée un cookie HttpOnly et retourne le rôle
+ * - Échec : retourne un message si le courriel est déjà utilisé ou si les champs sont invalides
  * - Erreur : retourne un message d'erreur serveur
  *
  * Route :
  * POST /utilisateurs/creerCompte
  *
- * Auteur : Diego, Amir (ajout de la partie hachage du mot de passe avec bcrypt)
+ * Auteur : Diego, Amir
  * =========================================================================================
  */
 router.post("/creerCompte", async (req: Request, res: Response) => {
   try {
-    const collection = getUtilisateurs(); //params que le controller a besoin pour create utilisateur
+    const collection = getUtilisateurs();
 
     // Récupérer les informations de l'utilisateur envoyées par le frontend
     const utilisateur = req.body;
-    const courriel = req.body.courriel as string;
+    const { nom, prenom, courriel, motDePasse } = utilisateur;
+
+    // Vérifier que les champs obligatoires sont présents et valides
+    if (
+      typeof nom !== "string" ||
+      typeof prenom !== "string" ||
+      typeof courriel !== "string" ||
+      typeof motDePasse !== "string" ||
+      !nom.trim() ||
+      !prenom.trim() ||
+      !courriel.trim() ||
+      !motDePasse.trim()
+    ) {
+      return res.status(400).json({
+        message: "Champs obligatoires manquants ou invalides.",
+      });
+    }
 
     // Vérifier si un compte existe déjà avec ce courriel
     const verifierCourrielExistant = await verifierExistenceUtilisateur(
       collection,
       courriel,
     );
-    if (verifierCourrielExistant !== null) {
-      return res
-        .status(400)
-        .json({ message: "Un Compte est déja associé à ce courriel" });
-    }
 
-    // Vérifier que le mot de passe est présent avant de le hacher
-    if (!utilisateur.motDePasse) {
+    if (verifierCourrielExistant !== null) {
       return res.status(400).json({
-        message: "Mot de passe requis.",
+        message: "Un compte est déjà associé à ce courriel.",
       });
     }
 
     // Hacher le mot de passe avant de l'enregistrer dans MongoDB
-    const motDePasseHash = await bcrypt.hash(utilisateur.motDePasse, 10);
+    const motDePasseHash = await bcrypt.hash(motDePasse, 10);
 
     // Remplacer le mot de passe en clair par le mot de passe haché
     utilisateur.motDePasse = motDePasseHash;
@@ -87,8 +102,37 @@ router.post("/creerCompte", async (req: Request, res: Response) => {
     // Créer l'utilisateur avec le mot de passe haché
     await createUtilisateur(collection, utilisateur);
 
+    // Récupérer l'utilisateur créé pour obtenir son _id MongoDB
+    const utilisateurCree = await getUtilisateurParCourriel(
+      collection,
+      courriel,
+    );
+
+    if (!utilisateurCree || !utilisateurCree._id) {
+      return res.status(500).json({
+        message: "Erreur lors de la création du compte.",
+      });
+    }
+
+    // Générer un token JWT contenant l'identifiant de l'utilisateur créé
+    const token = jwt.sign(
+      { id: utilisateurCree._id.toString() },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "1h" },
+    );
+
+    // Envoyer le token JWT dans un cookie HttpOnly
+    res.cookie("refresh", token, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 1000, // 1h en millisecondes
+      sameSite: "lax",
+      secure: false,
+    });
+
+    // Retourner seulement les informations nécessaires au frontend
     return res.status(201).json({
       message: "Utilisateur créé.",
+      role: utilisateurCree.role,
     });
   } catch (error) {
     console.error(
@@ -97,7 +141,7 @@ router.post("/creerCompte", async (req: Request, res: Response) => {
     );
 
     return res.status(500).json({
-      message: "Erreur serveur",
+      message: "Erreur serveur.",
     });
   }
 });
