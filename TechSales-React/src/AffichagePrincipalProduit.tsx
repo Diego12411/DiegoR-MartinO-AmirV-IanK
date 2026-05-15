@@ -31,6 +31,10 @@ function BoutonProduit({ produit }: { produit: Produit }) {
               className="card-img-top img-produit"
               src={produit.image_url || sansImage}
               alt={produit.nom}
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null;
+                currentTarget.src = sansImage;
+              }}
               style={{ width: "100%", height: "100%", objectFit: "contain" }}
             />
           </div>
@@ -120,11 +124,7 @@ export default function AffichagePrincipalProduit() {
                 <div className="row card-body text-dark">
                   {/* À changer plus tard */}
                   <div className="d-flex align-items-center ">
-                    <img
-                      className="img-fluid"
-                      src={logo}
-                      alt="Image"
-                    ></img>{" "}
+                    <img className="img-fluid" src={logo} alt="Image"></img>{" "}
                   </div>
                 </div>
               </div>

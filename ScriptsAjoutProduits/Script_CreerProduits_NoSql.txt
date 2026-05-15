@@ -46,7 +46,7 @@
   "description": "Laptop gaming AMD avec écran 240Hz",
   "prix": 1899.99,
   "stock": 7,
-  "image_url": "https://news.lenovo.com/wp-content/uploads/2025/01/09_Yoga_Slim_9i_14_10_Tidal_Teal_CameraOn_Right_Side_Open-e1736186936951-1024x862.png",
+  "image_url": "https://p2-ofp.static.pub//fes/cms/2025/05/13/ghrqkytomjz94t841whmrk678wc9vw115480.png",
   "categorie": { "nom_categorie": "Ordinateur" },
   "specification": {
     "type_produit": "Laptop",
