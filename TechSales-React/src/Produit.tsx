@@ -45,6 +45,18 @@ export default function ProduitDetails() {
   // on recupere le parametre de l'id du produit recu par le lien
   const { id } = useParams();
 
+  // state qui contient la quantite de produit a acheter
+  const [quantiteAcheter, setQuantiteAcheter] = useState(1);
+
+  // state qui va faire apparaitre un pop up window lorsque l'utilisateur n'est pas connecte
+  const [nonConnecte, setNonConnecte] = useState(false);
+  // state qui va faire apparaitre un pop up window lorsque l'utilisateur ajoute un produit a son panier
+  const [itemAjoute, setItemAjoute] = useState(false);
+
+  // Avec mongodb, le produit contient deja les specs integres (embedded document)
+  // un seul fetch suffit, plus besoin d'un 2e appel pour les aspects aka "on cherche les attributs d'un objet"
+  const [produit, setProduit] = useState<Produit | null>(null);
+
   // On recupere 4 produits au hasard a presente dans le bas de page
   const [produitsHasard, setProduitsHasard] = useState<Produit[]>([]);
   useEffect(() => {
@@ -53,9 +65,6 @@ export default function ProduitDetails() {
       .then((data: Produit[]) => setProduitsHasard(data ?? []));
   }, [id]);
 
-  // Avec mongodb, le produit contient deja les specs integres (embedded document)
-  // un seul fetch suffit, plus besoin d'un 2e appel pour les aspects aka "on cherche les attributs d'un objet"
-  const [produit, setProduit] = useState<Produit | null>(null);
   useEffect(() => {
     fetch(`${API_DEFAULT}/produits/${id}`)
       .then((response) => response.json())
@@ -67,9 +76,6 @@ export default function ProduitDetails() {
     window.scrollTo(0, 0);
   }, [id]);
 
-  // state qui contient la quantite de produit a acheter
-  const [quantiteAcheter, setQuantiteAcheter] = useState(1);
-
   // s'occupe de la couleur de l'affichage du stock
   const HandleAffichageStock = () => {
     if (produit && produit.stock > 0) {
@@ -78,11 +84,6 @@ export default function ProduitDetails() {
       return <h5 className="text-danger">Rupture de stock</h5>;
     }
   };
-
-  // state qui va faire apparaitre un pop up window lorsque l'utilisateur n'est pas connecte
-  const [nonConnecte, setNonConnecte] = useState(false);
-  // state qui va faire apparaitre un pop up window lorsque l'utilisateur ajoute un produit a son panier
-  const [itemAjoute, setItemAjoute] = useState(false);
 
   const ajouterItemAuPanier = async () => {
     try {

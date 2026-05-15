@@ -19,61 +19,98 @@ interface Produit {
 // meme signature que declare dans server.ts/CORS sinon bug
 const API_DEFAULT = "http://127.0.0.1:4000";
 
-function RetirerProduit(produit: Produit) {
-  // TODO [ ] : retirer un seul produit du panier de l'utilisateur
-}
+export default function afficherPanier() {
+  /**
+   * ===== Declaration des etats necessaires =====
+   */
+  const navigate = useNavigate();
+  // panier qui va contenir les items de l'utilisateur connecte
+  const [panier, setPanier] = useState<Produit[]>([]);
+  // state qui va faire apparaitre un pop up window lorsque l'utilisateur n'est pas connecte
+  const [nonConnecte, setNonConnecte] = useState(false);
+  // state qui pop un un banner affichant que le panier a ete vide avec succes
+  const [panierVide, setPanierVide] = useState(false);
+  const [messageBouttonAcheter, setMessageBouttonAcheter] = useState("");
 
-export function AfficherProduit({ produit }: { produit: Produit }) {
-  return (
-    <div className="row px-5 my-3 justify-content-left">
-      <div className="card shadow-lg me-5 p-3 py-3">
-        <div className="col-12 bg-white p-1 d-flex justify-content-left align-items-center">
-          <div className="d-flex justify-content-left align-items-center col-5">
-            {/*Image du produit*/}
-            <img
-              className="card shadow border-dark bg-light me-3"
-              src={produit.image || sansImage}
-              alt={produit.nom}
-              style={{
-                minWidth: "50px",
-                maxWidth: "50px",
-                minHeight: "50px",
-                maxHeight: "50px",
-                objectFit: "contain",
-              }}
-            ></img>
-            {/*Ramene a la page details du produit associé lorsqu'on clique le nom du produit*/}
-            <Link
-              to={`../produits/detailsProduit/${produit._id}`}
-              className="text-secondary text-decoration-none"
+  // TODO [X] : retirer un seul produit du panier de l'utilisateur
+  const RetirerProduit = async (produit: Produit) => {
+    try {
+      const response = await fetch(
+        `${API_DEFAULT}/paniers/retirerItem/${produit._id}`,
+        {
+          method: "DELETE",
+          credentials: "include", // cookie jwt necessaire pour authenticateToken()
+        },
+      );
+
+      if (response.status === 401) {
+        setNonConnecte(true);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+
+      // React cree une paire liee lorsque [panier, setPanier], panier <=> setPanier
+      // panierActuel est un nom de variable qui fait reference a panier
+      //on enleve completement le produit selectionne
+      setPanier((panierActuel) =>
+        panierActuel.filter((p) => p._id !== produit._id),
+      );
+    } catch (error) {
+      console.error("Erreur lors du retrait du produit");
+    }
+  };
+
+  // permet l'affichage central des items dans le panier d'un utilisateur
+  function AfficherProduit({ produit }: { produit: Produit }) {
+    return (
+      <div className="row px-5 my-3 justify-content-left">
+        <div className="card shadow-lg me-5 p-3 py-3">
+          <div className="col-12 bg-white p-1 d-flex justify-content-left align-items-center">
+            <div className="d-flex justify-content-left align-items-center col-5">
+              {/*Image du produit*/}
+              <img
+                className="card shadow border-dark bg-light me-3"
+                src={produit.image || sansImage}
+                alt={produit.nom}
+                style={{
+                  minWidth: "50px",
+                  maxWidth: "50px",
+                  minHeight: "50px",
+                  maxHeight: "50px",
+                  objectFit: "contain",
+                }}
+              ></img>
+              {/*Ramene a la page details du produit associé lorsqu'on clique le nom du produit*/}
+              <Link
+                to={`../produits/detailsProduit/${produit._id}`}
+                className="text-secondary text-decoration-none"
+              >
+                <div>{produit.nom}</div>
+              </Link>
+            </div>
+            <div className="d-flex justify-content-left align-items-center col-2">
+              {produit.prix} $
+            </div>
+            <div className="d-flex justify-content-left align-items-center col-2">
+              {produit.quantite}
+            </div>
+            <div className="d-flex justify-content-left align-items-center col-2">
+              {produit.prix * produit.quantite} $
+            </div>
+            {/*Bouton retirer le produit du panier*/}
+            <button
+              className="d-flex justify-content-left align-items-center col-1 btn btn-outline-dark btn-panier"
+              style={{ minWidth: "75px", maxWidth: "75px" }}
+              onClick={() => RetirerProduit(produit)}
             >
-              <div>{produit.nom}</div>
-            </Link>
+              Retirer
+            </button>
           </div>
-          <div className="d-flex justify-content-left align-items-center col-2">
-            {produit.prix} $
-          </div>
-          <div className="d-flex justify-content-left align-items-center col-2">
-            {produit.quantite}
-          </div>
-          <div className="d-flex justify-content-left align-items-center col-2">
-            {produit.prix * produit.quantite} $
-          </div>
-          {/*Bouton retirer le produit du panier*/}
-          <button
-            className="d-flex justify-content-left align-items-center col-1 btn btn-outline-dark btn-panier"
-            style={{ minWidth: "75px", maxWidth: "75px" }}
-            onClick={() => RetirerProduit(produit)}
-          >
-            Retirer
-          </button>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
-export default function afficherPanier() {
   const fairePaiement = async () => {
     //fairePaiement est une constante qui contient une fonction async ou l'on utilise stripe
     const stripe = await loadStripe(
@@ -94,12 +131,6 @@ export default function afficherPanier() {
     window.location.href = session.url; //change l'url du navigateur pour accéder à la page Stripe (checkout)
   };
 
-  const navigate = useNavigate();
-
-  // panier qui va contenir les items de l'utilisateur connecte
-  const [panier, setPanier] = useState<Produit[]>([]);
-
-  const [messageBouttonAcheter, setMessageBouttonAcheter] = useState("");
   const livraison = 0;
   const sousTotal = panier.reduce(
     (total, produit) => total + produit.prix * produit.quantite,
@@ -107,11 +138,6 @@ export default function afficherPanier() {
   );
   const taxes = sousTotal * 0.15;
   const total = taxes + sousTotal + livraison;
-
-  // state qui va faire apparaitre un pop up window lorsque l'utilisateur n'est pas connecte
-  const [nonConnecte, setNonConnecte] = useState(false);
-  // state qui pop un un banner affichant que le panier a ete vide avec succes
-  const [panierVide, setPanierVide] = useState(false);
 
   // TODO [X] : implementer le fetch des produits du panier d'un utilisateur
   /**
