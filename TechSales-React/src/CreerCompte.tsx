@@ -49,7 +49,7 @@ export default function AfficherCreerCompte() {
         } else if (data.message === "Utilisateur créé.") {
           localStorage.setItem("token", data.token);
           localStorage.setItem("utilisateur", JSON.stringify(data.utilisateur));
-          navigate("/compte");
+          navigate("/");
         }
       })
       .catch((err) => console.error(err));
