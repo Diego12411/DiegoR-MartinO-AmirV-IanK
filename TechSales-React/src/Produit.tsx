@@ -143,7 +143,7 @@ export default function ProduitDetails() {
 
       {itemAjoute && (
         <div className="alert alert-success text-center mx-5 my-3">
-          <p className="mb-2">Item ajouté au panier.</p>
+          <p className="mb-2">Item ajouté au panier avec succès.</p>
           <button
             className="btn btn-outline-dark"
             onClick={() => setItemAjoute(false)}

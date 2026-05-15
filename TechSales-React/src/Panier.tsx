@@ -110,6 +110,8 @@ export default function afficherPanier() {
 
   // state qui va faire apparaitre un pop up window lorsque l'utilisateur n'est pas connecte
   const [nonConnecte, setNonConnecte] = useState(false);
+  // state qui pop un un banner affichant que le panier a ete vide avec succes
+  const [panierVide, setPanierVide] = useState(false);
 
   // TODO [X] : implementer le fetch des produits du panier d'un utilisateur
   /**
@@ -185,7 +187,7 @@ export default function afficherPanier() {
     } else navigate("/Commande");
   }
 
-  // TODO [ ] : implementer l'action de vider tout le panier de l'utilisateur
+  // TODO [X] : implementer l'action de vider tout le panier de l'utilisateur
   // methode qui est appele lorsque l'utilisateur choisi d'effacer son panier au complet
   const effacerPanier = async () => {
     try {
@@ -199,6 +201,10 @@ export default function afficherPanier() {
         window.scrollTo({ top: 0, behavior: "smooth" });
         return;
       }
+
+      // affichage du banner attestant que le panier est vide
+      setPanierVide(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
 
       // on reset le panier de la page a un panier vide pour ne pas refetch le panier de l'utilisateur
       setPanier([]);
@@ -230,6 +236,18 @@ export default function afficherPanier() {
               Fermer
             </button>
           </div>
+        </div>
+      )}
+
+      {panierVide && (
+        <div className="alert alert-success text-center mx-5 my-3">
+          <p className="mb-2">Panier vidé avec succès!.</p>
+          <button
+            className="btn btn-outline-dark"
+            onClick={() => setPanierVide(false)}
+          >
+            Fermer
+          </button>
         </div>
       )}
 
