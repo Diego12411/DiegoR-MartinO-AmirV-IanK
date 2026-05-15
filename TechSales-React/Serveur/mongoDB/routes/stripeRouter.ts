@@ -45,8 +45,10 @@ router.post("/", authenticateToken, async (req, res) => {
       //crée une session qui pourra être accédée après que le backend recoit la requête. bouton Passer Commande → Fetch → Serveur.ts → stripeRouter /session-caisse
       mode: "payment",
       line_items,
-      success_url: "http://localhost:3000/commande", //si le paiement marche, on envoi l'utilisateur vers ce url
+      success_url: "http://127.0.0.1:5173/commande", //si le paiement marche, on envoi l'utilisateur vers ce url
       cancel_url: "http://127.0.0.1:5173/panier", //si l'utilisateur revient en arrière, on l'amène vers ce url
+
+      // TODO [ ] : rajouter route pour actualise la quantite dans l'inventaire des produits
     });
     // 5. renvoyer l’URL au frontend
     res.json({ url: session.url });

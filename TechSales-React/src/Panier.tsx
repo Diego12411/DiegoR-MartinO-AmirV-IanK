@@ -95,6 +95,7 @@ export default function afficherPanier() {
               {produit.quantite}
             </div>
             <div className="d-flex justify-content-left align-items-center col-2">
+              {/* TODO [ ] : formater le prix * quantite pour afficher jusqua x,00$ */}
               {produit.prix * produit.quantite} $
             </div>
             {/*Bouton retirer le produit du panier*/}
