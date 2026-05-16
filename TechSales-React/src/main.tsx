@@ -19,7 +19,7 @@ import SeConnecter from "./SeConnecter";
 import MotPasseOublie from "./MotPasseOublie";
 import Panier from "./Panier";
 import Commande from "./Commande";
-// TODO [ ] : import pas utilise, est-ce qu'on peut l'effacer?
+import AdminRoute from "./AdminRoute";
 import AffichagePrincipalProduitBanner from "./AffichagePrincipalProduitBanner";
 
 // Routage des pages
@@ -33,9 +33,16 @@ const router = createBrowserRouter([
   { path: "/motPasseOublie", element: <MotPasseOublie /> },
   { path: "/creerCompte", element: <CreerCompte /> },
   { path: "/seConnecter", element: <SeConnecter /> },
-  { path: "/PageAdmin", element: <PageAdmin /> },
   { path: "/compte", element: <Compte /> },
   { path: "/commande", element: <Commande /> },
+  {
+    path: "/PageAdmin",
+    element: (
+      <AdminRoute>
+        <PageAdmin />
+      </AdminRoute>
+    ),
+  },
 ]);
 
 createRoot(document.getElementById("root")!).render(
