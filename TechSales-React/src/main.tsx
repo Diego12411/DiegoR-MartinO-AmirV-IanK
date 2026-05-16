@@ -19,6 +19,7 @@ import SeConnecter from "./SeConnecter";
 import MotPasseOublie from "./MotPasseOublie";
 import Panier from "./Panier";
 import Commande from "./Commande";
+// TODO [ ] : import pas utilise, est-ce qu'on peut l'effacer?
 import AffichagePrincipalProduitBanner from "./AffichagePrincipalProduitBanner";
 
 // Routage des pages
@@ -40,7 +41,7 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>
+  </StrictMode>,
 );
 
 export const HeaderComponent = () => {
