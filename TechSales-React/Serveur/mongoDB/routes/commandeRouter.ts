@@ -9,6 +9,7 @@ import {
 import { ObjectId } from "mongodb";
 import { getCommandes, getProduits, getUtilisateurs } from "../db/mongo.js";
 import { STATUTS, Statut } from "../models/commande.js";
+import { authenticateToken } from "../middleware/jwtToken.js";
 
 /**
  * Routes qui relie le frontend avec le commandeController
@@ -26,21 +27,16 @@ router.get("/test", async (req, res) => {
 
 /**
  * POST -- Creation d'une nouvelle commande a partir du panier de l'utilisateur
+ * route protegee
  */
-router.post("/creerCommande/:utilisateurId", async (req, res) => {
+router.post("/creerCommande", authenticateToken, async (req, res) => {
   try {
-    // verification si "utilisateurId" est valide avant de proceder
-    if (!ObjectId.isValid(req.params.utilisateurId)) {
-      res.status(400).json({ message: "Identifiant utilisateur non valide" });
-      return;
-    }
-
-    // Recuperation des collections necessaires
+    // Recuperation des collections necessairesks
     const collectionCommande = getCommandes();
     const collectionUtilisateur = getUtilisateurs();
     const collectionProduit = getProduits();
 
-    const utilisateur = new ObjectId(req.params.utilisateurId);
+    const utilisateur = new ObjectId(req.user?._id); // on passe par le middleware de jwt
 
     const resultat = await creationCommande(
       collectionCommande,

@@ -20,6 +20,7 @@ import MotPasseOublie from "./MotPasseOublie";
 import Panier from "./Panier";
 import Commande from "./Commande";
 import AdminRoute from "./AdminRoute";
+// TODO [ ] : import non utilise, est-ce qu'on peut l'enlever
 import AffichagePrincipalProduitBanner from "./AffichagePrincipalProduitBanner";
 
 // Routage des pages
