@@ -41,7 +41,7 @@ export default function SeConnecter() {
         });
       })
       .then((data) => {
-        if (data.role === "admin") {
+        if (data.role?.toLowerCase() === "admin") {
           navigate("/PageAdmin");
         } else {
           navigate("/compte");

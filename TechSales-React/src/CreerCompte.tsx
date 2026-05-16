@@ -25,11 +25,23 @@ export default function AfficherCreerCompte() {
 
   function CreationCompteBouttonClicked() {
     if (!nom || !prenom || !courriel || !motDePasse) {
-      setMessageCreationCompte("*Il manque des champs obligatoire");
+      setMessageCreationCompte("*Il manque des champs obligatoires");
       return;
     }
-    fetch("http://localhost:4000/utilisateurs/creerCompte", {
+
+    const formatCourrielValide = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!formatCourrielValide.test(courriel)) {
+      setMessageCreationCompte("*Le format du courriel est invalide");
+      return;
+    }
+
+    setBouttonDisabled(true);
+    setMessageCreationCompte("");
+
+    fetch("http://127.0.0.1:4000/utilisateurs/creerCompte", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -42,17 +54,30 @@ export default function AfficherCreerCompte() {
         itemPanier: itemPanier,
       }),
     })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.message === "Un Compte est déja associé à ce courriel") {
-          setMessageCreationCompte(data.message);
-        } else if (data.message === "Utilisateur créé.") {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("utilisateur", JSON.stringify(data.utilisateur));
-          navigate("/");
-        }
+      .then((res) => {
+        return res.json().then((data) => ({
+          ok: res.ok,
+          data: data,
+        }));
       })
-      .catch((err) => console.error(err));
+      .then(({ ok, data }) => {
+        if (!ok) {
+          setMessageCreationCompte(
+            data.message || "Erreur lors de la création du compte.",
+          );
+          return;
+        }
+
+        // Compte créé avec succès, rediriger vers la page de connexion
+        navigate("/compte");
+      })
+      .catch((err) => {
+        console.error(err);
+        setMessageCreationCompte("Impossible de joindre le serveur.");
+      })
+      .finally(() => {
+        setBouttonDisabled(false);
+      });
   }
 
   return (
@@ -67,9 +92,11 @@ export default function AfficherCreerCompte() {
     >
       <main className="container-fluid text-center p-0">
         <HeaderComponent />
-        <div style={{
-          marginBottom: '40px',
-        }}></div>
+        <div
+          style={{
+            marginBottom: "40px",
+          }}
+        ></div>
 
         <div className="d-flex justify-content-center align-items-center">
           <div className="row justify-content-center">
@@ -188,9 +215,11 @@ export default function AfficherCreerCompte() {
             </div>
           </div>
         </div>
-        <div style={{
-          marginBottom: '40px',
-        }}></div>
+        <div
+          style={{
+            marginBottom: "40px",
+          }}
+        ></div>
         <FooterComponent />
       </main>
     </div>
