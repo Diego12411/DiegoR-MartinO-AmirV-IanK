@@ -13,13 +13,36 @@ import { ItemPanier } from "../models/itemPanier.js";
 import { authenticateToken } from "../middleware/jwtToken.js";
 
 /**
- * Routes qui relie le frontend avec le panierController
- * @author Martin
+ * =========================================================================================
+ * ROUTEUR PANIER - GESTION DU PANIER UTILISATEUR (API PROTÉGÉE JWT)
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Ce fichier gère toutes les routes liées au panier utilisateur.
+ * Il permet d’ajouter, retirer, modifier des articles et vider le panier.
+ * Toutes les routes sont protégées par un middleware JWT (authenticateToken).
+ *
+ * Fonctionnement :
+ * - Chaque requête récupère l’utilisateur via le token JWT (req.user)
+ * - Les opérations sont effectuées sur la collection utilisateurs MongoDB
+ * - Le panier est manipulé comme un tableau d’items (ItemPanier)
+ *
+ * Sécurité :
+ * - Toutes les routes sont protégées par authenticateToken
+ * - Impossible d’accéder ou modifier un panier sans authentification
+ * - Validation des ObjectId pour éviter les injections invalides
+ *
+ * Routes principales :
+ * - GET /panierUtilisateur : récupère le panier de l’utilisateur connecté
+ * - PATCH /ajoutItem : ajoute un produit au panier
+ * - DELETE /retirerItem/:itemId : supprime un item du panier
+ * - PATCH /modifierQuantite/:itemId : modifie la quantité d’un item
+ * - PUT /viderPanier : vide entièrement le panier utilisateur
+ *
+ * Auteur : Martin
+ * =========================================================================================
  */
 
 const router = Router();
-
-// TODO [X] : toutes les routes doivent etre protegees pour panier
 // On force toutes les routes a utiliser Middleware/authenticateToken()
 // Donc, on n'a plus a le declarer dans chaque route
 router.use(authenticateToken);

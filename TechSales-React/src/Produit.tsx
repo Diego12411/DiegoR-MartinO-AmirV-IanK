@@ -4,11 +4,66 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 /**
- * Page qui affiche les informations detaillees d'un produit specifique
- * Au bas de la page, on retrouve d'autres produits disponibles sur notre site.
- * Lorsque l'image est clicke, ca nous redirige vers une nouvelle page avec les informations detaillees du prochain produit.
+ * =========================================================================================
+ * PAGE PRODUIT DÉTAILS - AFFICHAGE D'UN PRODUIT ET AJOUT AU PANIER (REACT)
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Cette page affiche les informations détaillées d’un produit sélectionné.
+ * Elle permet aussi d’ajouter le produit au panier et de consulter des produits similaires.
+ *
+ * Fonctionnement global :
+ * - Récupère l’ID du produit via l’URL (useParams)
+ * - Fetch les détails complets du produit depuis le backend
+ * - Fetch une liste de produits aléatoires pour suggestions
+ * - Affiche toutes les informations du produit (specs, prix, stock, description)
+ * - Permet d’ajouter une quantité au panier
+ *
+ * Données produit :
+ * - Informations générales : nom, prix, description, stock
+ * - Image principale du produit
+ * - Spécifications techniques (CPU, GPU, RAM, stockage)
+ * - Catégorie associée
+ *
+ * Interactions utilisateur :
+ * - Sélection de quantité à ajouter
+ * - Bouton "Ajouter au panier"
+ * - Redirection login si utilisateur non connecté
+ * - Message de confirmation après ajout au panier
+ *
+ * Panier :
+ * - Ajout via PATCH /paniers/ajoutItem
+ * - Authentification requise (cookies JWT via credentials: include)
+ * - Gestion des erreurs 401 (non connecté)
+ *
+ * Produits suggérés :
+ * - Récupérés via GET /produits/lireProduitsHasard
+ * - Affichés en bas de page sous forme de cartes cliquables
+ * - Redirection vers la page détail d’un autre produit
+ *
+ * États React utilisés :
+ * - produit : produit actuellement affiché
+ * - produitsHasard : liste de produits recommandés
+ * - quantiteAcheter : quantité sélectionnée
+ * - nonConnecte : affiche message si utilisateur non authentifié
+ * - itemAjoute : confirmation ajout panier
+ *
+ * UX :
+ * - Scroll automatique en haut lors changement produit
+ * - Reset des alertes à chaque changement d’ID
+ * - Désactivation bouton si stock insuffisant
+ *
+ * API utilisées :
+ * - GET /produits/:id
+ * - GET /produits/lireProduitsHasard
+ * - PATCH /paniers/ajoutItem
+ *
+ * Dépendances :
+ * - React Router (navigation et paramètres URL)
+ * - Bootstrap (layout et composants UI)
+ *
+ * Auteur : Martin
+ * =========================================================================================
  */
-
 type Categorie = {
   nom_categorie: string;
 };

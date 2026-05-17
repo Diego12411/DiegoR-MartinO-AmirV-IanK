@@ -5,7 +5,45 @@ import "./AffichagePrincipalProduit.css";
 import video from "./assets/VideoBackground.webm";
 import logo from "./assets/logo.png";
 import sansImage from "./assets/ProduitSansImage.png";
-import { AffichagePrincipalProduitBanner } from "./AffichagePrincipalProduitBanner.tsx";
+import { AffichagePrincipalProduitBanner } from "./AffichagePrincipalProduitBannierre.tsx";
+
+/**
+ * =========================================================================================
+ * PAGE PRINCIPALE - AFFICHAGE DES PRODUITS (FRONTEND REACT)
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Cette page affiche la liste des produits récupérés depuis l’API backend.
+ * Elle inclut un header, un footer, une bannière et une section de produits
+ * affichés sous forme de scroll horizontal.
+ *
+ * Fonctionnement global :
+ * - Récupère tous les produits depuis l’API /produits
+ * - Stocke les produits dans un state React
+ * - Affiche chaque produit dans une carte cliquable
+ * - Permet un scroll horizontal contrôlé via boutons
+ *
+ * Composants principaux :
+ * - HeaderComponent : barre de navigation
+ * - FooterComponent : bas de page
+ * - AffichagePrincipalProduitBanner : bannière visuelle
+ * - BoutonProduit : carte individuelle d’un produit
+ *
+ * Interaction utilisateur :
+ * - Scroll horizontal gauche/droite des produits
+ * - Clic sur un produit → redirection vers page détail produit
+ *
+ * Données :
+ * - Produit contient : _id, nom, description, prix, stock, image_url
+ * - API utilisée : GET http://localhost:4000/produits
+ *
+ * UX / UI :
+ * - Fond vidéo en arrière-plan
+ * - Affichage en cards Bootstrap
+ * - Scroll fluide horizontal type “catalogue”
+ *
+ * Auteur : Ian, Diego
+ * =========================================================================================
+ */
 
 type Produit = {
   _id: string; // Changé en _id (format en react)

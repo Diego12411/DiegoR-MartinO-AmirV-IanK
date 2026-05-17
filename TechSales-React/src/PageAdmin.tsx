@@ -4,6 +4,42 @@ import { getProduitById } from "../Serveur/mongoDB/controllers/produitController
 import { getProduits } from "../Serveur/mongoDB/db/mongo.js";
 import "./PageAdmin.css";
 
+/**
+ * =========================================================================================
+ * PAGE ADMIN - GESTION UTILISATEURS ET PRODUITS (REACT)
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Cette page permet à un administrateur de gérer les utilisateurs et les produits.
+ * Elle regroupe les fonctions de suppression et modification côté admin.
+ *
+ * Fonctionnement global :
+ * - Récupère la liste des produits depuis le backend
+ * - Permet de rechercher, modifier et supprimer des produits
+ * - Permet de supprimer et modifier des utilisateurs
+ * - Utilise plusieurs états React pour gérer les formulaires
+ *
+ * Section utilisateurs :
+ * - Suppression d’un utilisateur par courriel
+ * - Modification des informations utilisateur (nom, prénom, mot de passe, rôle)
+ *
+ * Section produits :
+ * - Liste des produits avec recherche par nom ou ID
+ * - Modification d’un produit (nom, prix, stock)
+ * - Suppression d’un produit
+ *
+ * Données :
+ * - Produits récupérés via GET /produits
+ * - Utilisateurs modifiés via endpoints utilisateurs (PUT/DELETE)
+ *
+ * Interface :
+ * - Deux grandes sections séparées (utilisateurs et produits)
+ * - Formulaires Bootstrap
+ * - Messages de succès ou d’erreur affichés sous les actions
+ *
+ * Auteur : Diego, Ian
+ * =========================================================================================
+ */
+
 // ============================================================
 // TYPES
 // ============================================================
@@ -74,7 +110,7 @@ export default function AfficherPageAdmin() {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ courriel: courrielDelete }),
-      }
+      },
     )
       .then((res) => res.json())
       .then((data) => {
@@ -103,7 +139,7 @@ export default function AfficherPageAdmin() {
           courriel: courrielUpdate,
           role: role,
         }),
-      }
+      },
     )
       .then((res) => res.json())
       .then((data) => {
@@ -388,7 +424,7 @@ export default function AfficherPageAdmin() {
                         produit.nom
                           .toString()
                           .toLowerCase()
-                          .startsWith(`${produitListeNom}`)
+                          .startsWith(`${produitListeNom}`),
                     )
                     .map((produit) => (
                       <InfoProduit key={produit._id} produit={produit} />

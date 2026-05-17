@@ -12,10 +12,40 @@ import { STATUTS, Statut } from "../models/commande.js";
 import { authenticateToken } from "../middleware/jwtToken.js";
 
 /**
- * Routes qui relie le frontend avec le commandeController
- * @author Martin
+ * =========================================================================================
+ * ROUTEUR COMMANDES - GESTION DES COMMANDES UTILISATEURS (API MONGODB)
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Ce fichier gère toutes les routes liées aux commandes.
+ * Il permet de créer une commande à partir du panier, consulter les commandes
+ * d’un utilisateur, récupérer toutes les commandes, modifier leur statut et les supprimer.
+ *
+ * Fonctionnement :
+ * - Utilise plusieurs collections MongoDB (commandes, utilisateurs, produits)
+ * - Les opérations sont déléguées au commandeController
+ * - Certaines routes sont liées à un utilisateur spécifique via ObjectId
+ *
+ * Sécurité :
+ * - La création de commande est protégée par JWT (authenticateToken)
+ * - Validation des ObjectId pour éviter les requêtes invalides
+ * - Validation des statuts de commande via ENUM STATUTS
+ *
+ * Routes principales :
+ * - GET /test : endpoint de test
+ * - POST /creerCommande : crée une commande depuis le panier utilisateur (protégé)
+ * - GET /commandesPasseesPar/:utilisateurId : commandes d’un utilisateur
+ * - GET /obtenirToutesLesCommandes : liste toutes les commandes
+ * - PATCH /changerStatut/:commandeId/:statut : met à jour le statut d’une commande
+ * - DELETE /supprimerCommande/:commandeId : supprime une commande
+ *
+ * Remarques :
+ * - Certaines routes ne sont pas protégées (à sécuriser selon besoin)
+ * - Vérification de statut et ObjectId appliquée côté API
+ * - Logique métier centralisée dans le controller
+ *
+ * Auteur : Martin
+ * =========================================================================================
  */
-
 const router = Router();
 
 /**

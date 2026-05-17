@@ -4,6 +4,52 @@ import { authenticateToken } from "../middleware/jwtToken.js";
 
 const router = Router();
 
+/**
+ * =========================================================================================
+ * CRÉATION D'UNE SESSION DE PAIEMENT STRIPE POUR VALIDATION DE COMMANDE
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Crée une session de paiement Stripe Checkout à partir des produits envoyés par le frontend.
+ * Chaque produit est transformé en "line_item" compatible avec Stripe, puis une session
+ * de paiement est générée et renvoyée au client sous forme d’URL.
+ *
+ * Fonctionnement global :
+ * - Reçoit un panier de produits depuis le frontend
+ * - Vérifie que le panier n’est pas vide
+ * - Transforme les produits au format requis par Stripe
+ * - Crée une session de paiement Stripe Checkout
+ * - Retourne l’URL de paiement au frontend
+ *
+ * Vérifications :
+ * - Vérifie que le panier contient au moins un produit
+ * - Vérifie implicitement que les champs produits sont bien présents (nom, prix, quantité)
+ *
+ * Sécurité :
+ * - La route est protégée par un middleware JWT (authenticateToken)
+ * - Seuls les utilisateurs authentifiés peuvent créer une session de paiement
+ * - Les prix et données produits sont fournis par le backend côté logique Stripe (non manipulés côté client après validation)
+ *
+ * Intégration Stripe :
+ * - Utilise Stripe Checkout en mode "payment"
+ * - Convertit les prix en centimes (exigence Stripe)
+ * - Applique un taux de taxe défini dans Stripe Dashboard
+ * - Définit des URLs de redirection en cas de succès ou d’annulation
+ *
+ * Réponse :
+ * - Succès : retourne { url: session.url } permettant de rediriger vers Stripe Checkout
+ * - Échec client : retourne 400 si panier vide
+ * - Échec serveur : retourne 500 en cas d’erreur Stripe ou serveur
+ *
+ * Route :
+ * POST /
+ *
+ * Middleware :
+ * - authenticateToken : vérifie l’authentification de l’utilisateur via JWT
+ *
+ * Auteur : Diego, Martin
+ * =========================================================================================
+ */
+
 router.post("/", authenticateToken, async (req, res) => {
   try {
     const stripe = new Stripe(process.env.STRIPE_SECRET!); //ne garanti pas qu'il existe

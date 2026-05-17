@@ -1,10 +1,48 @@
 import logo from "./assets/logo.png";
-import "./SeConnecter.css";
+import "./Authentification.css";
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 // FooterComponent et HeaderComponent sont les codes écrits par mes coéquipiers.
 // Je les ai importés pour les utiliser dans cette page de connexion, afin de garder une cohérence dans le design et la navigation du site.
 import { FooterComponent, HeaderComponent } from "./main";
+
+/**
+ * =========================================================================================
+ * PAGE D’AUTHENTIFICATION - CONNEXION UTILISATEUR (REACT)
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Ce composant permet à un utilisateur de se connecter avec son email et son mot de passe.
+ * Il envoie les données au backend et gère la réponse pour connecter l’utilisateur.
+ *
+ * Fonctionnement :
+ * - Stocke l’email et le mot de passe dans des variables d’état
+ * - Envoie une requête POST vers l’API de connexion
+ * - Vérifie si les champs sont remplis avant l’envoi
+ * - Affiche un message d’erreur si la connexion échoue
+ *
+ * Authentification :
+ * - Utilise une requête fetch vers /utilisateurs/connexion
+ * - credentials: "include" pour permettre l’utilisation des cookies JWT
+ * - Le backend renvoie le rôle de l’utilisateur
+ *
+ * Redirection :
+ * - Si l’utilisateur est admin : redirection vers /PageAdmin
+ * - Sinon : redirection vers /Inscription
+ *
+ * Gestion des erreurs :
+ * - Champs vides
+ * - Erreur de connexion serveur
+ * - Message d’erreur affiché dans l’interface
+ *
+ * Interface :
+ * - Champ email
+ * - Champ mot de passe
+ * - Bouton de connexion
+ * - Liens vers création de compte et mot de passe oublié
+ *
+ * Auteur : Amir
+ * =========================================================================================
+ */
 
 export default function SeConnecter() {
   const [email, setEmail] = useState("");
@@ -117,7 +155,7 @@ export default function SeConnecter() {
                 <div className="mt-3 text-start seconnecter-links">
                   <p className="mb-1 " style={{ fontSize: "12px" }}>
                     Pas de compte ?{" "}
-                    <Link to="/creerCompte" className="seconnecter-link">
+                    <Link to="/Inscription" className="seconnecter-link">
                       Créer un compte
                     </Link>
                   </p>

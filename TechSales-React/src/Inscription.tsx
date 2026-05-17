@@ -6,6 +6,57 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ItemPanier } from "./models/itemPanier";
 
+/**
+ * =========================================================================================
+ * PAGE CRÉATION DE COMPTE (REACT)
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Cette page permet à un utilisateur de créer un nouveau compte.
+ * Elle valide les champs, envoie les données au backend et gère la réponse.
+ *
+ * Fonctionnement :
+ * - Stocke les informations utilisateur dans des states React
+ * - Vérifie les champs obligatoires avant envoi
+ * - Valide le format du courriel avec une expression régulière
+ * - Envoie une requête POST vers l’API de création de compte
+ * - Gère la réponse et redirige si succès
+ *
+ * Validation :
+ * - Tous les champs doivent être remplis
+ * - Le courriel doit respecter un format valide
+ * - Le bouton est désactivé pendant l’envoi pour éviter les doubles requêtes
+ *
+ * API utilisée :
+ * - POST /utilisateurs/creerCompte
+ *
+ * Données envoyées :
+ * - nom
+ * - prenom
+ * - courriel
+ * - motDePasse
+ * - role (Client)
+ * - itemPanier (liste initiale vide ou préexistante)
+ *
+ * Gestion des erreurs :
+ * - Champs manquants
+ * - Courriel invalide
+ * - Erreur serveur ou réseau
+ * - Message affiché dans l’interface
+ *
+ * Navigation :
+ * - Succès : redirection vers /compte
+ * - Bouton secondaire : redirection vers /Authentification
+ *
+ * Interface :
+ * - Formulaire avec champs nom, prénom, email, mot de passe
+ * - Bouton de création de compte
+ * - Message d’erreur dynamique
+ * - Bouton de connexion alternative
+ *
+ * Auteur : Diego
+ * =========================================================================================
+ */
+
 {
   /*source Card : https://getbootstrap.com/docs/4.0/components/card/
     source Flex : https://getbootstrap.com/docs/4.0/utilities/flex/ 
@@ -38,7 +89,7 @@ export default function AfficherCreerCompte() {
 
     setBouttonDisabled(true);
     setMessageCreationCompte("");
-
+    console.log(formatCourrielValide.test(courriel));
     fetch("http://127.0.0.1:4000/utilisateurs/creerCompte", {
       method: "POST",
       credentials: "include",
@@ -207,7 +258,7 @@ export default function AfficherCreerCompte() {
                 <button
                   type="button"
                   className="btn btn-outline-dark mt-3 mb-3"
-                  onClick={() => navigate("/seConnecter")}
+                  onClick={() => navigate("/Authentification")}
                 >
                   Se Connecter
                 </button>

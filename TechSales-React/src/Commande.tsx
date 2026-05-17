@@ -2,6 +2,38 @@ import { useEffect } from "react";
 import { HeaderComponent, FooterComponent } from "./main";
 import { useNavigate } from "react-router";
 
+/**
+ * =========================================================================================
+ * PAGE DE CONFIRMATION DE COMMANDE (REACT)
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Cette page s’affiche après un paiement réussi avec Stripe.
+ * Elle valide la création de la commande côté backend, met à jour le stock
+ * des produits et vide le panier de l’utilisateur connecté.
+ *
+ * Fonctionnement :
+ * - Vérifie la présence du session_id Stripe dans l’URL
+ * - Si absent, redirige vers la page de connexion
+ * - Récupère le panier de l’utilisateur connecté
+ * - Crée une commande via l’API backend
+ * - Met à jour le stock des produits achetés
+ * - Vide le panier utilisateur
+ *
+ * Étapes principales :
+ * - Lecture du panier
+ * - Création de la commande
+ * - Mise à jour des stocks produits
+ * - Vidage du panier
+ *
+ * Sécurité :
+ * - Utilise credentials: "include" pour les requêtes protégées
+ * - Dépend de l’authentification utilisateur via cookie JWT
+ * - Vérifie le session_id Stripe pour confirmer le paiement
+ *
+ * Auteur : Martin
+ * =========================================================================================
+ */
+
 export default function afficherConfirmationCommande() {
   // meme signature que declare dans server.ts/CORS sinon bug
   const API_DEFAULT = "http://127.0.0.1:4000";
@@ -47,8 +79,6 @@ export default function afficherConfirmationCommande() {
           console.error("Erreur lors de la creation de la commande");
           return;
         }
-
-        // TODO [X] : actualiser l'inventaire a la suite de la creation de la commande
         // mettre a jour l'inventaire
         await Promise.all(
           itemsPanier.map(

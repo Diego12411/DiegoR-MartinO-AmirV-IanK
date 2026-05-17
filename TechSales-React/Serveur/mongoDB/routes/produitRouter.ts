@@ -13,6 +13,32 @@ import { Produit } from "../models/produit.js";
 const router = Router();
 
 /**
+ * =========================================================================================
+ * ROUTEUR PRODUITS - CRUD + PRODUITS ALÉATOIRES (MongoDB)
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Ce fichier gère toutes les routes liées aux produits de l’application.
+ * Il permet de créer, lire, modifier et supprimer des produits stockés dans MongoDB,
+ * ainsi que de récupérer des produits aléatoires pour affichage (ex: page d’accueil).
+ *
+ * Fonctionnement :
+ * - Connexion à MongoDB via getProduits()
+ * - Utilisation des fonctions du contrôleur produitController
+ * - Exposition d’une API REST complète pour les produits
+ *
+ * Routes disponibles :
+ * - GET /lireProduitsHasard : retourne 4 produits aléatoires
+ * - POST /create : crée un nouveau produit
+ * - GET /:id : récupère un produit par ID
+ * - GET / : récupère tous les produits
+ * - PUT /:id : met à jour un produit
+ * - DELETE /:id : supprime un produit
+ *
+ * Auteur : Ian
+ * =========================================================================================
+ */
+
+/**
  * GET -- Retourne 4 items random parmis ceux disponible dans la base mongodb
  */
 router.get("/lireProduitsHasard", async (req, res) => {

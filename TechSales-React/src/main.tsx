@@ -13,15 +13,13 @@ import "./index.css";
 import AffichagePrincipalProduit from "./AffichagePrincipalProduit";
 import ProduitDetails from "./Produit";
 import PageAdmin from "./PageAdmin";
-import CreerCompte from "./CreerCompte";
+import Inscription from "./Inscription";
 import Compte from "./Compte";
-import SeConnecter from "./SeConnecter";
+import Authentification from "./Authentification";
 import MotPasseOublie from "./MotPasseOublie";
 import Panier from "./Panier";
 import Commande from "./Commande";
 import AdminRoute from "./AdminRoute";
-// TODO [ ] : import non utilise, est-ce qu'on peut l'enlever
-import AffichagePrincipalProduitBanner from "./AffichagePrincipalProduitBanner";
 
 // Routage des pages
 const router = createBrowserRouter([
@@ -32,8 +30,8 @@ const router = createBrowserRouter([
     element: <AffichagePrincipalProduit />,
   },
   { path: "/motPasseOublie", element: <MotPasseOublie /> },
-  { path: "/creerCompte", element: <CreerCompte /> },
-  { path: "/seConnecter", element: <SeConnecter /> },
+  { path: "/inscription", element: <Inscription /> },
+  { path: "/authentification", element: <Authentification /> },
   { path: "/compte", element: <Compte /> },
   { path: "/commande", element: <Commande /> },
   {
@@ -164,13 +162,13 @@ export const FooterComponent = () => {
                     Compte
                   </li>
                   <a
-                    href="SeConnecter"
+                    href="Authentification"
                     className="list-group-item bg-transparent text-white mb-2"
                   >
                     Se connecter
                   </a>
                   <a
-                    href="CreerCompte"
+                    href="Inscription"
                     className="list-group-item bg-transparent text-white mb-2"
                   >
                     Créer une compte
@@ -208,13 +206,13 @@ export const FooterComponent = () => {
                     Support
                   </li>
                   <a
-                    href="#"
+                    href="https://www.facebook.com"
                     className="list-group-item bg-transparent text-white mb-2"
                   >
                     Q&A
                   </a>
                   <a
-                    href="#"
+                    href="https://www.facebook.com"
                     className="list-group-item bg-transparent text-white mb-2"
                   >
                     Nous contacter

@@ -1,5 +1,4 @@
-import { HeaderComponent } from "./main";
-import { FooterComponent } from "./main";
+import { HeaderComponent, FooterComponent } from "./main";
 import logo from "./assets/logo.png";
 import "./Panier.css";
 import { Link } from "react-router";
@@ -7,6 +6,63 @@ import { useState, useEffect } from "react";
 import sansImage from "./assets/ProduitSansImage.png";
 import { useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
+
+/**
+ * =========================================================================================
+ * PAGE PANIER - AFFICHAGE ET GESTION DU PANIER UTILISATEUR (REACT)
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Cette page permet à un utilisateur de consulter son panier, modifier son contenu
+ * (retirer des produits, vider le panier) et procéder au paiement via Stripe.
+ *
+ * Fonctionnement global :
+ * - Récupère le panier de l’utilisateur connecté au chargement de la page
+ * - Construit une liste de produits complets à partir des IDs du backend
+ * - Affiche les produits avec quantité, prix unitaire et sous-total
+ * - Permet de retirer un produit individuellement
+ * - Permet de vider complètement le panier
+ * - Calcule automatiquement sous-total, taxes et total
+ * - Gère le paiement via Stripe Checkout
+ *
+ * Authentification :
+ * - Toutes les requêtes protégées utilisent credentials: "include"
+ * - Si l’utilisateur n’est pas connecté (401), affichage d’un message + redirection possible
+ *
+ * Paiement :
+ * - Utilise Stripe (loadStripe avec clé publique test)
+ * - Création d’une session côté backend (/session-caisse)
+ * - Redirection vers Stripe Checkout via session.url
+ *
+ * Données :
+ * - Panier récupéré via GET /paniers/panierUtilisateur
+ * - Suppression item via DELETE /paniers/retirerItem/:id
+ * - Vidage panier via PUT /paniers/viderPanier
+ * - Produits enrichis via GET /produits/:id
+ *
+ * États React utilisés :
+ * - panier : liste des produits affichés
+ * - nonConnecte : contrôle affichage alerte utilisateur non connecté
+ * - panierVide : notification de succès après suppression complète
+ * - messageBouttonAcheter : messages d’erreur liés au paiement
+ *
+ * Calculs :
+ * - sousTotal = somme(prix * quantité)
+ * - taxes = 15% du sous-total
+ * - total = sousTotal + taxes + livraison
+ *
+ * Interface :
+ * - Tableau de produits avec image, nom, prix, quantité, sous-total
+ * - Boutons : retirer, vider panier, ajouter produits, payer
+ * - Section récapitulatif du total
+ *
+ * Dépendances :
+ * - React Router (navigation + liens)
+ * - Stripe.js
+ * - Bootstrap pour le layout
+ *
+ * Auteur : Diego, Martin
+ * =========================================================================================
+ */
 
 interface Produit {
   nom: string;
@@ -19,7 +75,7 @@ interface Produit {
 // meme signature que declare dans server.ts/CORS sinon bug
 const API_DEFAULT = "http://127.0.0.1:4000";
 
-export default function afficherPanier() {
+export default function AfficherPanier() {
   /**
    * ===== Declaration des etats necessaires =====
    */
@@ -285,7 +341,7 @@ export default function afficherPanier() {
           <div className="d-flex justify-content-center gap-3">
             <button
               className="btn btn-dark"
-              onClick={() => navigate("/seConnecter")}
+              onClick={() => navigate("/authentification")}
             >
               Se connecter
             </button>
