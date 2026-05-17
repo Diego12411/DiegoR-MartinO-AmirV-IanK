@@ -9,6 +9,44 @@ import { config } from "dotenv";
 import { connectToMongo } from "./db/mongo.js";
 import cookieParser from "cookie-parser";
 
+/**
+ * =========================================================================================
+ * INITIALISATION DU SERVEUR EXPRESS + CONNEXION MONGODB
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Ce fichier est le point d’entrée principal du backend.
+ * Il configure le serveur Express, connecte MongoDB, applique les middlewares globaux
+ * et enregistre toutes les routes de l’application.
+ *
+ * Fonctionnement global :
+ * - Chargement des variables d’environnement (.env)
+ * - Connexion à MongoDB avant de démarrer le serveur
+ * - Initialisation d’Express
+ * - Configuration des middlewares (CORS, JSON, cookies)
+ * - Enregistrement des routes principales
+ * - Démarrage du serveur HTTP
+ *
+ * Sécurité & configuration :
+ * - Vérifie la présence de MONGODB_URI avant connexion
+ * - Active CORS uniquement pour le frontend autorisé (localhost:5173)
+ * - Active credentials pour permettre cookies JWT
+ * - Utilise cookie-parser pour gérer les cookies HttpOnly
+ *
+ * Routes enregistrées :
+ * - /paniers → gestion du panier utilisateur
+ * - /utilisateurs → gestion des comptes utilisateurs
+ * - /commandes → gestion des commandes
+ * - /produits → gestion des produits
+ * - /session-caisse → intégration Stripe Checkout
+ *
+ * Démarrage serveur :
+ * - PORT défini via .env ou fallback sur 4000
+ * - Affiche une confirmation dans la console au lancement
+ *
+ * Auteur : Diego, Ian, Martin, Amir
+ * =========================================================================================
+ */
+
 config();
 
 const uri = process.env.MONGODB_URI;
