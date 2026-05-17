@@ -16,7 +16,7 @@ interface Produit {
   _id: string;
 }
 
-// meme signature que declare dans server.ts/CORS sinon bug
+// meme signature qui est declare dans server.ts/CORS sinon bug
 const API_DEFAULT = "http://127.0.0.1:4000";
 
 export default function afficherPanier() {
