@@ -9,12 +9,43 @@ import {
 import { ObjectId } from "mongodb";
 import { getCommandes, getProduits, getUtilisateurs } from "../db/mongo.js";
 import { STATUTS, Statut } from "../models/commande.js";
+import { authenticateToken } from "../middleware/jwtToken.js";
 
 /**
- * Routes qui relie le frontend avec le commandeController
- * @author Martin
+ * =========================================================================================
+ * ROUTEUR COMMANDES - GESTION DES COMMANDES UTILISATEURS (API MONGODB)
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Ce fichier gère toutes les routes liées aux commandes.
+ * Il permet de créer une commande à partir du panier, consulter les commandes
+ * d’un utilisateur, récupérer toutes les commandes, modifier leur statut et les supprimer.
+ *
+ * Fonctionnement :
+ * - Utilise plusieurs collections MongoDB (commandes, utilisateurs, produits)
+ * - Les opérations sont déléguées au commandeController
+ * - Certaines routes sont liées à un utilisateur spécifique via ObjectId
+ *
+ * Sécurité :
+ * - La création de commande est protégée par JWT (authenticateToken)
+ * - Validation des ObjectId pour éviter les requêtes invalides
+ * - Validation des statuts de commande via ENUM STATUTS
+ *
+ * Routes principales :
+ * - GET /test : endpoint de test
+ * - POST /creerCommande : crée une commande depuis le panier utilisateur (protégé)
+ * - GET /commandesPasseesPar/:utilisateurId : commandes d’un utilisateur
+ * - GET /obtenirToutesLesCommandes : liste toutes les commandes
+ * - PATCH /changerStatut/:commandeId/:statut : met à jour le statut d’une commande
+ * - DELETE /supprimerCommande/:commandeId : supprime une commande
+ *
+ * Remarques :
+ * - Certaines routes ne sont pas protégées (à sécuriser selon besoin)
+ * - Vérification de statut et ObjectId appliquée côté API
+ * - Logique métier centralisée dans le controller
+ *
+ * Auteur : Martin
+ * =========================================================================================
  */
-
 const router = Router();
 
 /**
@@ -26,21 +57,16 @@ router.get("/test", async (req, res) => {
 
 /**
  * POST -- Creation d'une nouvelle commande a partir du panier de l'utilisateur
+ * route protegee
  */
-router.post("/creerCommande/:utilisateurId", async (req, res) => {
+router.post("/creerCommande", authenticateToken, async (req, res) => {
   try {
-    // verification si "utilisateurId" est valide avant de proceder
-    if (!ObjectId.isValid(req.params.utilisateurId)) {
-      res.status(400).json({ message: "Identifiant utilisateur non valide" });
-      return;
-    }
-
-    // Recuperation des collections necessaires
+    // Recuperation des collections necessairesks
     const collectionCommande = getCommandes();
     const collectionUtilisateur = getUtilisateurs();
     const collectionProduit = getProduits();
 
-    const utilisateur = new ObjectId(req.params.utilisateurId);
+    const utilisateur = new ObjectId(req.user?._id); // on passe par le middleware de jwt
 
     const resultat = await creationCommande(
       collectionCommande,

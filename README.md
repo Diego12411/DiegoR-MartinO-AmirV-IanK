@@ -1,185 +1,277 @@
 # TechSales (｡◕‿‿◕｡)
 
 ## Description ( ´◔ ω◔`) ノシ
+
 Ce projet est la conception d'un site web de vente en ligne d'ordinateurs portable. Ce projet sert de pratique et d'apprentissage dans le développement fullstack.
 
 ## Fonctionnalités (ﾉ⚆ヮ⚆)ﾉ
+
 ### Usager
-- se connecter ou se créer un compte pour passer des commandes
-- accès à une page *Compte*
-    - capacité de modifier ses informations personnelles
-    - afficher l'historique des commandes passées
+
+- se connecter ou se créer un compte afin de passer des commandes
+- accès à une page _Compte_
 - naviguer l'inventaire des ordinateurs portables
 - afficher les détails complets d'un produit
 - placer un produit dans le panier
 - simuler la vente d'un produit
 
-*Notre projet ne fait pas tout ça encore*
+### Administrateur
 
-### Administrateur 
-- connexion à une page pour l'admin
-    - capacité de modifier l'inventaire (Modifier un produit ou le supprimer)
-    - capacité à modifier les données des usagers ou supprimer un utilisateur
-    - bloquer des comptes utilisateur au besoin
+- connexion à une page destinée spécifiquement à l'administrateur
+  - capacité de modifier l'inventaire (Modifier un produit ou le supprimer)
+  - capacité à modifier les données des usagers ou supprimer un utilisateur
 - afficher toutes les commandes passées
 
 ## Prérequis
-Avant d’installer le projet, assurez-vous d’avoir installé :
+
+Avant de cloner le projet, assurez-vous d’avoir installé :
 
 - Node.js
 - Docker
 - Visual Studio Code
-- Git
+- Git Bash ou tout autre logiciel de gestion de version
+
 ## Installation (͡ ° ͜ʖ ͡ °)
-1. En utilisant un outil de gestion de Git, clonez le répertoire suivant à l'endroit de votre choix sur votre ordinateur 
->  https://github.com/Diego12411/DiegoR-MartinO-AmirV-IanK.git
 
-2. Localisez le fichier suivant ***VenteEnLigneDDL.ddl*** dans l'arborescence du répertoire cloné et ouvrez-le avec l'application NotePad
-> ```
-> === Arborescence du projet ===
-> DiegoR-MartinO-AmirV-IanK/
-> ├── Livrables/
-> ├── TechSales-React/
-> └── VenteBD/
->     └──► VenteEnLigneDDL.ddl
-> ```
+### Clonage du projet
 
-3. Ouvrez l'application Docker, ouvrez un terminal puis lancez la commande suivante
-> ```docker run -d --name TechSales-server -p 3306:3306 -e MYSQL_ROOT_PASSWORD=oracle -e MYSQL_DATABASE=TechSales -e MYSQL_USER=martin -e MYSQL_PASSWORD=oracle mysql/mysql-server:latest```
+1. En utilisant un outil de gestion Git, clonez le répertoire suivant à l'endroit de votre choix sur votre ordinateur
 
-4. Ouvrez un terminal à partir de la nouvelle image **TechSales-Server** créée à l'étape précédente puis entrez la commande suivante
-> ```mysql -u root -p```  
-> Entrez le mot de passe suivant : *MOT DE PASSE* et appuyez sur la touche *Enter*
+   > https://github.com/Diego12411/DiegoR-MartinO-AmirV-IanK.git
 
-5. Sur le même terminal qu'à l'étape 4, sélectionnez la base de données à utiliser avec la commande suivante
-> ```use NOM DU DATABASE```
+2. Ouvrez l'application Docker, ouvrez un terminal puis copiez la commande suivante et appuyez de la touche _ENTER_
 
-6. Copier tout le contenu du fichier ***VenteEnLigneDDL.ddl*** de l'étape 2, puis collez le dans le terminal de l'étape 4 et appuyer sur la touche *Enter*
+   > `docker run --name TechSales -d -p 27017:27017 mongodb/mongodb-community-server:latest`
+   >
+   > Le container `TechSales` devrait commencer automatiquement
 
-#### Avant de continuer! Nous devons ajouter quelques produits préalablement 
-> ```
-> === Arborescence du projet ===
-> DiegoR-MartinO-AmirV-IanK/
-> ├── Livrables/
-> ├── ScriptsAjoutProduit/
->     └──► Script_insert_specs_produit.txt
-> ├── TechSales-React/
-> └── VenteBD/
-> ```
->> 1. Ouvrez le fichier **Script_insert_specs_produit.txt**
->> 2. Copier tout le comptenu dans le Terminal de l'image mySQL ouvert préalablement dans Docker et faite **Enter**
+### Connexion à MongoDB avec Visual Studio Code
+
+3. Ouvrez une nouvelle fenêtre Visual Studio Code
+
+4. Assurez-vous d'avoir l'extension **MongoDB for VS Code** installé avant de continuer
+
+5. Allez dans l'onglet **MongoDB**
+
+6. Créer une nouvelle connexion MongoDB
+
+   > Entrez dans la barre qui apparaît la chaine de connection suivante :
+   > `mongodb://localhost:27017`
+
+### Insertion des données fictives
+
+7. Dans le même onglet **MongoDB**, cliquez sur le boutton **_Create New Playground_**
+
+   > Effacez tout le contenu se trouvant dans le nouveau document ouvert
+   >
+   > Touches : `Ctrl + A` puis `BACKSPACE`
+
+8. Localisez le fichier suivant **_Script_ajouter_utilisateurs_NoSQL.txt_** dans l'arborescence du répertoire cloné et ouvrez-le avec un éditeur de texte
+
+   > ```
+   > === Arborescence du projet ===
+   > DiegoR-MartinO-AmirV-IanK/s
+   > ├── Livrables/
+   > ├── ScriptAjoutUtilisateurs/
+   >     └──► Script_ajouter_utilisateurs_NoSQL.txt
+   > ├── ScriptAjoutProduits/
+   > ├── TechSales-React/
+   > ├── VenteBD/
+   > ...
+   > ```
+
+9. Copiez le contenu du fichier **_Script_ajouter_utilisateurs_NoSQL.txt_** dans le nouveau document du **Playground** dans Visual Studio Code
+
+10. Localisez le fichier suivant **_Script_ajouter_produits_exemple-playground_** dans l'arborescence du répertoire cloné et ouvrez-le avec un éditeur de texte
+
+    > ```
+    > === Arborescence du projet ===
+    > DiegoR-MartinO-AmirV-IanK/s
+    > ├── Livrables/
+    > ├── ScriptAjoutUtilisateurs/
+    > ├── ScriptAjoutProduits/
+    >     └──► Script_ajouter_utilisateurs_NoSQL.txt
+    > ├── TechSales-React/
+    > ├── VenteBD/
+    > ...
+    > ```
+
+11. Copier tout le contenu du fichier **_Script_ajouter_utilisateurs_NoSQL.txt_** dans le nouveau doucument **Playground** dans Visual Studio Code
+
+12. Une fois que les deux documents ont été copié dans le **Playground**, appuyez sur la flèche en haut à droite afin d’exécuter le code
 
 ### Configuration du fichier .env
-Avant de démarrer le serveur, créez un fichier `.env` dans le dossier `Serveur` du projet.  
-Exemple de contenu :
-```
-env
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=votre_utilisateur
-DB_PASSWORD=votre_mot_de_passe
-DB_NAME=TechSales
-JWT_SECRET=votre_cle_secrete
-PORT=4000
-```
+
+1. Créez un nouveau fichier `.env` dans le dossier **Serveur** du projet.
+
+   > ```
+   > === Arborescence du projet ===
+   > DiegoR-MartinO-AmirV-IanK/s
+   > ├── Livrables/
+   > ├── ScriptAjoutUtilisateurs/
+   > ├── ScriptAjoutProduits/
+   > ├── TechSales-React/
+   >     ...
+   >     ├── Serveur
+   >         └──► .env
+   >     ...
+   > ├── VenteBD/
+   > ...
+   > ```
+
+2. Copiez les informations ci-dessous dans le nouveau fichier `.env` et sauvegardez le fichier
+
+   > ```
+   > PORT=4000
+   >
+   > DB_HOST=localhost
+   > DB_USER=martin
+   > DB_PASSWORD=oracle
+   > DB_NAME=TechSales
+   > DB_PORT=3306
+   > JWT_SECRET=techsales_secret_123456
+   >
+   > MONGODB_URI=mongodb://localhost:27017
+   >
+   > REACT_URI=http://localhost:5173
+   >
+   > STRIPE_SECRET=sk_test_51TUcjm2K6lYYB09CBuPHBhEJeN4wKEEKK2YPJUk77aYAkhqjwGUaBKSKbAPmcnxDVv0WLHnOHXR5p4BoCbGReRFI00S0oDO6nP
+   > ```
 
 ### Petite remarque importante
+
 Si vous utilisez `.env`, il faut aussi vérifier que :
+
 - `.env` est dans `.gitignore`
 - vous ne poussez pas vos environnements sur GitHub
 
-7. Ouvrez une nouvelle fenêtre de Visual Studio Code
+### Démarrage du projet
 
-8. Dans Visual Studio Code, ouvrez le dossier ***TechSales-React*** contenant le projet
-> 1. File ► Open Folder...
-> 2. Sélectionner le dossier ***TechSales-React***
-> ```
-> === Arborescence du projet ===
-> DiegoR-MartinO-AmirV-IanK/
-> ├── Livrables/
-> ├──► TechSales-React/
-> └── VenteBD/
-> ```
+Les étapes suivantes représente le démarrage du serveur de la base de données ainsi que React
 
-9. Dans l'arborescence du projet, déplacez-vous à l'intérieur du dossier ***Server***
-> ```
-> === Arborescence du projet ===
-> DiegoR-MartinO-AmirV-IanK/
-> ├── Livrables/
-> ├── TechSales-React/
-> │   ├── Images
-> │   ├── node_modules
-> │   ├── public
-> │   ├──► Serveur
-> │   ├── sql-scripts
-> │   └── src
-> └── VenteBD/
-> ```
+1. Dans l'arborescence du projet, déplacez-vous à l'intérieur du dossier **_Serveur_**
 
-10. Faites un clic droit dans un espace vide du dossier et choisissez l'option suivante
-> Open in Terminal
+   > ```
+   > === Arborescence du projet ===
+   > DiegoR-MartinO-AmirV-IanK/
+   > ├── Livrables/
+   > ...
+   > ├── TechSales-React/
+   > │   ...
+   > │   ├──► Serveur
+   >     ...
+   > └── VenteBD/
+   > ```
 
-11. Entrez la commande suivante dans le terminal pour activer la base de données du site web
-> ...\DiegoR-MartinO-AmirV-IanK\TechSales-React\Serveur
->
-> ```npm run dev```
+2. Faites un clic droit dans un espace vide du dossier et choisissez l'option suivante
 
-12. Dans l'arborescence du projet, déplacez-vous à l'intérieur du dossier ***TechSales-React***
-> ```
-> === Arborescence du projet ===
-> DiegoR-MartinO-AmirV-IanK/
-> ├── Livrables/
-> ├──► TechSales-React/
-> └── VenteBD/
-> ```
+   > **Open in Terminal**
 
-13. Faites un clic droit dans un espace vide du dossier et choisissez l'option suivante
-> Open in Terminal
+3. Avant de continuer, assurez-vous d'installer les dépendances nécessaires pour la base de données avec la commande suivante
 
-14. Entrez la commande suivante dans le terminal pour activer le projet React.
-> ...\DiegoR-MartinO-AmirV-IanK\TechSales-React
->
-> ```npm run dev```
+   > ...\DiegoR-MartinO-AmirV-IanK\TechSales-React\Serveur>
+   > `npm install`
 
-15. En maintenant la touche ***crtl***, cliquez sur le lien qui apparaîtra
-> Exemple de lien
-> ```
-> ➜  Local:   http://localhost:XXXX/
-> ```
+4. Entrez la commande suivante dans le terminal pour activer la base de données du site web
 
-16. Le lien s'ouvrira dans le navigateur de votre choix
+   > ...\DiegoR-MartinO-AmirV-IanK\TechSales-React\Serveur>
+   > `npm run dev`
 
-17. Ajouter "***/affichageprincipalproduit***" au lien se trouvant dans la barre de recherche
+5. Dans l'arborescence du projet, déplacez-vous à l'intérieur du dossier **_TechSales-React_**
 
-18. Voilà! Vous arriverez sur la page principale du site ***TechSales***, et donc vous pourrez naviguer vers d’autres pages avec les liens à cliquer !
+   > ```
+   > === Arborescence du projet ===
+   > DiegoR-MartinO-AmirV-IanK/
+   > ├── Livrables/
+   > ...
+   > ├──► TechSales-React/
+   > ...
+   > ```
+
+6. Faites un clic droit dans un espace vide du dossier et choisissez l'option suivante
+
+   > **Open in Terminal**
+
+7. Avant de continuer, assurez-vous d'installer les dépendances nécessaires pour l'utilisation de React
+
+   > ...\DiegoR-MartinO-AmirV-IanK\TechSales-React\Serveur>
+   > `npm install`
+
+8. Entrez la commande suivante dans le terminal pour activer le projet React
+
+   > ...\DiegoR-MartinO-AmirV-IanK\TechSales-React>
+   > `npm run dev`
+
+9. En maintenant la touche `Ctrl`, cliquez sur le lien qui apparaîtra
+
+   > `➜  Local:   http://localhost:XXXX/`
+
+10. Le lien s'ouvrira dans le navigateur de votre choix
+
+11. Voilà! Vous arriverez sur la page principale du site **_TechSales_**
+
+### Comptes de test posible avant la création d'un nouveau compte
+
+#### Compte admin
+
+courriel : test2@mail.com  
+mot de passe : 1234
+
+#### Compte utilisateur
+
+courriel : test1@mail.com  
+mot de passe : 1234
 
 ## Technologies utilisées (⌐■_■)
+
 - React Vite
 - TypeScript
 - Docker
-- MySQL
+- MySQL (SQL)
+- MongoDB (NoSQL)
 - Express.js
 - GitHub
 - Postman
 
 ## Auteurs (ʘ‿ʘ)╯
-* Amirhossein
-* Diego
-* Ian
-* Martin
 
- ---
+- Amirhossein
+- Diego
+- Ian
+- Martin
 
-# Dépendances à installer
+## Stripe : API externe utilisé
 
-Si le projet affiche des erreurs, pensez à installer les dépendances suivantes :
+### Description
 
-### Dans un terminal du dossier TechSales-React
+Stripe est une compagnie qui offre un service de paiement en ligne. Il gère la validation des informations de paiement à travers les institutions financières et transmet les montants à la compagnie utilisant Stripe.
 
-- npm install
-- npm install --save bootstrap react-router-dom
-- npm install jsonwebtoken
-- npm install --save @types/jsonwebtoken
+Stripe offre un API externe gratuit permettant de simuler la vente d'un produit en redirigeant l'utilisateur connecté vers une page Stripe dans laquelle l'utilisateur entre ses informations de carte de crédit.
 
-### Dans un terminal du dossier Serveur
-- npm install
+Si les informations sont valides, alors l'utilisateur est redirigé vers la page commande.
+
+Si les informations sont invalides, alors le systeme Stripe demande d'entrer une carte valide.
+
+### Carte de crédit à utiliser pour les tests
+
+- Carte valide
+  - Numéro : `4242 4242 4242 4242`
+  - Expiration : `12/34`
+  - CVC : `123`
+- Carte invalide
+  - Numéro : `4000 0000 0000 0002`
+  - Expiration : `12/34`
+  - CVC : `123`
+
+### Clés nécessaires fournies par Stripe
+
+- Utilisé dans le fichier `.env` pour valider la route de Stripe lors de son instantiation
+  - `sk_test_51TUcjm2K6lYYB09CBuPHBhEJeN4wKEEKK2YPJUk77aYAkhqjwGUaBKSKbAPmcnxDVv0WLHnOHXR5p4BoCbGReRFI00S0oDO6nP`
+
+- Utilisé dans le fetch de la page `Panier.tsx` pour la création d'une instance de Stripe
+  - `pk_test_51TUcjm2K6lYYB09CZ0eccEwLkvK9nYSJQ9J4sxqdMsyEhuZyPolnOmH4lOenCxAuRbozOAWBBg1MdNbjkxI9gYVj00GGNXlA0v`
+
+### Sources utilisés
+
+- https://www.youtube.com/watch?v=3OOHC_UzrKA
+- https://dashboard.stripe.com/acct_1TUcjm2K6lYYB09C/test/dashboard

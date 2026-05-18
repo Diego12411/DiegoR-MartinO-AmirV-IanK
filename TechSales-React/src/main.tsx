@@ -13,12 +13,13 @@ import "./index.css";
 import AffichagePrincipalProduit from "./AffichagePrincipalProduit";
 import ProduitDetails from "./Produit";
 import PageAdmin from "./PageAdmin";
-import CreerCompte from "./CreerCompte";
+import Inscription from "./Inscription";
 import Compte from "./Compte";
-import SeConnecter from "./SeConnecter";
+import Authentification from "./Authentification";
 import MotPasseOublie from "./MotPasseOublie";
 import Panier from "./Panier";
 import Commande from "./Commande";
+import AdminRoute from "./AdminRoute";
 
 // Routage des pages
 const router = createBrowserRouter([
@@ -29,11 +30,18 @@ const router = createBrowserRouter([
     element: <AffichagePrincipalProduit />,
   },
   { path: "/motPasseOublie", element: <MotPasseOublie /> },
-  { path: "/creerCompte", element: <CreerCompte /> },
-  { path: "/seConnecter", element: <SeConnecter /> },
-  { path: "/PageAdmin", element: <PageAdmin /> },
+  { path: "/inscription", element: <Inscription /> },
+  { path: "/authentification", element: <Authentification /> },
   { path: "/compte", element: <Compte /> },
   { path: "/commande", element: <Commande /> },
+  {
+    path: "/PageAdmin",
+    element: (
+      <AdminRoute>
+        <PageAdmin />
+      </AdminRoute>
+    ),
+  },
 ]);
 
 createRoot(document.getElementById("root")!).render(
@@ -65,15 +73,8 @@ export const HeaderComponent = () => {
         <div className="px-3 col bg-white p-3 d-flex justify-content-between align-items-center">
           {/* Partie gauche */}
           <div className="d-flex align-items-center gap-3">
-            <img src={logo} alt="logo" width={210} height={35} />
             <Link to="/">
-              <button
-                type="button"
-                className="text-black btn btn-link ms-4"
-                style={{ fontSize: "13px" }}
-              >
-                Nos produits
-              </button>
+              <img src={logo} alt="logo" width={210} height={35} />
             </Link>
             <Link to="/">
               <button
@@ -161,13 +162,13 @@ export const FooterComponent = () => {
                     Compte
                   </li>
                   <a
-                    href="SeConnecter"
+                    href="Authentification"
                     className="list-group-item bg-transparent text-white mb-2"
                   >
                     Se connecter
                   </a>
                   <a
-                    href="CreerCompte"
+                    href="Inscription"
                     className="list-group-item bg-transparent text-white mb-2"
                   >
                     Créer une compte
@@ -205,13 +206,13 @@ export const FooterComponent = () => {
                     Support
                   </li>
                   <a
-                    href="#"
+                    href="https://www.facebook.com"
                     className="list-group-item bg-transparent text-white mb-2"
                   >
                     Q&A
                   </a>
                   <a
-                    href="#"
+                    href="https://www.facebook.com"
                     className="list-group-item bg-transparent text-white mb-2"
                   >
                     Nous contacter

@@ -1,16 +1,69 @@
 import { Link, useParams } from "react-router";
 import { HeaderComponent, FooterComponent } from "./main.tsx";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 /**
- * Page qui affiche les informations detaillees d'un produit specifique
- * Au bas de la page, on retrouve d'autres produits disponibles sur notre site.
- * Lorsque l'image est clicke, ca nous redirige vers une nouvelle page avec les informations detaillees du prochain produit.
+ * =========================================================================================
+ * PAGE PRODUIT DÉTAILS - AFFICHAGE D'UN PRODUIT ET AJOUT AU PANIER (REACT)
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Cette page affiche les informations détaillées d’un produit sélectionné.
+ * Elle permet aussi d’ajouter le produit au panier et de consulter des produits similaires.
+ *
+ * Fonctionnement global :
+ * - Récupère l’ID du produit via l’URL (useParams)
+ * - Fetch les détails complets du produit depuis le backend
+ * - Fetch une liste de produits aléatoires pour suggestions
+ * - Affiche toutes les informations du produit (specs, prix, stock, description)
+ * - Permet d’ajouter une quantité au panier
+ *
+ * Données produit :
+ * - Informations générales : nom, prix, description, stock
+ * - Image principale du produit
+ * - Spécifications techniques (CPU, GPU, RAM, stockage)
+ * - Catégorie associée
+ *
+ * Interactions utilisateur :
+ * - Sélection de quantité à ajouter
+ * - Bouton "Ajouter au panier"
+ * - Redirection login si utilisateur non connecté
+ * - Message de confirmation après ajout au panier
+ *
+ * Panier :
+ * - Ajout via PATCH /paniers/ajoutItem
+ * - Authentification requise (cookies JWT via credentials: include)
+ * - Gestion des erreurs 401 (non connecté)
+ *
+ * Produits suggérés :
+ * - Récupérés via GET /produits/lireProduitsHasard
+ * - Affichés en bas de page sous forme de cartes cliquables
+ * - Redirection vers la page détail d’un autre produit
+ *
+ * États React utilisés :
+ * - produit : produit actuellement affiché
+ * - produitsHasard : liste de produits recommandés
+ * - quantiteAcheter : quantité sélectionnée
+ * - nonConnecte : affiche message si utilisateur non authentifié
+ * - itemAjoute : confirmation ajout panier
+ *
+ * UX :
+ * - Scroll automatique en haut lors changement produit
+ * - Reset des alertes à chaque changement d’ID
+ * - Désactivation bouton si stock insuffisant
+ *
+ * API utilisées :
+ * - GET /produits/:id
+ * - GET /produits/lireProduitsHasard
+ * - PATCH /paniers/ajoutItem
+ *
+ * Dépendances :
+ * - React Router (navigation et paramètres URL)
+ * - Bootstrap (layout et composants UI)
+ *
+ * Auteur : Martin
+ * =========================================================================================
  */
-
-// _id d'un produit pour tester la page
-// http://127.0.0.1:5173/detailsProduit/69f3f6770aba9a7149661c00
-
 type Categorie = {
   nom_categorie: string;
 };
@@ -38,22 +91,37 @@ type Produit = {
 };
 
 export default function ProduitDetails() {
+  // meme signature que declare dans server.ts/CORS sinon bug
+  const API_DEFAULT = "http://127.0.0.1:4000";
+
+  // variable qui permet la nagivation des pages
+  const navigate = useNavigate();
+
   // on recupere le parametre de l'id du produit recu par le lien
   const { id } = useParams();
+
+  // state qui contient la quantite de produit a acheter
+  const [quantiteAcheter, setQuantiteAcheter] = useState(1);
+
+  // state qui va faire apparaitre un pop up window lorsque l'utilisateur n'est pas connecte
+  const [nonConnecte, setNonConnecte] = useState(false);
+  // state qui va faire apparaitre un pop up window lorsque l'utilisateur ajoute un produit a son panier
+  const [itemAjoute, setItemAjoute] = useState(false);
+
+  // Avec mongodb, le produit contient deja les specs integres (embedded document)
+  // un seul fetch suffit, plus besoin d'un 2e appel pour les aspects aka "on cherche les attributs d'un objet"
+  const [produit, setProduit] = useState<Produit | null>(null);
 
   // On recupere 4 produits au hasard a presente dans le bas de page
   const [produitsHasard, setProduitsHasard] = useState<Produit[]>([]);
   useEffect(() => {
-    fetch("http://localhost:4000/produits/lireProduitsHasard")
+    fetch(`${API_DEFAULT}/produits/lireProduitsHasard`)
       .then((response) => response.json())
       .then((data: Produit[]) => setProduitsHasard(data ?? []));
   }, [id]);
 
-  // Avec mongodb, le produit contient deja les specs integres (embedded document)
-  // un seul fetch suffit, plus besoin d'un 2e appel pour les aspect aka "on cherche les attributs d'un objet"
-  const [produit, setProduit] = useState<Produit | null>(null);
   useEffect(() => {
-    fetch(`http://localhost:4000/produits/${id}`)
+    fetch(`${API_DEFAULT}/produits/${id}`)
       .then((response) => response.json())
       .then((data) => setProduit(data)); // mongo retourne un objet Produit directement
   }, [id]);
@@ -61,10 +129,9 @@ export default function ProduitDetails() {
   // On deplace la page "window" a la position (0,0), soit le haut de la page lorsque le id du produit initiale change
   useEffect(() => {
     window.scrollTo(0, 0);
+    setNonConnecte(false);
+    setItemAjoute(false);
   }, [id]);
-
-  // state qui contient la quantite de produit a acheter
-  const [quantiteAcheter, setQuantiteAcheter] = useState(1);
 
   // s'occupe de la couleur de l'affichage du stock
   const HandleAffichageStock = () => {
@@ -75,12 +142,74 @@ export default function ProduitDetails() {
     }
   };
 
+  const ajouterItemAuPanier = async () => {
+    try {
+      const response = await fetch(`${API_DEFAULT}/paniers/ajoutItem`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          produitId: produit?._id,
+          quantite: quantiteAcheter,
+        }),
+      });
+
+      // le statut 401 provient de Middleware/authenticateToken() => lorsque erreur
+      if (response.status === 401) {
+        setNonConnecte(true);
+        window.scrollTo({ top: 0, behavior: "smooth" }); // remonte la page lorsque le pop up apparait
+        return;
+      }
+
+      setItemAjoute(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (error) {
+      alert("Erreur lors de l'ajout au panier");
+    }
+  };
+
   // ===== Debut du developpement de la page details d'un produit =====
 
   return (
     <>
       {/* Header developpe dans le main */}
       <HeaderComponent />
+
+      {nonConnecte && (
+        <div className="alert alert-warning text-center mx-5 my-3">
+          <p className="mb-2">
+            Vous devez être connecté pour ajouter des items a votre panier.
+          </p>
+          <div className="d-flex justify-content-center gap-3">
+            <button
+              className="btn btn-dark"
+              onClick={() => navigate("/seConnecter")}
+            >
+              Se connecter
+            </button>
+            <button
+              className="btn btn-outline-dark"
+              onClick={() => setNonConnecte(false)}
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
+      )}
+
+      {itemAjoute && (
+        <div className="alert alert-success text-center mx-5 my-3">
+          <p className="mb-2">Item ajouté au panier avec succès.</p>
+          <button
+            className="btn btn-outline-dark"
+            onClick={() => setItemAjoute(false)}
+          >
+            Fermer
+          </button>
+        </div>
+      )}
 
       {/* Element semantique qui contient l'information principale de la page */}
       <main className="container-fluid vw-100 px-5">
@@ -211,11 +340,14 @@ export default function ProduitDetails() {
                 value={quantiteAcheter}
                 onChange={(e) => setQuantiteAcheter(Number(e.target.value))}
               />
-              <Link to="/" className="flex-fill">
-                <button type="button" className="btn btn-dark w-100">
-                  Acheter
-                </button>
-              </Link>
+              <button
+                type="button"
+                className="btn btn-dark w-100"
+                onClick={ajouterItemAuPanier}
+                disabled={!produit || produit.stock < 1}
+              >
+                Ajouter au panier
+              </button>
             </div>
           </div>
         </div>

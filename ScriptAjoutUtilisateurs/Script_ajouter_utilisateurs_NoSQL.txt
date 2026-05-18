@@ -26,7 +26,7 @@ db.utilisateurs.insertMany([
     nom: "Test",
     prenom: "1",
     courriel: "test1@mail.com",
-    motDePasse: "1234", // À remplacer par bcrypt plus tard
+    motDePasse: "$2b$10$zFL2vklDKeOcjsiiZyKlOuLN5yRGoY0VRwSBZ3oW4dWQg/Sfh8a2e", // 1234
     role: "client",
     adresse: {
       noCivic: NumberInt(123),
@@ -42,7 +42,7 @@ db.utilisateurs.insertMany([
     nom: "Test",
     prenom: "2",
     courriel: "test2@mail.com",
-    motDePasse: "1234", // À remplacer par bcrypt plus tard
+    motDePasse: "$2b$10$zFL2vklDKeOcjsiiZyKlOuLN5yRGoY0VRwSBZ3oW4dWQg/Sfh8a2e", // 1234
     role: "admin",
     adresse: {
       noCivic: NumberInt(123),

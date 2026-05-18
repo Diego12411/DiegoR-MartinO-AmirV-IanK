@@ -9,33 +9,30 @@ export async function createUtilisateur(
 }
 
 export async function updateUtilisateur(
-    collection: Collection<Utilisateur>,
-    courriel:string,
-    utilisateur: Utilisateur //req de express qui contient quoi modif
+  collection: Collection<Utilisateur>,
+  courriel: string,
+  utilisateur: Utilisateur, //req de express qui contient quoi modif
 ) {
-    await collection.updateOne( 
-        {courriel}, 
-        {$set: utilisateur }
-    )
+  await collection.updateOne({ courriel }, { $set: utilisateur });
 }
 
 export async function deleteUtilisateur(
   collection: Collection<Utilisateur>,
   courriel: string,
 ) {
-  return await collection.deleteOne({courriel});
+  return await collection.deleteOne({ courriel });
 }
 
 export async function getAllUtilisateurs(collection: Collection<Utilisateur>) {
   return await collection.find({}).toArray();
 }
 
-export async function verifierExistenceUtilisateur(collection: Collection<Utilisateur>, courriel: string,){
-  return await collection.findOne({courriel});
+export async function verifierExistenceUtilisateur(
+  collection: Collection<Utilisateur>,
+  courriel: string,
+) {
+  return await collection.findOne({ courriel });
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//Amir//////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * =========================================================================================
@@ -109,6 +106,3 @@ export async function getUtilisateurParId(
     return null;
   }
 }
-
-//Amir////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////

@@ -6,6 +6,57 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ItemPanier } from "./models/itemPanier";
 
+/**
+ * =========================================================================================
+ * PAGE CRÉATION DE COMPTE (REACT)
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Cette page permet à un utilisateur de créer un nouveau compte.
+ * Elle valide les champs, envoie les données au backend et gère la réponse.
+ *
+ * Fonctionnement :
+ * - Stocke les informations utilisateur dans des states React
+ * - Vérifie les champs obligatoires avant envoi
+ * - Valide le format du courriel avec une expression régulière
+ * - Envoie une requête POST vers l’API de création de compte
+ * - Gère la réponse et redirige si succès
+ *
+ * Validation :
+ * - Tous les champs doivent être remplis
+ * - Le courriel doit respecter un format valide
+ * - Le bouton est désactivé pendant l’envoi pour éviter les doubles requêtes
+ *
+ * API utilisée :
+ * - POST /utilisateurs/creerCompte
+ *
+ * Données envoyées :
+ * - nom
+ * - prenom
+ * - courriel
+ * - motDePasse
+ * - role (Client)
+ * - itemPanier (liste initiale vide ou préexistante)
+ *
+ * Gestion des erreurs :
+ * - Champs manquants
+ * - Courriel invalide
+ * - Erreur serveur ou réseau
+ * - Message affiché dans l’interface
+ *
+ * Navigation :
+ * - Succès : redirection vers /compte
+ * - Bouton secondaire : redirection vers /Authentification
+ *
+ * Interface :
+ * - Formulaire avec champs nom, prénom, email, mot de passe
+ * - Bouton de création de compte
+ * - Message d’erreur dynamique
+ * - Bouton de connexion alternative
+ *
+ * Auteur : Diego
+ * =========================================================================================
+ */
+
 {
   /*source Card : https://getbootstrap.com/docs/4.0/components/card/
     source Flex : https://getbootstrap.com/docs/4.0/utilities/flex/ 
@@ -25,11 +76,23 @@ export default function AfficherCreerCompte() {
 
   function CreationCompteBouttonClicked() {
     if (!nom || !prenom || !courriel || !motDePasse) {
-      setMessageCreationCompte("*Il manque des champs obligatoire");
+      setMessageCreationCompte("*Il manque des champs obligatoires");
       return;
     }
-    fetch("http://localhost:4000/utilisateurs/creerCompte", {
+
+    const formatCourrielValide = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!formatCourrielValide.test(courriel)) {
+      setMessageCreationCompte("*Le format du courriel est invalide");
+      return;
+    }
+
+    setBouttonDisabled(true);
+    setMessageCreationCompte("");
+    console.log(formatCourrielValide.test(courriel));
+    fetch("http://127.0.0.1:4000/utilisateurs/creerCompte", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -39,20 +102,33 @@ export default function AfficherCreerCompte() {
         courriel: courriel,
         motDePasse: motDePasse,
         role: "Client",
-        itemPanier: itemPanier
+        itemPanier: itemPanier,
       }),
     })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.message === "Un Compte est déja associé à ce courriel") {
-          setMessageCreationCompte(data.message);
-        } else if (data.message === "Utilisateur créé") {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("utilisateur", JSON.stringify(data.utilisateur));
-          navigate("/compte");
-        }
+      .then((res) => {
+        return res.json().then((data) => ({
+          ok: res.ok,
+          data: data,
+        }));
       })
-      .catch((err) => console.error(err));
+      .then(({ ok, data }) => {
+        if (!ok) {
+          setMessageCreationCompte(
+            data.message || "Erreur lors de la création du compte.",
+          );
+          return;
+        }
+
+        // Compte créé avec succès, rediriger vers la page de connexion
+        navigate("/compte");
+      })
+      .catch((err) => {
+        console.error(err);
+        setMessageCreationCompte("Impossible de joindre le serveur.");
+      })
+      .finally(() => {
+        setBouttonDisabled(false);
+      });
   }
 
   return (
@@ -67,7 +143,13 @@ export default function AfficherCreerCompte() {
     >
       <main className="container-fluid text-center p-0">
         <HeaderComponent />
-        <div className="d-flex justify-content-center align-items-center vh-100">
+        <div
+          style={{
+            marginBottom: "40px",
+          }}
+        ></div>
+
+        <div className="d-flex justify-content-center align-items-center">
           <div className="row justify-content-center">
             <div className="col-7">
               <div
@@ -120,7 +202,7 @@ export default function AfficherCreerCompte() {
                 </div>
                 <div className="form-group text-start">
                   <input
-                    type="text"
+                    type="email"
                     className="form-control"
                     value={courriel}
                     placeholder="Email"
@@ -176,7 +258,7 @@ export default function AfficherCreerCompte() {
                 <button
                   type="button"
                   className="btn btn-outline-dark mt-3 mb-3"
-                  onClick={() => navigate("/seConnecter")}
+                  onClick={() => navigate("/Authentification")}
                 >
                   Se Connecter
                 </button>
@@ -184,6 +266,11 @@ export default function AfficherCreerCompte() {
             </div>
           </div>
         </div>
+        <div
+          style={{
+            marginBottom: "40px",
+          }}
+        ></div>
         <FooterComponent />
       </main>
     </div>

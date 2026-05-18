@@ -2,6 +2,44 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { HeaderComponent, FooterComponent } from "./main";
 
+/**
+ * =========================================================================================
+ * PAGE COMPTE UTILISATEUR (REACT)
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Cette page affiche les informations du profil utilisateur connecté.
+ * Elle permet aussi de se déconnecter du compte.
+ *
+ * Fonctionnement :
+ * - Récupère les données du profil depuis le backend
+ * - Stocke le profil dans un state React
+ * - Affiche les informations utilisateur dans une carte
+ * - Gère les erreurs de chargement
+ *
+ * Authentification :
+ * - Requêtes protégées par cookie JWT (credentials: "include")
+ * - Appelle le backend pour obtenir le profil utilisateur connecté
+ *
+ * Données affichées :
+ * - ID utilisateur
+ * - Nom et prénom
+ * - Courriel
+ * - Adresse complète (si disponible)
+ * - Rôle utilisateur
+ *
+ * Déconnexion :
+ * - Envoie une requête POST vers /utilisateurs/deconnexion
+ * - Supprime la session côté backend
+ * - Redirige vers la page de connexion
+ *
+ * Gestion des erreurs :
+ * - Erreur si chargement du profil échoue
+ * - Message affiché si utilisateur non authentifié ou serveur indisponible
+ *
+ * Auteur : Amir
+ * =========================================================================================
+ */
+
 type Adresse = {
   noCivic: number;
   rue: string;
@@ -35,7 +73,7 @@ export default function Compte() {
           throw new Error("Erreur lors de la déconnexion.");
         }
 
-        navigate("/SeConnecter");
+        navigate("/Authentification");
       })
       .catch((err) => {
         console.error(err);

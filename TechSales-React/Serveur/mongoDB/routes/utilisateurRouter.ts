@@ -8,13 +8,11 @@ import {
   getUtilisateurParCourriel,
 } from "../controllers/utilisateurController.js";
 import { getUtilisateurs } from "../db/mongo.js";
-import { ObjectId } from "mongodb";
 import jwt from "jsonwebtoken";
 import { authenticateToken } from "../middleware/jwtToken.js";
-import { verifierExistenceItem } from "../controllers/panierController.js";
+import bcrypt from "bcrypt";
 
 const router = Router();
-
 //test dun endpoint test
 router.get("/test", async (req: Request, res: Response) => {
   res.send("Endpoint test reussis!");
@@ -28,32 +26,131 @@ router.get("/", async (req: Request, res: Response) => {
   res.status(200).json(resultat);
 });
 
+/**
+ * =========================================================================================
+ * CRÉATION D'UN COMPTE UTILISATEUR AVEC CONNEXION AUTOMATIQUE
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Permet de créer un nouveau compte utilisateur dans la collection MongoDB "utilisateurs".
+ * Après la création du compte, l'utilisateur est automatiquement connecté avec un
+ * token JWT envoyé dans un cookie HttpOnly.
+ *
+ * Vérifications :
+ * - Vérifie que les champs requis sont présents et valides
+ * - Vérifie si un compte existe déjà avec le même courriel
+ * - Hache le mot de passe avec bcrypt avant l'enregistrement
+ *
+ * Sécurité :
+ * - Le mot de passe n'est jamais enregistré en clair dans la base de données
+ * - Le mot de passe est remplacé par sa version hachée avant l'insertion
+ * - Le token JWT est envoyé dans un cookie HttpOnly
+ * - Le token n'est pas stocké dans le localStorage
+ *
+ * Réponse :
+ * - Succès : crée le compte, crée un cookie HttpOnly et retourne le rôle
+ * - Échec : retourne un message si le courriel est déjà utilisé ou si les champs sont invalides
+ * - Erreur : retourne un message d'erreur serveur
+ *
+ * Route :
+ * POST /utilisateurs/creerCompte
+ *
+ * Auteur : Diego, Amir
+ * =========================================================================================
+ */
 router.post("/creerCompte", async (req: Request, res: Response) => {
   try {
-    const collection = getUtilisateurs(); //params que le controller a besoin pour create utilisateur
-    const utilisateur = req.body; //params que le controller a besoin pour create utilisateur
-    const courriel = req.body.courriel as string;
+    const collection = getUtilisateurs();
 
+    // Récupérer les informations de l'utilisateur envoyées par le frontend
+    const utilisateur = req.body;
+    const { nom, prenom, courriel, motDePasse } = utilisateur;
+
+    // Vérifier que les champs obligatoires sont présents et valides
+    if (
+      typeof nom !== "string" ||
+      typeof prenom !== "string" ||
+      typeof courriel !== "string" ||
+      typeof motDePasse !== "string" ||
+      !nom.trim() ||
+      !prenom.trim() ||
+      !courriel.trim() ||
+      !motDePasse.trim()
+    ) {
+      return res.status(400).json({
+        message: "Champs obligatoires manquants ou invalides.",
+      });
+    }
+
+    const formatCourrielValide = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!formatCourrielValide.test(courriel)) {
+      return res.status(400).json({
+        message: "Le format du courriel est invalide.",
+      });
+    }
+
+    // Vérifier si un compte existe déjà avec ce courriel
     const verifierCourrielExistant = await verifierExistenceUtilisateur(
       collection,
       courriel,
     );
+
     if (verifierCourrielExistant !== null) {
-      return res
-        .status(400)
-        .json({ message: "Un Compte est déja associé à ce courriel" });
+      return res.status(400).json({
+        message: "Un compte est déjà associé à ce courriel.",
+      });
     }
 
-    const resultat = await createUtilisateur(collection, utilisateur); //stocker le resultat de la function createUtilisateur
-    res.status(201).json({
-      message: "Utilisateur créé",
+    // Hacher le mot de passe avant de l'enregistrer dans MongoDB
+    const motDePasseHash = await bcrypt.hash(motDePasse, 10);
+
+    // Remplacer le mot de passe en clair par le mot de passe haché
+    utilisateur.motDePasse = motDePasseHash;
+
+    // Créer l'utilisateur avec le mot de passe haché
+    await createUtilisateur(collection, utilisateur);
+
+    // Récupérer l'utilisateur créé pour obtenir son _id MongoDB
+    const utilisateurCree = await getUtilisateurParCourriel(
+      collection,
+      courriel,
+    );
+
+    if (!utilisateurCree || !utilisateurCree._id) {
+      return res.status(500).json({
+        message: "Erreur lors de la création du compte.",
+      });
+    }
+
+    // Générer un token JWT contenant l'identifiant de l'utilisateur créé
+    const token = jwt.sign(
+      { id: utilisateurCree._id.toString() },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "1h" },
+    );
+
+    // Envoyer le token JWT dans un cookie HttpOnly
+    res.cookie("refresh", token, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 1000, // 1h en millisecondes
+      sameSite: "lax",
+      secure: false,
+    });
+
+    // Retourner seulement les informations nécessaires au frontend
+    return res.status(201).json({
+      message: "Utilisateur créé.",
+      role: utilisateurCree.role,
     });
   } catch (error) {
     console.error(
       `[${new Date().toISOString()}] POST /creerCompte ->`,
       (error as Error).message,
     );
-    res.status(500).json({ message: "Erreur serveur" });
+
+    return res.status(500).json({
+      message: "Erreur serveur.",
+    });
   }
 });
 
@@ -116,30 +213,36 @@ router.delete(
   },
 );
 
-////////////////////////////////////////////////////////////////////////////////////////////
-//Amir//////////////////////////////////////////////////////////////////////////////////////
-
 /**
  * =========================================================================================
- * AUTHENTIFICATION UTILISATEUR (LOGIN)
+ * AUTHENTIFICATION UTILISATEUR (CONNEXION)
  * -----------------------------------------------------------------------------------------
  * Description :
  * Permet à un utilisateur de se connecter à son compte en validant son courriel
  * et son mot de passe.
  *
  * Vérifications :
- * - Champs requis (courriel, mot de passe)
- * - Existence de l'utilisateur
- * - Correspondance du mot de passe
+ * - Vérifie que le courriel et le mot de passe sont présents
+ * - Recherche l'utilisateur dans MongoDB à partir du courriel
+ * - Vérifie l'existence de l'utilisateur
+ * - Compare le mot de passe entré avec le mot de passe haché dans MongoDB avec bcrypt
+ *
+ * Sécurité :
+ * - Le mot de passe n'est jamais comparé directement en clair
+ * - Le mot de passe réel n'est jamais retourné au frontend
+ * - Le token JWT est envoyé dans un cookie HttpOnly
+ * - Le cookie HttpOnly n'est pas accessible avec JavaScript côté client
  *
  * Réponse :
- * - Succès : envoie le token JWT dans un cookie HttpOnly et retourne le rôle
- * - Échec : message d'erreur approprié
+ * - Succès : crée un cookie HttpOnly contenant le token JWT et retourne le rôle de l'utilisateur
+ * - Échec : retourne un message si les champs sont manquants ou invalides
+ * - Erreur : retourne un message d'erreur serveur
  *
  * Route :
  * POST /utilisateurs/connexion
  *
- * Auteur : Amir
+ * Auteur :
+ * Amir
  * =========================================================================================
  */
 router.post("/connexion", async (req: Request, res: Response) => {
@@ -151,7 +254,12 @@ router.post("/connexion", async (req: Request, res: Response) => {
     const { courriel, motDePasse } = req.body;
 
     // Vérifier que les champs requis sont présents
-    if (!courriel || !motDePasse) {
+    if (
+      typeof courriel !== "string" ||
+      typeof motDePasse !== "string" ||
+      !courriel.trim() ||
+      !motDePasse.trim()
+    ) {
       return res.status(400).json({
         message: "Courriel et mot de passe requis.",
       });
@@ -167,26 +275,33 @@ router.post("/connexion", async (req: Request, res: Response) => {
       });
     }
 
-    // Vérifier que le mot de passe correspond
-    // Version temporaire sans bcrypt
-    if (utilisateur.motDePasse !== motDePasse) {
+    // Comparer le mot de passe entré avec le mot de passe haché dans MongoDB
+    const motDePasseValide = await bcrypt.compare(
+      motDePasse,
+      utilisateur.motDePasse,
+    );
+
+    // Vérifier si le mot de passe est valide
+    if (!motDePasseValide) {
       return res.status(401).json({
         message: "Mot de passe incorrect.",
       });
     }
 
+    // TODO [ ] : decider sur une longevite du token
     // Générer un token JWT contenant l'identifiant de l'utilisateur
     const token = jwt.sign(
       { id: utilisateur._id?.toString() },
       process.env.JWT_SECRET as string,
-      // Token valide pendant 1 minute pour les tests, à ajuster en production pour 1h ou plus
-      { expiresIn: "1m" },
+      // Token valide pendant 1h
+      { expiresIn: "1h" },
     );
 
+    // TODO [ ] : decider sur une longevite du cookie
     // Envoyer le token JWT dans un cookie HttpOnly
     res.cookie("refresh", token, {
       httpOnly: true,
-      maxAge: 60 * 1000, // 1 minute en millisecondes
+      maxAge: 60 * 60 * 1000, // 1h en millisecondes
       sameSite: "lax",
       secure: false,
     });
@@ -304,8 +419,5 @@ router.post("/deconnexion", async (req: Request, res: Response) => {
     });
   }
 });
-
-//Amir//////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////
 
 export default router;
