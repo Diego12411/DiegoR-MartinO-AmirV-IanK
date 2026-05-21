@@ -5,6 +5,38 @@ type AdminRouteProps = {
   children: React.ReactNode;
 };
 
+/**
+ * =========================================================================================
+ * ROUTE PROTÉGÉE POUR LA PAGE ADMINISTRATEUR
+ * -----------------------------------------------------------------------------------------
+ * Description :
+ * Ce composant protège l'accès à la page administrateur côté frontend.
+ * Avant d'afficher la page admin, il vérifie si l'utilisateur est connecté
+ * et s'il possède le rôle "admin".
+ *
+ * Fonctionnement :
+ * - Appelle la route backend GET /utilisateurs/profil
+ * - Envoie automatiquement le cookie HttpOnly avec credentials: "include"
+ * - Vérifie si l'utilisateur est authentifié
+ * - Vérifie si le rôle de l'utilisateur est "admin"
+ *
+ * Redirections :
+ * - Si aucun utilisateur n'est connecté : redirection vers /seConnecter
+ * - Si l'utilisateur est connecté mais n'est pas admin : redirection vers /compte
+ * - Si l'utilisateur est admin : affichage de la page protégée
+ *
+ * Sécurité :
+ * - Empêche un utilisateur client d'accéder directement à /PageAdmin
+ *   en écrivant l'URL dans le navigateur
+ * - La vérification du rôle est faite à partir du profil retourné par le backend
+ *
+ * Remarque :
+ * Cette protection est faite côté frontend. Les routes backend sensibles
+ * doivent aussi être protégées côté serveur pour une sécurité complète.
+ *
+ * Auteur : Amir
+ * =========================================================================================
+ */
 export default function AdminRoute({ children }: AdminRouteProps) {
   const [chargement, setChargement] = useState(true);
   const [autorise, setAutorise] = useState(false);
